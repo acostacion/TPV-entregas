@@ -1,27 +1,32 @@
+// María Eduarda Beckers, Carmen Gómez Becerra.
 #include <fstream>
 #include <array>
 #include <string>
 #include <iostream>
 
-struct Ejemplar {
+struct Ejemplar { // 1 ejemplar.
 	int id;
 	char tipo;
 	std::string nombre;
 };
 
-struct Catalogo {
+struct Catalogo { // Catálogo de ejemplares.
 	int numElems;
 	Ejemplar* elems;
 };
 
 bool leerCatalogo() {
+	// Abrimos archivo y comprobamos si se ha leído bien.
 	std::ifstream entrada("catalogo.txt");
 	if (!entrada.is_open())return false;
+
+	// Lee el nº de elementos del catálogo.
 	Catalogo c;
 	entrada >> c.numElems;
-	std::string linea;
 
+	// Va almacenando cada elemento.
 	for (int i = 0; i < c.numElems; i++) {
+		// Guarda el ID, el tipo(L,A,J) y el nombre.
 		entrada >> c.elems[i].id >> c.elems[i].tipo;
 		getline(entrada, c.elems[i].nombre);
 	}
@@ -32,6 +37,19 @@ bool leerCatalogo() {
 
 
 bool leerPrestamos() {
+	// Abrimos archivo y comprobamos si se ha leído bien.
+	std::ifstream entrada("prestamos.txt");
+	if (!entrada.is_open()) return false;
+
+	Catalogo c;
+	int npres; // Número de préstamos.
+	entrada >> npres;
+		for (int i = 0; i < npres; i++) {
+
+	}
+	Ejemplar* nprestamo = buscarEjemplar(c, );
+	entrada.close();
+	return true;
 
 }
 
@@ -39,20 +57,24 @@ void ordenarPrestamos() {
 
 }
 
-Ejemplar* buscarEjemplar(Catalogo catalogo, int codigo) {
+Ejemplar* buscarEjemplar(Catalogo c, int codigo) {
 	bool encontrado = false;
 	int i = 0;
+
+	// Busca si el ID del catálogo coincide con el código dado.
 	while (!encontrado) {
-		encontrado = catalogo.elems[i].id == codigo;
+		encontrado = c.elems[i].id == codigo;
 		i++;
 	}
-	if (encontrado) return &catalogo.elems[i];
+
+	// Al encontrarlo devuelve el puntero a ese ID.
+	if (encontrado) return &c.elems[i];
 	return nullptr;
 	
 }
 
 int main() {
-	leerCatalogo(std:: catalogo);
+	
 
 
 }
