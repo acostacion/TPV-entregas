@@ -1,13 +1,14 @@
 // María Eduarda Beckers, Carmen Gómez Becerra. Grupo 20.
 
+#include <windows.h> 
 #include <fstream>
 #include <array>
 #include <string>
 #include <iostream>
-#include <windows.h> 
 #include <algorithm>
+#include <vector>
 
-#include "Date.cpp" 
+#include "Date.hpp" 
 
 #pragma region Structs
 struct Ejemplar { // 1 ejemplar.
@@ -20,8 +21,6 @@ struct Catalogo { // Catálogo de ejemplares.
 	int numElems;
 	Ejemplar* elems;
 };
-
-
 
 struct Prestamo { // 1 préstamo
 	int codigoEjemplar;
@@ -151,7 +150,8 @@ int main() {
 		return 1;
 	}
 
-	sort(prestamos.elems, prestamos.elems + prestamos.numElems);
+	
+	std::sort(prestamos.elems, prestamos.elems + prestamos.numElems);
 	mostrarPrestamos(prestamos);
 
 
