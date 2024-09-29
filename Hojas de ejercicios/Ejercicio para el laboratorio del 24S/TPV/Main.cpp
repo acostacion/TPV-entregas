@@ -1,4 +1,4 @@
-// María Eduarda Beckers, Carmen Gómez Becerra.
+// María Eduarda Beckers, Carmen Gómez Becerra. Grupo 20.
 
 #include <fstream>
 #include <array>
@@ -21,12 +21,18 @@ struct Catalogo { // Catálogo de ejemplares.
 	Ejemplar* elems;
 };
 
+
+
 struct Prestamo { // 1 préstamo
 	int codigoEjemplar;
 	Date fecha;
 	Ejemplar* ejemplarPtr;
 	int idUsuario;
 };
+
+bool operator<(const Prestamo& izdo, const Prestamo& dcho) {
+	return izdo.fecha < dcho.fecha;
+}
 
 struct ListaPrestamos { // Catálogo de préstamos.
 	int numElems;
@@ -39,13 +45,6 @@ Ejemplar* buscarEjemplar(Catalogo c, int codigo) {
 	int ini = 0, fin = c.numElems -1;
 
 	// Busca si el ID del catálogo coincide con el código dado.
-
-	// DUDA: esto es un algotitmo de EDA, verdad? Yo es que no he dado EDA.
-	// Creo que lo que falla es que se queda en la mitad infinitamente, 
-	// yo haría una búsqueda normal simplemente.
-	// Lo he investigado, se llama búsqueda binaria.
-	// El array ha de estar ordenado en orden ascendente.
-	// No se puede aplicar búsqueda binaria, luego lo cambiamos.
 
 	while (ini <= fin) {
 		int mitad = (ini + fin) / 2;
@@ -86,15 +85,6 @@ bool leerCatalogo(Catalogo& c) {
 	return true;
 }
 
-void ordenarPrestamos(ListaPrestamos& p) {
-
-	// sort(puntero al primer elemento del array, puntero al ultimo elemento del array).
-	std::sort(p.elems, p.elems + p.numElems, [](const Prestamo& a, const Prestamo& b) { // NOTA: no entiendo el tercer argumento.
-		return a.fecha < b.fecha; // Ordenar por fecha
-		});
-
-}
-
 int duracionPrestamo(char tipo) {
 	if (tipo == 'L') return 30; // Libros
 	else if (tipo == 'A') return 7; // Audiovisual
@@ -106,9 +96,7 @@ void mostrarPrestamos(const ListaPrestamos& p){
 		if (p.elems[i].ejemplarPtr) { // si hay un prestamo
 			Date fechaEntrega = p.elems[i].fecha;
 
-			
-			fechaEntrega += duracionPrestamo((p.elems[i].ejemplarPtr->tipo)); // No entiendo que es lo de la flecha. Creo que todavia no lo hemos dado.
-			
+			fechaEntrega += duracionPrestamo((p.elems[i].ejemplarPtr->tipo)); 
 			
 			int diasHastaEntrega = fechaEntrega.diff(Date());
 			
@@ -162,7 +150,8 @@ int main() {
 		std::cout << "No se ha podido leer el archivo";
 		return 1;
 	}
-	ordenarPrestamos(prestamos);
+
+	sort(prestamos.elems, prestamos.elems + prestamos.numElems);
 	mostrarPrestamos(prestamos);
 
 
