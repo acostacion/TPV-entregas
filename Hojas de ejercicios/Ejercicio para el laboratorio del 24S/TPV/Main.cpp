@@ -9,7 +9,7 @@
 
 #include "Date.cpp" 
 
-
+#pragma region Structs
 struct Ejemplar { // 1 ejemplar.
 	int id;
 	char tipo;
@@ -21,24 +21,31 @@ struct Catalogo { // Catálogo de ejemplares.
 	Ejemplar* elems;
 };
 
-struct Prestamo {
+struct Prestamo { // 1 préstamo
 	int codigoEjemplar;
-	Date data;
+	Date fecha;
 	Ejemplar* ejemplarPtr;
 	int idUsuario;
 };
 
-struct ListaPrestamos { // Catálogo de ejemplares.
+struct ListaPrestamos { // Catálogo de préstamos.
 	int numElems;
 	Prestamo* elems;
 };
+#pragma endregion
 
-
-
+#pragma region Methods
 Ejemplar* buscarEjemplar(Catalogo c, int codigo) {
 	int ini = 0, fin = c.numElems -1;
 
 	// Busca si el ID del catálogo coincide con el código dado.
+
+	// DUDA: esto es un algotitmo de EDA, verdad? Yo es que no he dado EDA.
+	// Creo que lo que falla es que se queda en la mitad infinitamente, 
+	// yo haría una búsqueda normal simplemente.
+	// Lo he investigado, se llama búsqueda binaria.
+	// El array ha de estar ordenado en orden ascendente.
+	// No se puede aplicar búsqueda binaria, luego lo cambiamos.
 
 	while (ini <= fin) {
 		int mitad = (ini + fin) / 2;
@@ -57,7 +64,6 @@ Ejemplar* buscarEjemplar(Catalogo c, int codigo) {
 	return nullptr; // si no encuentra
 
 }
-
 
 bool leerCatalogo(Catalogo& c) {
 	// Abrimos archivo y comprobamos si se ha leído bien.
@@ -79,26 +85,29 @@ bool leerCatalogo(Catalogo& c) {
 	entrada.close();
 	return true;
 }
+
 void ordenarPrestamos(ListaPrestamos& p) {
 
-	std::sort(p.elems, p.elems + p.numElems, [](const Prestamo& a, const Prestamo& b) {
-		return a.data < b.data; // Ordenar por fecha
+	// sort(puntero al primer elemento del array, puntero al ultimo elemento del array).
+	std::sort(p.elems, p.elems + p.numElems, [](const Prestamo& a, const Prestamo& b) { // NOTA: no entiendo el tercer argumento.
+		return a.fecha < b.fecha; // Ordenar por fecha
 		});
 
 }
+
 int duracionPrestamo(char tipo) {
 	if (tipo == 'L') return 30; // Libros
-	else if (tipo == 'A') return 7; // Audio visual
+	else if (tipo == 'A') return 7; // Audiovisual
 	return 14; // Juegos
 }
 
 void mostrarPrestamos(const ListaPrestamos& p){
 	for (int i = 0; i < p.numElems;i++) {
 		if (p.elems[i].ejemplarPtr) { // si hay un prestamo
-			Date fechaEntrega = p.elems[i].data;
+			Date fechaEntrega = p.elems[i].fecha;
 
 			
-			fechaEntrega += duracionPrestamo((p.elems[i].ejemplarPtr->tipo));
+			fechaEntrega += duracionPrestamo((p.elems[i].ejemplarPtr->tipo)); // No entiendo que es lo de la flecha. Creo que todavia no lo hemos dado.
 			
 			
 			int diasHastaEntrega = fechaEntrega.diff(Date());
@@ -126,7 +135,7 @@ bool leerPrestamos(ListaPrestamos& p,Catalogo& c) {
 	p.elems = new Prestamo[p.numElems];
 
 	for(int i = 0; i < p.numElems; i++) {
-		entrada >> p.elems[i].codigoEjemplar >> p.elems[i].data >> p.elems[i].idUsuario;
+		entrada >> p.elems[i].codigoEjemplar >> p.elems[i].fecha >> p.elems[i].idUsuario;
 		p.elems[i].ejemplarPtr = buscarEjemplar(c , p.elems[i].codigoEjemplar);
 	}
 	
@@ -134,6 +143,7 @@ bool leerPrestamos(ListaPrestamos& p,Catalogo& c) {
 	return true;
 
 }
+#pragma endregion
 
 
 
