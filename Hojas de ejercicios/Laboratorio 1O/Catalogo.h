@@ -15,7 +15,7 @@ public:
 	Catalogo(std::istream&);
 	~Catalogo();
 	Ejemplar* buscaEjemplar(int) const;
-	void insertaEjemplar(Ejemplar::Tipo, std::string);
+	int insertaEjemplar(Ejemplar::Tipo, std::string);
 	friend  std::ostream& operator<<(std::ostream&, const Catalogo&);
 };
 

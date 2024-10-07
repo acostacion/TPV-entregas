@@ -2,7 +2,6 @@
 // Declaración de la clase 
 //
 #pragma once
-
 #include <iostream>
 #include "Ejemplar.h"
 #include "Date.hpp"
@@ -14,15 +13,15 @@ private:
 	Ejemplar* ejemplar;
 	Date fecha;
 	int usuario;
-public:
 
+public:
 	Prestamo(); Prestamo(Ejemplar*, Date, int);
 	Ejemplar* getEjemplar() { return ejemplar; };
 	Date getFecha() { return fecha; };
 	int getUsuario() const { return usuario; };
-	Ejemplar* getDevolucion() const { return ejemplar; };
+	Date getDevolucion() const;
 	bool operator<(const Prestamo&) const;
-	bool leePrestamo(const Catalogo&);
+	Prestamo leePrestamo(std::istream&, const Catalogo&);
 	friend std::ostream& operator<<(std::ostream&, const Prestamo&);
 };
 

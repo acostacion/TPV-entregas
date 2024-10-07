@@ -1,5 +1,9 @@
 #include "Ejemplar.h"
+#include "Prestamo.h"
+#include "Date.hpp"
+#include "Listaprestamos.h"
 #include <iostream>
+#include <string>
 
 Ejemplar::Ejemplar() {
 	id = 0;
@@ -14,12 +18,22 @@ Ejemplar::Ejemplar(int _id , Tipo _tipo, std::string _nombre) {
 	disponible = true;
 }
 
-void Ejemplar::presta() {
-	// TO DO.
+bool Ejemplar::presta() {
+	if (disponible) {
+		disponible = false;
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
-void Ejemplar::devuelve() {
-	// TO DO.
+bool Ejemplar::devuelve() {
+	if (!disponible) {
+		disponible = true;
+		return true;
+	} return false;
+
 }
 
 std::ostream& operator<<(std::ostream& out, const Ejemplar& ejemplar) {
@@ -27,14 +41,14 @@ std::ostream& operator<<(std::ostream& out, const Ejemplar& ejemplar) {
 }
 
 std::istream& operator>>(std::istream& in , Ejemplar& ejemplar) {
-	char c, t;
-	
-	in >> ejemplar.id >> c >> t >> c >> ejemplar.nombre;
+	char t;
+	in >> ejemplar.id >> t;
 	if (t == 'L') ejemplar.tipo = Ejemplar::L;
 	if (t == 'A') ejemplar.tipo = Ejemplar::A;
 	if (t == 'J') ejemplar.tipo = Ejemplar::J;
 	else ejemplar.tipo == Ejemplar::Nada;
 
-	return in;
+	std::getline(in, ejemplar.nombre);
 
+	return in;
 }

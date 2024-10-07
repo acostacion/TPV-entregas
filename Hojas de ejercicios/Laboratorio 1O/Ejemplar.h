@@ -2,6 +2,7 @@
 // Declaración de la clase 
 //
 #include <iostream>
+#include <string>
 #pragma once
 class Ejemplar
 {
@@ -18,9 +19,9 @@ public:
 	Tipo getTipo() { return tipo; };
 	std::string getNombre() const { return nombre; };
 
-	void presta();
+	bool presta();
 
-	void devuelve();
+	bool devuelve();
 
 	friend std::ostream& operator<<(std::ostream&, const Ejemplar&);
 
@@ -31,7 +32,5 @@ private:
 	Tipo tipo;
 	std::string nombre;
 	bool disponible;
-
-
 };
 

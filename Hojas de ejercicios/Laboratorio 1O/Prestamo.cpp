@@ -2,7 +2,7 @@
 
 Prestamo::Prestamo() {
 	ejemplar = nullptr;
-	fecha = { 0, 0, 0 };
+	fecha = Date();
 	usuario = 0;
 }
 
@@ -12,18 +12,35 @@ Prestamo::Prestamo(Ejemplar* _ejemplar, Date _fecha, int _usuario) {
 	usuario = _usuario;
 }
 
-bool Prestamo::operator<(const Prestamo& p) const {
-	// Con qué otro préstamo se compara?
+Date Prestamo::getDevolucion() const {
+	if (ejemplar->getTipo() == Ejemplar::Tipo::L) return fecha + 30; // Libros
+	if (ejemplar->getTipo() == Ejemplar::Tipo::A) return fecha + 7; // Audiovisual
+	return fecha + 14; // Juegos // Mejor usar switch o if-if-if.
 }
 
-bool leePrestamo(const Catalogo& c) {
+bool Prestamo::operator<(const Prestamo& p) const {
+	Date fechaEntrega1 = getDevolucion();
+	Date fechaEntrega2 = p.getDevolucion();
 
-	// A MEDIAS.
-	int ejemplar;
-	std::cin >> ejemplar;
-	c.buscaEjemplar(ejemplar);
+	return fechaEntrega1 < fechaEntrega2;
+}
+
+Prestamo Prestamo::leePrestamo(std::istream& in , const Catalogo& c) {
+	int codi;
+	in >> codi;
+	Ejemplar* ejemplo;
+	Prestamo nuevoPrestamo;
+	ejemplo = c.buscaEjemplar(codi);
+	if (ejemplo != nullptr) {
+		Date _fecha;
+		int _usuario;
+		in >> _fecha >> _usuario;
+		nuevoPrestamo = Prestamo(c.buscaEjemplar(codi), _fecha, _usuario);
+	}
+	return nuevoPrestamo;
 }
 
 std::ostream& operator<<(std::ostream& out, const Prestamo& p) {
 	std::cout << p.ejemplar << " " << p.fecha << " " << p.usuario;
+	return out;
 }

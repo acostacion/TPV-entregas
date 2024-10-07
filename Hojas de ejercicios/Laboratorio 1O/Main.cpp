@@ -14,123 +14,143 @@
 #include "ListaPrestamos.h" 
 #include "Ejemplar.h" 
 
-
-
-int duracionPrestamo(char tipo) {
-	if (tipo == 'L') return 30; // Libros
-	if (tipo == 'A') return 7; // Audiovisual
-	return 14; // Juegos // Mejor usar switch o if-if-if.
-}
-
-Date FechaEntrega( const Prestamo& p) {
-	return p.fecha + duracionPrestamo((p.ejemplarPtr->tipo));
-}
-
-bool operator<(const Prestamo& izdo, const Prestamo& dcho) {
-	Date fechaEntrega1;
-	Date fechaEntrega2;
-
-	fechaEntrega1 = FechaEntrega( izdo);
-	fechaEntrega2 = FechaEntrega( dcho);
-
-	return fechaEntrega1 < fechaEntrega2;
-}
-
-
-#pragma region Methods
-Ejemplar* buscarEjemplar(Catalogo c, int codigo) { // Habría que pasarlo por referencia. Quieres acceder al catálogo pero no quieres ni modificarlo ni copiarlo, sino acceder a él.
-	
-
-}
-
-bool leerCatalogo(Catalogo& c) {
-	// Abrimos archivo y comprobamos si se ha leído bien.
-	std::ifstream entrada("catalogo.txt");
-	if (!entrada.is_open())return false;
-
-	// Lee el nº de elementos del catálogo.
-	entrada >> c.numElems;
-
-	c.elems = new Ejemplar[c.numElems];
-
-	// Va almacenando cada elemento.
-	for (int i = 0; i < c.numElems; i++) {
-		// Guarda el ID, el tipo(L,A,J) y el nombre.
-		entrada >> c.elems[i].id >> c.elems[i].tipo;
-		std::getline(entrada, c.elems[i].nombre);
-	}
-
-	entrada.close();
-	return true;
-}
-
-
-
-void mostrarPrestamos(const ListaPrestamos& p){
-	for (int i = 0; i < p.numElems;i++) {
-		if (p.elems[i].ejemplarPtr) { // si hay un prestamo
-			Date fechaEntrega;
-
-			fechaEntrega = FechaEntrega(inp.elems[i]);
-			
-			int diasHastaEntrega = fechaEntrega.diff(Date());
-			
-			int penalizacion;
-			if (diasHastaEntrega < 0) penalizacion = -diasHastaEntrega * 2;
-			else penalizacion = 0;
-
-			std::cout << fechaEntrega << " (en " << diasHastaEntrega << " días) " << p.elems[i].ejemplarPtr->nombre;
-
-			if (penalizacion > 0) {
-				std::cout << " (" << penalizacion << " días de penalización)";
-			}
-			std::cout << "\n";
-		}
-	}
-}
-
-bool leerPrestamos(ListaPrestamos& p,Catalogo& c) {
-	// Abrimos archivo y comprobamos si se ha leído bien.
-	std::ifstream entrada("prestamos.txt");
-	if (!entrada.is_open()) return false;
-
-	entrada >> p.numElems;
-	p.elems = new Prestamo[p.numElems];
-
-	for(int i = 0; i < p.numElems; i++) {
-		entrada >> p.elems[i].codigoEjemplar >> p.elems[i].fecha >> p.elems[i].idUsuario;
-		p.elems[i].ejemplarPtr = buscarEjemplar(c , p.elems[i].codigoEjemplar);
-	}
-	
-	entrada.close();
-	return true;
-
-}
-#pragma endregion
-
-
-
 int main() {
-	
 	// 1. Carga el catálogo y la lista de préstamos
 	SetConsoleOutputCP(CP_UTF8);
 
-	Catalogo catalogo;
-	ListaPrestamos prestamos;
-
-	if (!leerCatalogo(catalogo)) {
-		std::cout << "No se ha podido leer el archivo";
+	std::ifstream entrada("catalogo.txt");
+	if (!entrada.is_open()) {
+		std::cout << "No se ha podido leer el archivo catalogo";
 		return 1;
 	}
-	if (!leerPrestamos(prestamos, catalogo)) {
-		std::cout << "No se ha podido leer el archivo";
+	Catalogo catalogo = Catalogo(entrada);
+	entrada.close();
+
+	std::ifstream entrada2("prestamos.txt");
+	if (!entrada2.is_open()) {
+		std::cout << "No se ha podido leer el archivo prestamos";
 		return 1;
 	}
+	ListaPrestamos prestamos = ListaPrestamos(entrada2, catalogo);
+	entrada2.close();
+	int n;
 
-	
-	std::sort(prestamos.elems, prestamos.elems + prestamos.numElems);
-	mostrarPrestamos(prestamos);
+	do {
+		std::cout << "Elige una opción:\n"
+			<< "\n"
+			<< "  1. Mostrar el catálogo.\n"
+			<< "  2. Mostrar préstamos.\n"
+			<< "  3. Registrar ejemplar.\n"
+			<< "  4. Prestar un ejemplar.\n"
+			<< "  5. Devolver un ejemplar.\n"
+			<< "  6. Salir.\n"
+			<< "\n"
+			<< "Opción: ";
+		std::cin >> n;
 
+		switch (n) {
+		case 1:
+			std::cout << "\n";
+			std::cout << catalogo;
+			break;
+
+		case 2:
+			std::cout << "\n";
+			std::cout << prestamos;
+			break;
+
+		case 3: {
+			std::cout << "¿Es libro(L), audiovisual(A) o juego(J)? ";
+			char letra;
+			std::cin >> letra;
+
+			Ejemplar::Tipo _tipo;
+			std::cout << "\n";
+			while (true) {
+				switch (tolower(letra)) {
+				case 'l': _tipo = Ejemplar::Tipo::L; break;
+				case 'j': _tipo = Ejemplar::Tipo::J; break;
+				case 'a': _tipo = Ejemplar::Tipo::A; break;
+				default:
+					std::cout << "Letra no válida. Intente con L, J o A: ";
+					std::cin >> letra;
+					continue;
+				}
+				break;
+			}
+
+			std::cout << "\n" << "¿Cuál es su título?  ";
+			std::string _nombre;
+			std::cin.ignore(); // Limpiar el buffer antes de usar getline
+			std::getline(std::cin, _nombre);
+
+			int codigo = catalogo.insertaEjemplar(_tipo, _nombre);
+			std::cout << "Insertado con código " << codigo << "\n";
+			break;
+		}
+
+		case 4: {
+			int codEjemplar;
+			std::cout << "Código del ejemplar: ";
+			std::cin >> codEjemplar;
+			std::cout << "\n";
+			Ejemplar* ejem = catalogo.buscaEjemplar(codEjemplar);
+			if (ejem == nullptr) {
+				std::cout << "No existe ningún ejemplar con código " << codEjemplar << "\n";
+			}
+			else {
+				std::cout << " -> " << ejem->getNombre() << "\n";
+				int idUsu;
+				std::cout << "Usuario al que se presta: ";
+				std::cin >> idUsu;
+
+				if (ejem->presta()) {
+					Date fecha;
+					Prestamo nuevoPrestamo = Prestamo(ejem, fecha, idUsu);
+					prestamos.insertaPrestamo(nuevoPrestamo);
+					std::cout << "Ejemplar prestado.\n";
+				}
+				else {
+					std::cout << "El ejemplar no está disponible.\n";
+				}
+			}
+			break;
+		}
+
+		case 5: {
+			int codEjemplar;
+			std::cout << "Código del ejemplar: ";
+			std::cin >> codEjemplar;
+			std::cout << "\n";
+			Ejemplar* ejem = catalogo.buscaEjemplar(codEjemplar);
+			if (ejem == nullptr) {
+				std::cout << "No se ha encontrado un préstamo de ese ejemplar." << codEjemplar << "\n";
+			}
+			else {
+				if (ejem->devuelve()) {
+					Prestamo quitarPrestamo = Prestamo(ejem, Date(), codEjemplar);
+					prestamos.quitarPrestamo(quitarPrestamo);
+					std::cout << "Ejemplar devuelto.\n";
+				}
+				else {
+					std::cout << "No se ha encontrado un préstamo de ese ejemplar.\n";
+				}
+			}
+			break;
+		}
+
+		case 6:
+			std::cout << "Saliendo...\n";
+			return 0;
+
+		default:
+			std::cout << "Opción no válida. Inténtelo de nuevo.\n";
+			break;
+		}
+
+		std::cout << "\n";
+
+	} while (n != 6);
 
 	return 0;
 }

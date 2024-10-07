@@ -10,6 +10,7 @@ Catalogo::Catalogo(std::istream& entrada) {
 	// Lee el nº de elementos del catálogo.
 	entrada >> numElems;
 	elems = new Ejemplar[numElems];
+	capacidad = numElems + 10;
 
 	// Va almacenando cada elemento.
 	for (int i = 0; i < numElems; i++) {
@@ -20,6 +21,7 @@ Catalogo::Catalogo(std::istream& entrada) {
 Catalogo::~Catalogo() {
 	delete[] elems;
 }
+
 
 Ejemplar* Catalogo::buscaEjemplar(int codigo) const {
 	int ini = 0, fin = numElems - 1;
@@ -43,15 +45,28 @@ Ejemplar* Catalogo::buscaEjemplar(int codigo) const {
 	return nullptr; // si no encuentra
 }
 
-void Catalogo::insertaEjemplar(Ejemplar::Tipo t, std::string nombre) {
-	numElems++;
-	// Cómo metemos el int???
+int Catalogo::insertaEjemplar(Ejemplar::Tipo _t, std::string _nombre) {
+	
+	if (numElems == capacidad) {
+		capacidad += 10;
+		Ejemplar* newElems = new Ejemplar[capacidad];
 
-	elems[numElems] = new Ejemplar( , t, nombre);
+		for (size_t i = 0; i < numElems; i++) {
+			newElems[i] = elems[i];
+		}
+		delete[] elems;
+		elems = newElems;
+
+	}
+	int cod = elems[numElems - 1].getCodigo() + 1;
+	Ejemplar nuevoEjem(cod, _t, _nombre);
+	numElems++;
+	return cod;
 }
 
 std::ostream& operator<<(std::ostream& out, const Catalogo& catalogo) {
 	for (int i = 0; i < catalogo.numElems; i++) {
 		out << catalogo.elems[i] << "\n";
 	}
+	return out;
 }
