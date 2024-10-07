@@ -46,6 +46,7 @@ Ejemplar* Catalogo::buscaEjemplar(int codigo) const {
 void Catalogo::insertaEjemplar(Ejemplar::Tipo t, std::string nombre) {
 	numElems++;
 	// Cómo metemos el int???
+
 	elems[numElems] = new Ejemplar( , t, nombre);
 }
 
