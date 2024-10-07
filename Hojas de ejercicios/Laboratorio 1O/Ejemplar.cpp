@@ -15,11 +15,11 @@ Ejemplar::Ejemplar(int _id , Tipo _tipo, std::string _nombre) {
 }
 
 void Ejemplar::presta() {
-
+	// TO DO.
 }
 
 void Ejemplar::devuelve() {
-
+	// TO DO.
 }
 
 std::ostream& operator<<(std::ostream& out, const Ejemplar& ejemplar) {

@@ -7,17 +7,14 @@
 #include <iostream>
 
 Catalogo::Catalogo(std::istream& entrada) {
-	// Abrimos archivo y comprobamos si se ha leído bien.
-	//entrada("catalogo.txt");
-
 	// Lee el nº de elementos del catálogo.
 	entrada >> numElems;
 	elems = new Ejemplar[numElems];
+
 	// Va almacenando cada elemento.
 	for (int i = 0; i < numElems; i++) {
 		entrada >> elems[i];
 	}
-
 }
 
 Catalogo::~Catalogo() {
@@ -46,8 +43,10 @@ Ejemplar* Catalogo::buscaEjemplar(int codigo) const {
 	return nullptr; // si no encuentra
 }
 
-void Catalogo::insertaEjemplar(Ejemplar::Tipo, std::string nombre) {
-
+void Catalogo::insertaEjemplar(Ejemplar::Tipo t, std::string nombre) {
+	numElems++;
+	// Cómo metemos el int???
+	elems[numElems] = new Ejemplar( , t, nombre);
 }
 
 std::ostream& operator<<(std::ostream& out, const Catalogo& catalogo) {
