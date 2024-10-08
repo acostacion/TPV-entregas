@@ -42,7 +42,11 @@ bool Ejemplar::devuelve() {
 
 std::ostream& operator<<(std::ostream& out, const Ejemplar& ejemplar) {
 	// Escribe del tipo "1927 L Amén, buenos días".
-	return out << ejemplar.id << " " << ejemplar.tipo << " " << ejemplar.nombre;
+	char t;
+	if (ejemplar.tipo == 1) t = 'L';
+	if (ejemplar.tipo == 2) t = 'A';
+	if (ejemplar.tipo == 3) t = 'J';
+	return out << ejemplar.id << " " << t << " " << ejemplar.nombre;
 }
 
 std::istream& operator>>(std::istream& in , Ejemplar& ejemplar) {
