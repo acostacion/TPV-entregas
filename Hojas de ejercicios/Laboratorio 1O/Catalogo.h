@@ -1,6 +1,4 @@
-//
-// Declaración de la clase 
-//
+// María Eduarda Beckers, Carmen Gómez Becerra. Grupo 20.
 #pragma once
 #include <iostream>
 #include "Ejemplar.h"

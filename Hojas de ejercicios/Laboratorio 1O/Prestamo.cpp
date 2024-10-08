@@ -1,3 +1,4 @@
+// María Eduarda Beckers, Carmen Gómez Becerra. Grupo 20.
 #include "Prestamo.h"
 
 Prestamo::Prestamo() {
@@ -13,34 +14,42 @@ Prestamo::Prestamo(Ejemplar* _ejemplar, Date _fecha, int _usuario) {
 }
 
 Date Prestamo::getDevolucion() const {
+	// Según el tipo devuelve fecha + penalización a la hora de hacer una devolución.
 	if (ejemplar->getTipo() == Ejemplar::Tipo::L) return fecha + 30; // Libros
 	if (ejemplar->getTipo() == Ejemplar::Tipo::A) return fecha + 7; // Audiovisual
-	return fecha + 14; // Juegos // Mejor usar switch o if-if-if.
+	return fecha + 14; // Juegos 
 }
 
 bool Prestamo::operator<(const Prestamo& p) const {
+
+	// Saca la fecha del préstamo global y la del préstamo del método.
 	Date fechaEntrega1 = getDevolucion();
 	Date fechaEntrega2 = p.getDevolucion();
 
+	// Compara fechas de global < local.
 	return fechaEntrega1 < fechaEntrega2;
 }
 
 Prestamo Prestamo::leePrestamo(std::istream& in , const Catalogo& c) {
-	int codi;
-	in >> codi;
-	Ejemplar* ejemplo;
-	Prestamo nuevoPrestamo;
-	ejemplo = c.buscaEjemplar(codi);
-	if (ejemplo != nullptr) {
-		Date _fecha;
-		int _usuario;
-		in >> _fecha >> _usuario;
-		nuevoPrestamo = Prestamo(c.buscaEjemplar(codi), _fecha, _usuario);
-	}
-	return nuevoPrestamo;
+	// Lecturas y creaciones de punteros y variables.
+	int id;
+	in >> id;
+	Ejemplar* ejemplarPTR;
+	Date _fecha;
+	int _usuario;
+
+	// Se busca el ejemplar con ese id y se apunta con ejemplarPTR.
+	ejemplarPTR = c.buscaEjemplar(id);
+
+	// Si no está vacío se lee la fecha y el usuario
+	if (ejemplarPTR != nullptr) in >> _fecha >> _usuario;
+		
+	// Devuelve el préstamo con id al que apunta, fecha y usuario.
+	return Prestamo(c.buscaEjemplar(id), _fecha, _usuario);
 }
 
 std::ostream& operator<<(std::ostream& out, const Prestamo& p) {
+	// Se escribe tipo "1292 10/10/2010 223".
 	std::cout << p.ejemplar << " " << p.fecha << " " << p.usuario;
 	return out;
 }

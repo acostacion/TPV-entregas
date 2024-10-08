@@ -1,3 +1,4 @@
+// María Eduarda Beckers, Carmen Gómez Becerra. Grupo 20.
 #include "Catalogo.h"
 #include "Ejemplar.h"
 
@@ -10,7 +11,7 @@ Catalogo::Catalogo(std::istream& entrada) {
 	// Lee el nº de elementos del catálogo.
 	entrada >> numElems;
 	elems = new Ejemplar[numElems];
-	capacidad = numElems + 10;
+	capacidad = numElems + 10; // Se establece esto como capacidad máxima.
 
 	// Va almacenando cada elemento.
 	for (int i = 0; i < numElems; i++) {
@@ -47,24 +48,33 @@ Ejemplar* Catalogo::buscaEjemplar(int codigo) const {
 
 int Catalogo::insertaEjemplar(Ejemplar::Tipo _t, std::string _nombre) {
 	
+	// Si se ha llegado a la capacidad máxima...
 	if (numElems == capacidad) {
 		capacidad += 10;
-		Ejemplar* newElems = new Ejemplar[capacidad];
+		Ejemplar* newElems = new Ejemplar[capacidad]; // ... se crea otro array auxiliar con mayor capacidad.
 
 		for (size_t i = 0; i < numElems; i++) {
+			// Se va pasando el contenido del viejo array al nuevo.
 			newElems[i] = elems[i];
 		}
+		// Se borra el contenido del array original.
 		delete[] elems;
+
+		// Se mete el contenido del array aux en el original.
 		elems = newElems;
 
 	}
-	int cod = elems[numElems - 1].getCodigo() + 1;
-	Ejemplar nuevoEjem(cod, _t, _nombre);
+	// Se saca el codigo del último elemento y se suma 1.
+	int id = elems[numElems - 1].getCodigo() + 1;
+
+	// Se crea un nuevo ejemplar con nuevo id, con el tipo y nombre.
+	Ejemplar nuevoEjem(id, _t, _nombre);
 	numElems++;
-	return cod;
+	return id;
 }
 
 std::ostream& operator<<(std::ostream& out, const Catalogo& catalogo) {
+	// Se escriben todos los elementos del catálogo.
 	for (int i = 0; i < catalogo.numElems; i++) {
 		out << catalogo.elems[i] << "\n";
 	}
