@@ -36,6 +36,7 @@ int main() {
 	}
 	// crea la lista de préstamos.
 	ListaPrestamos prestamos = ListaPrestamos(entrada2, catalogo);
+	prestamos.ordena();
 	entrada2.close();
 	int n;
 
@@ -134,6 +135,8 @@ int main() {
 					std::cout << "El ejemplar no está disponible.\n";
 				}
 			}
+			prestamos.ordena();
+
 			break;
 		}
 
@@ -164,6 +167,8 @@ int main() {
 					std::cout << "No se ha encontrado un préstamo de ese ejemplar.\n";
 				}
 			}
+			prestamos.ordena();
+
 			break;
 		}
 

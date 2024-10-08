@@ -50,6 +50,6 @@ Prestamo Prestamo::leePrestamo(std::istream& in , const Catalogo& c) {
 
 std::ostream& operator<<(std::ostream& out, const Prestamo& p) {
 	// Se escribe tipo "1292 10/10/2010 223".
-	std::cout << p.ejemplar << " " << p.fecha << " " << p.usuario;
+	std::cout << p.ejemplar->getCodigo() << " " << p.fecha << " " << p.usuario;
 	return out;
 }

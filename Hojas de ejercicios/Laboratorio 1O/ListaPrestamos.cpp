@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <array>
+#include <format>
 #include "ListaPrestamos.h"
 
 ListaPrestamos::ListaPrestamos(std::istream& in, const Catalogo& c) {
@@ -19,6 +20,7 @@ ListaPrestamos::ListaPrestamos(std::istream& in, const Catalogo& c) {
 		nuevoPrestamo = nuevoPrestamo.leePrestamo(in, c);
 		elems[i] = nuevoPrestamo;
 	}
+
 }
 
 ListaPrestamos::~ListaPrestamos() {
@@ -73,7 +75,16 @@ void ListaPrestamos::quitarPrestamo(Prestamo& _prestamo) {
 std::ostream& operator<<(std::ostream& out, const ListaPrestamos& p) {
 	// Se escriben todos los elementos de la lista de préstamos.
 	for (int i = 0; i < p.numElems; i++) {
-		out << p.elems[i] << "\n";
+		Date fechaEntrega;
+		fechaEntrega = p.elems[i].getDevolucion();
+		int diasHastaEntrega = fechaEntrega.diff(Date());
+		int penalizacion;
+		if (diasHastaEntrega < 0) penalizacion = -diasHastaEntrega * 2;
+		else penalizacion = 0;
+		out << fechaEntrega;
+		out << format(" (en {:>5} días) {:<45}  ", diasHastaEntrega, p.elems[i].getEjemplar()->getNombre());
+		if (penalizacion > 0) out << " ( " << penalizacion << " días de la penalización)" << "\n";
+		else out << "\n";
 	}
 	return out;
 }
