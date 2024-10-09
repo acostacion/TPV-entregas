@@ -4,6 +4,7 @@
 #include <array>
 #include <format>
 #include "ListaPrestamos.h"
+#include <Windows.h>
 
 ListaPrestamos::ListaPrestamos(std::istream& in, const Catalogo& c) {
 	// Lee el número de elementos.
@@ -81,10 +82,21 @@ std::ostream& operator<<(std::ostream& out, const ListaPrestamos& p) {
 		int penalizacion;
 		if (diasHastaEntrega < 0) penalizacion = -diasHastaEntrega * 2;
 		else penalizacion = 0;
-		out << fechaEntrega;
-		out << format(" (en {:>5} días) {:<45}  ", diasHastaEntrega, p.elems[i].getEjemplar()->getNombre());
-		if (penalizacion > 0) out << " ( " << penalizacion << " días de la penalización)" << "\n";
-		else out << "\n";
+		
+		HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(h, 71);
+		if (penalizacion > 0) {
+			out << fechaEntrega;
+			out << format(" (en {:>5} días) {:<45}  ", diasHastaEntrega, p.elems[i].getEjemplar()->getNombre());
+			out << " ( " << penalizacion << " días de la penalización)" << "\n";
+		}
+		else {
+			SetConsoleTextAttribute(h, 7);
+			out << fechaEntrega;
+			out << format(" (en {:>5} días) {:<45}  ", diasHastaEntrega, p.elems[i].getEjemplar()->getNombre()); 
+			out << "\n";
+			
+		}
 	}
 	return out;
 }
