@@ -12,6 +12,12 @@ Ejemplar::Ejemplar() {
 	nombre = " ";
 	disponible = false;
 }
+Ejemplar::Ejemplar(const Ejemplar& otro) {
+	id = otro.id;
+	tipo = otro.tipo;
+	nombre = otro.nombre;
+	disponible = otro.disponible;
+}
 Ejemplar::Ejemplar(int _id , Tipo _tipo, std::string _nombre) {
 	id = _id;
 	tipo = _tipo;
@@ -65,4 +71,14 @@ std::istream& operator>>(std::istream& in , Ejemplar& ejemplar) {
 	std::getline(in, ejemplar.nombre);
 
 	return in; // Devuelve todo lo leído.
+}
+
+Ejemplar& Ejemplar::operator=(const Ejemplar& otro) {
+	if (this == &otro) return *this;
+	id = otro.id;
+	tipo = otro.tipo;
+	nombre = otro.nombre;
+	disponible = otro.disponible;
+
+	return *this;
 }

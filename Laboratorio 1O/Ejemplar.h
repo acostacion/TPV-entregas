@@ -13,9 +13,11 @@ public:
 	};
 	Ejemplar();
 	Ejemplar(int, Tipo, std::string);
+	Ejemplar(const Ejemplar&);
 	int getCodigo() { return id; };
 	Tipo getTipo() { return tipo; };
 	std::string getNombre() const { return nombre; };
+	Ejemplar& operator=(const Ejemplar&);
 
 	bool presta();
 

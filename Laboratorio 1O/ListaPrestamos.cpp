@@ -9,10 +9,10 @@
 ListaPrestamos::ListaPrestamos(std::istream& in, const Catalogo& c) {
 	// Lee el número de elementos.
 	in >> numElems;
-
+	capacidad = numElems * 2;
 	// Crea un array de préstamos de tamaño numElems.
-	elems = new Prestamo[numElems];
-	capacidad = numElems + 10; // Se establece esto como capacidad máxima.
+	elems = new Prestamo[capacidad];
+	 // Se establece esto como capacidad máxima.
 
 	for (int i = 0; i < numElems; i++) {
 
@@ -27,16 +27,46 @@ ListaPrestamos::ListaPrestamos(std::istream& in, const Catalogo& c) {
 ListaPrestamos::~ListaPrestamos() {
 	delete[] elems;
 }
+ListaPrestamos::ListaPrestamos(const ListaPrestamos& otro) {
+	if (otro.elems != nullptr) {
+		// Realizar una copia profunda del objeto al que apunta el puntero
+		elems = new Prestamo(*otro.elems);
+	}
+	else {
+		elems = nullptr;
+	}
+
+	numElems = otro.numElems;
+	capacidad = otro.capacidad;
+}
 
 void ListaPrestamos::ordena() {
 	std::sort(elems, elems + numElems);
 }
 
+
+ListaPrestamos& ListaPrestamos::operator=(const ListaPrestamos& otro) {
+	numElems = otro.numElems;
+	capacidad = otro.capacidad;
+	if (elems != nullptr) {
+		delete elems; // lo eliminamos si es diferente de nullptr
+	}
+	if (otro.elems != nullptr) { // Si no es nullptr
+		// Realizar una copia profunda del objeto al que apunta el puntero
+		elems = new Prestamo(*otro.elems);
+	}
+	else {
+		elems = nullptr;
+	}
+	return *this;
+}
+
+
 void ListaPrestamos::insertaPrestamo(const Prestamo& p) {
 	
 	// Si se ha llegado a la capacidad máxima...
 	if (numElems == capacidad) {
-		capacidad += 10;
+		capacidad = numElems * 2;
 		Prestamo* newElems = new Prestamo[capacidad]; // ... se crea otro array auxiliar con mayor capacidad.
 
 		for (size_t i = 0; i < numElems; i++) {
@@ -84,8 +114,9 @@ std::ostream& operator<<(std::ostream& out, const ListaPrestamos& p) {
 		else penalizacion = 0;
 		
 		HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(h, 71);
+		
 		if (penalizacion > 0) {
+			SetConsoleTextAttribute(h, 71);
 			out << fechaEntrega;
 			out << format(" (en {:>5} días) {:<45}  ", diasHastaEntrega, p.elems[i].getEjemplar()->getNombre());
 			out << " ( " << penalizacion << " días de la penalización)" << "\n";

@@ -14,6 +14,8 @@ private:
 
 public:
 	Prestamo(); Prestamo(Ejemplar*, Date, int);
+	Prestamo(const Prestamo&);
+	Prestamo& operator=(const Prestamo&);
 	Ejemplar* getEjemplar() { return ejemplar; };
 	Date getFecha() { return fecha; };
 	int getUsuario() const { return usuario; };

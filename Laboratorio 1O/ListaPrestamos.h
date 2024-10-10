@@ -13,6 +13,7 @@ private:
 public:
 	ListaPrestamos(std::istream&, const Catalogo&);
 	~ListaPrestamos();
+	ListaPrestamos& operator=(const ListaPrestamos&);
 	void ordena();
 	void insertaPrestamo(const Prestamo&);
 	void quitarPrestamo(Prestamo&);

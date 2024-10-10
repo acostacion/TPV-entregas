@@ -10,8 +10,8 @@
 Catalogo::Catalogo(std::istream& entrada) {
 	// Lee el nº de elementos del catálogo.
 	entrada >> numElems;
-	elems = new Ejemplar[numElems];
-	capacidad = numElems + 10; // Se establece esto como capacidad máxima.
+	capacidad = numElems * 2;// Se establece esto como capacidad máxima.
+	elems = new Ejemplar[capacidad];
 
 	// Va almacenando cada elemento.
 	for (int i = 0; i < numElems; i++) {
@@ -50,10 +50,10 @@ int Catalogo::insertaEjemplar(Ejemplar::Tipo _t, std::string _nombre) {
 	
 	// Si se ha llegado a la capacidad máxima...
 	if (numElems == capacidad) {
-		capacidad += 10;
+		capacidad = capacidad*2;
 		Ejemplar* newElems = new Ejemplar[capacidad]; // ... se crea otro array auxiliar con mayor capacidad.
 
-		for (size_t i = 0; i < numElems; i++) {
+		for (int i = 0; i < numElems; i++) {
 			// Se va pasando el contenido del viejo array al nuevo.
 			newElems[i] = elems[i];
 		}
@@ -65,10 +65,13 @@ int Catalogo::insertaEjemplar(Ejemplar::Tipo _t, std::string _nombre) {
 
 	}
 	// Se saca el codigo del último elemento y se suma 1.
-	int id = elems[numElems - 1].getCodigo() + 1;
-
+	int id = (numElems > 0) ? elems[numElems - 1].getCodigo() + 1 : 1;
+	
 	// Se crea un nuevo ejemplar con nuevo id, con el tipo y nombre.
-	Ejemplar nuevoEjem(id, _t, _nombre);
+	Ejemplar nuevoEjem = Ejemplar(id, _t, _nombre);
+	
+	elems[numElems] = nuevoEjem;
+		
 	numElems++;
 	return id;
 }
