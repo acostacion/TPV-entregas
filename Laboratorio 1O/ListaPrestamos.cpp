@@ -24,10 +24,11 @@ ListaPrestamos::ListaPrestamos(std::istream& in, const Catalogo& c) {
 
 }
 
-ListaPrestamos::~ListaPrestamos() {
-	delete[] elems;
-}
+
 ListaPrestamos::ListaPrestamos(const ListaPrestamos& otro) {
+	numElems = otro.numElems;
+	capacidad = otro.capacidad;
+
 	if (otro.elems != nullptr) {
 		// Realizar una copia profunda del objeto al que apunta el puntero
 		elems = new Prestamo(*otro.elems);
@@ -36,8 +37,10 @@ ListaPrestamos::ListaPrestamos(const ListaPrestamos& otro) {
 		elems = nullptr;
 	}
 
-	numElems = otro.numElems;
-	capacidad = otro.capacidad;
+}
+
+ListaPrestamos::~ListaPrestamos() {
+	delete[] elems;
 }
 
 void ListaPrestamos::ordena() {
@@ -63,7 +66,8 @@ ListaPrestamos& ListaPrestamos::operator=(const ListaPrestamos& otro) {
 
 
 void ListaPrestamos::insertaPrestamo(const Prestamo& p) {
-	
+	elems[numElems] = p;
+	numElems++; // Aumentamos índice.
 	// Si se ha llegado a la capacidad máxima...
 	if (numElems == capacidad) {
 		capacidad = numElems * 2;
@@ -81,8 +85,7 @@ void ListaPrestamos::insertaPrestamo(const Prestamo& p) {
 	}
 	
 	// Se mete el préstamo en el array.
-	elems[numElems] = p;
-	numElems++; // Aumentamos índice.
+	
 }
 
 void ListaPrestamos::quitarPrestamo(Prestamo& _prestamo) {

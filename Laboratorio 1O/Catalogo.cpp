@@ -47,37 +47,39 @@ Ejemplar* Catalogo::buscaEjemplar(int codigo) const {
 }
 
 int Catalogo::insertaEjemplar(Ejemplar::Tipo _t, std::string _nombre) {
+
+	// Se saca el codigo del último elemento y se suma 1.
+	int id = (numElems > 0) ? elems[numElems - 1].getCodigo() + 1 : 1;
+
+	// Se crea un nuevo ejemplar con nuevo id, con el tipo y nombre.
+	Ejemplar nuevoEjem (id, _t, _nombre);
 	
+	elems[numElems] = nuevoEjem;
+
+	numElems++;
+
 	// Si se ha llegado a la capacidad máxima...
 	if (numElems == capacidad) {
 		capacidad = capacidad*2;
 		Ejemplar* newElems = new Ejemplar[capacidad]; // ... se crea otro array auxiliar con mayor capacidad.
-
+		
+		// Se mete el contenido del array aux en el original.
 		for (int i = 0; i < numElems; i++) {
 			// Se va pasando el contenido del viejo array al nuevo.
 			newElems[i] = elems[i];
 		}
+
 		// Se borra el contenido del array original.
 		delete[] elems;
-
-		// Se mete el contenido del array aux en el original.
 		elems = newElems;
-
 	}
-	// Se saca el codigo del último elemento y se suma 1.
-	int id = (numElems > 0) ? elems[numElems - 1].getCodigo() + 1 : 1;
-	
-	// Se crea un nuevo ejemplar con nuevo id, con el tipo y nombre.
-	Ejemplar nuevoEjem = Ejemplar(id, _t, _nombre);
-	
-	elems[numElems] = nuevoEjem;
-		
-	numElems++;
 	return id;
 }
 
 std::ostream& operator<<(std::ostream& out, const Catalogo& catalogo) {
 	// Se escriben todos los elementos del catálogo.
+	out << "   Id  Tipo         Nombre" << "\n";
+
 	for (int i = 0; i < catalogo.numElems; i++) {
 		out << catalogo.elems[i] << "\n";
 	}

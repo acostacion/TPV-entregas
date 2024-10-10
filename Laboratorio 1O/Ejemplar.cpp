@@ -12,6 +12,9 @@ Ejemplar::Ejemplar() {
 	nombre = " ";
 	disponible = false;
 }
+
+
+
 Ejemplar::Ejemplar(const Ejemplar& otro) {
 	id = otro.id;
 	tipo = otro.tipo;
@@ -23,6 +26,16 @@ Ejemplar::Ejemplar(int _id , Tipo _tipo, std::string _nombre) {
 	tipo = _tipo;
 	nombre = _nombre;
 	disponible = true;
+}
+
+Ejemplar& Ejemplar::operator=(const Ejemplar& otro) {
+	if (this == &otro) return *this;
+	id = otro.id;
+	tipo = otro.tipo;
+	nombre = otro.nombre;
+	disponible = otro.disponible;
+
+	return *this;
 }
 
 bool Ejemplar::presta() {
@@ -50,9 +63,13 @@ std::ostream& operator<<(std::ostream& out, const Ejemplar& ejemplar) {
 	// Escribe del tipo "1927 L Amén, buenos días".
 	std:: string t;
 	if (ejemplar.tipo == 1) t = "Libro";
-	if (ejemplar.tipo == 2) t = "Audiovisual";
-	if (ejemplar.tipo == 3) t = "Juego";
-	return out << ejemplar.id << " " << t << " " << ejemplar.nombre;
+	else if (ejemplar.tipo == 2) t = "Audiovisual";
+	else if (ejemplar.tipo == 3) t = "Juego";
+	else if (ejemplar.tipo == 0) t = "Deconocido";
+	
+	if(ejemplar.tipo != 2)out << " " << ejemplar.id << " " << t << "       " << ejemplar.nombre;
+	else out << " " << ejemplar.id << " " << t << " " << ejemplar.nombre;
+	return out;
 }
 
 std::istream& operator>>(std::istream& in , Ejemplar& ejemplar) {
@@ -63,22 +80,11 @@ std::istream& operator>>(std::istream& in , Ejemplar& ejemplar) {
 
 	// Clasifica el tipo.
 	if (t == 'L') ejemplar.tipo = Ejemplar::L;
-	if (t == 'A') ejemplar.tipo = Ejemplar::A;
-	if (t == 'J') ejemplar.tipo = Ejemplar::J;
-	else ejemplar.tipo == Ejemplar::Nada;
-
+	else if (t == 'A') ejemplar.tipo = Ejemplar::A;
+	else if (t == 'J') ejemplar.tipo = Ejemplar::J;
+	else ejemplar.tipo = Ejemplar::Nada;
 	// Lee el nombre.
 	std::getline(in, ejemplar.nombre);
 
 	return in; // Devuelve todo lo leído.
-}
-
-Ejemplar& Ejemplar::operator=(const Ejemplar& otro) {
-	if (this == &otro) return *this;
-	id = otro.id;
-	tipo = otro.tipo;
-	nombre = otro.nombre;
-	disponible = otro.disponible;
-
-	return *this;
 }

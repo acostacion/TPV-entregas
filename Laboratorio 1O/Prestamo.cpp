@@ -13,6 +13,24 @@ Prestamo::Prestamo(Ejemplar* _ejemplar, Date _fecha, int _usuario) {
 	usuario = _usuario;
 }
 
+Prestamo& Prestamo::operator=(const Prestamo& otro) {
+
+	if (ejemplar != nullptr) {
+		delete ejemplar; // lo eliminamos si es diferente de nullptr
+	}
+	if (otro.ejemplar != nullptr) { // Si no es nullptr
+		// Realizar una copia profunda del objeto al que apunta el puntero
+		ejemplar = new Ejemplar(*otro.ejemplar);
+	}
+	else {
+		ejemplar = nullptr;
+	}
+	fecha = otro.fecha;
+	usuario = otro.usuario;
+	return *this;
+}
+
+
 Prestamo::Prestamo(const Prestamo& otro) {
 	if (otro.ejemplar != nullptr) {
 		// Realizar una copia profunda del objeto al que apunta el puntero
@@ -43,21 +61,6 @@ bool Prestamo::operator<(const Prestamo& p) const {
 	return fechaEntrega1 < fechaEntrega2;
 }
 
-Prestamo& Prestamo::operator=(const Prestamo& otro) {
-
-	if (ejemplar != nullptr) {
-		delete ejemplar; // lo eliminamos si es diferente de nullptr
-	}
-	if (otro.ejemplar != nullptr) { // Si no es nullptr
-		// Realizar una copia profunda del objeto al que apunta el puntero
-		ejemplar = new Ejemplar(*otro.ejemplar);
-	} else {
-		ejemplar = nullptr; 
-	}
-	fecha = otro.fecha;
-	usuario = otro.usuario;
-	return *this;
-}
 
 Prestamo Prestamo::leePrestamo(std::istream& in , const Catalogo& c) {
 	// Lecturas y creaciones de punteros y variables.

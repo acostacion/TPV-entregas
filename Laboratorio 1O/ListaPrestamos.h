@@ -12,6 +12,7 @@ private:
 	int capacidad;
 public:
 	ListaPrestamos(std::istream&, const Catalogo&);
+	ListaPrestamos(const ListaPrestamos&);
 	~ListaPrestamos();
 	ListaPrestamos& operator=(const ListaPrestamos&);
 	void ordena();
