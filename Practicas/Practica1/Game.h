@@ -1,14 +1,14 @@
 #pragma once
 
-// Biblioteca estándar de C++
+// Biblioteca estándar de C++.
 #include <array>
 
-// Biblioteca SDL
+// Biblioteca SDL.
 #include <SDL.h>
 
 // Nuestras clases
 #include "Texture.h"
-#include "Dog.h"
+//#include "Dog.h"
 
 using uint = unsigned int;
 
@@ -20,8 +20,8 @@ class Game
 public:
 	// Identificadores de las texturas
 	enum TextureName {
-		
-		NUM_TEXTURES,  // Truco C++: número de texturas definidas
+		// De momento nada. Aquí irán Mario, Koopa...
+		//NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
 private:
@@ -30,7 +30,7 @@ private:
 	// Renderizador de la SDL (para dibujar)
 	SDL_Renderer* renderer = nullptr;
 	// Array con todas las texturas del juego
-	std::array<Texture*, NUM_TEXTURES> textures;
+	//std::array<Texture*, NUM_TEXTURES> textures;
 	// Interruptor para terminar el juego
 	bool seguir;
 
@@ -62,5 +62,5 @@ public:
 inline Texture*
 Game::getTexture(TextureName name) const
 {
-	return textures[name];
+	//return textures[name];
 }

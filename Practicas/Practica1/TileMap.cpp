@@ -20,7 +20,6 @@ TileMap::TileMap(std::istream& entrada) {
 		if(entrada)j = 0;
 		i++;
 	}
-
 }
 
 void TileMap::Render() {
