@@ -1,0 +1,53 @@
+Puntos clave SMB TPV
+
+1. Texture.
+	- Tamaño total y tamaño de sus frames.
+	- Métodos para construir/cargar/dibujar (en su pos)/destruir textura.
+	- Dibujar textura entera (render) o un frame (renderFrame).
+
+2. Vector2D.
+	- Atributos x e y de tipo T.
+	- Métodos:
+		- Constructora.
+		- Sacar x e y.
+		- Suma, resta, producto escalar de vectores y producto de un vector por un escalar.
+		- Suma, resta y producto deben ser operadores.
+	- Define en el módulo con using un alias Point2D para el tipo.
+
+3. TileMap: dibuja fondo y obstáculos conforme avanza el personaje.
+	- Puntero a la textura (textura de texturitas).
+	- Matriz de índices (para luego elegir la texturita).
+	- Métodos:
+		- Constructora (lee la matriz desde el CSV).
+		- Render.
+		- Update.
+		- Hit (colisiones de los obstáculos).
+
+4. Block
+5. Goomba
+6. Koopa
+7. Mushroom
+8. Player
+
+9. Game.
+	- Tamaño de la ventana.
+	- Desplazamiento del mapa (mapOffset).
+	- Punteros a la ventana y al renderer.
+	- Punteros a los elementos del juego (vector).
+	- Booleano exit.
+	- Array de texturas.
+	- Métodos:
+		- Inicialización y destrucción.
+		- Run (bucle principal).
+		- Render (estado actual del juego).
+		- Update.
+		- Manejar eventos (handleEvents).
+		- Sin abusar podrá tener getMapOffset o collides.
+
+CARGA DE TEXTURAS
+- Han de cargarse durante la inicialización (constructora de Game).
+- Han de guardarse en un array estático (tipo array) de NUM_TEXTURES elementos de tipo Texture* cuyos índices serán valores de un enum TextureName con los nombres de distintas texturas.
+- Han de definirse los nombres de ficheros de imágenes y los nº de frames en horizontal y vertical.
+- Usar la cons TEXTURE_ROOT con valor "../assets/images/"
+
+SEGUIR

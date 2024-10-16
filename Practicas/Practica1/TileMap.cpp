@@ -23,9 +23,12 @@ TileMap::TileMap(std::istream& entrada) {
 }
 
 void TileMap::Render() {
-	for (int i = 0; i < map.size(); i++) {
-		for (int j = 0; j< map. ) {
-			.
+	int fils = sizeof map / sizeof map[0]; // filas
+	int cols = sizeof map[0] / sizeof(map[0][0]); // columnas
+
+	for (int i = 0; i < fils; i++) {
+		for (int j = 0; j < cols; j++ ) {
+			
 		}
 	}
 }

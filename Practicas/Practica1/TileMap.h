@@ -8,8 +8,9 @@ class TileMap
 {
 private:
 	std::vector<std::vector<int>> map;
-	Texture* texture;
-	int NUM_TEXTURES = 62;
+	Texture* texture; // Conjunto de patrones.
+
+	//int NUM_TEXTURES = 62;
 
 public:
 	TileMap(std::istream&);
