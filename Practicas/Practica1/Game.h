@@ -21,7 +21,7 @@ public:
 	// Identificadores de las texturas
 	enum TextureName {
 		// De momento nada. Aquí irán Mario, Koopa...
-		//NUM_TEXTURES,  // Truco C++: número de texturas definidas
+		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
 private:
@@ -30,7 +30,7 @@ private:
 	// Renderizador de la SDL (para dibujar)
 	SDL_Renderer* renderer = nullptr;
 	// Array con todas las texturas del juego
-	//std::array<Texture*, NUM_TEXTURES> textures;
+	std::array<Texture*, NUM_TEXTURES> textures;
 	// Interruptor para terminar el juego
 	bool seguir;
 

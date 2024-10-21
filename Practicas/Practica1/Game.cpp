@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "TileMap.h"
+#include "Texture.h"
 
 using namespace std;
 
@@ -9,8 +10,8 @@ using namespace std;
 struct TextureSpec
 {
 	const char* name;	// Ruta del archivo
-	uint numColumns;	// Número de frames por fila
-	uint numRows;		// Número de frames por columna
+	uint numColumns;	// Número de frames por cols
+	uint numRows;		// Número de frames por fils
 };
 
 // Directorio raíz de los archivos de textura
@@ -18,8 +19,7 @@ const string textureRoot = "../assets/";
 
 // Especificación de las texturas del juego
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
-	TextureSpec{"maps/background.png", 1, 1},
-	{"imgs/mario.png", 12, 1},
+	TextureSpec{"maps/background.png", 8, 7}, // {Mapa, fils, cols}
 };
 
 Game::Game()
@@ -49,13 +49,13 @@ Game::Game()
 	mapOffset = 0;
 
 	// Crea los objetos del juego
-	perro = new Dog(this, -textures[BACKGROUND]->getFrameWidth(), 390);
+	//perro = new Dog(this, -textures[BACKGROUND]->getFrameWidth(), 390);
 }
 
 Game::~Game()
 {
 	// Elimina los objetos del juego
-	delete perro;
+	//delete perro;
 
 	// Elimina las texturas
 	for (Texture* texture : textures)
