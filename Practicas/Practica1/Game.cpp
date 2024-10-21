@@ -1,8 +1,6 @@
 #include <string>
 
 #include "Game.h"
-#include "TileMap.h"
-#include "Texture.h"
 
 using namespace std;
 
@@ -69,6 +67,7 @@ Game::~Game()
 	SDL_Quit();
 }
 
+/*
 void
 Game::run()
 {
@@ -89,7 +88,7 @@ Game::run()
 			SDL_Delay(FRAME_RATE - elapsed);
 	}
 }
-
+*/
 void
 Game::render() const
 {
@@ -97,16 +96,17 @@ Game::render() const
 
 	// Pinta los objetos del juego
 	textures[BACKGROUND]->render();
-	perro->render();
+	tileMap->Render(renderer);
 
 	SDL_RenderPresent(renderer);
 }
 
+/*
 void
 Game::update()
 {
 	// Actualiza los objetos del juego
-	perro->update();
+	tileMap->Update();
 }
 
 void
@@ -119,7 +119,10 @@ Game::handleEvents()
 		if (evento.type == SDL_QUIT)
 			seguir = false;
 		else if (evento.type == SDL_KEYDOWN) {
-			perro->handleEvent(evento);
+			//perro->handleEvent(evento);
 		}
 	}
 }
+
+
+*/

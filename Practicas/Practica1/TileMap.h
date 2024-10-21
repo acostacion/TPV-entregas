@@ -9,17 +9,19 @@ class TileMap
 {
 private:
 	std::vector<std::vector<int>> map;
+	Game* game;
 	Texture* texture; // Conjunto de patrones.
-	int colAct;
 	SDL_Rect destRect;
-	uint cellW = Game::WIN_WIDTH / 18, cellH  = Game::WIN_HEIGHT / 16;
-	//int NUM_TEXTURES = 62;
+	//uint cellW = Game::WIN_WIDTH / 18, cellH  = Game::WIN_HEIGHT / 16;
 
 public:
-	TileMap(std::istream&, Texture*);
+	static constexpr uint TILE_SIDE = 16;
+	static constexpr uint TILE_MAP = 32;
+
+	TileMap(std::istream& entrada, Game* _game);
 	void Render(SDL_Renderer*);
-	void Update();
-	void Hit();
+	//void Update();
+	//void Hit();
 
 };
 
