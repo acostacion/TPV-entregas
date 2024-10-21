@@ -17,7 +17,7 @@ private:
 
 public:
 	TileMap(std::istream&, Texture*);
-	void Render();
+	void Render(SDL_Renderer*);
 	void Update();
 	void Hit();
 

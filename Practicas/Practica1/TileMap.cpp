@@ -25,22 +25,24 @@ TileMap::TileMap(std::istream& entrada, Texture* textura) {
 	colAct = 0;
 }
 
-void TileMap::Render() {
+void TileMap::Render(SDL_Renderer* renderer) {
 	// Filas y columnas totales.
+	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
 	int fils = sizeof map / sizeof map[0]; // filas
 	int cols = (sizeof map[0] / sizeof(map[0][0]))%9; // columnas
 
 	for (int i = 0; i < fils; i++) {
 		for (int j = 0 + colAct; j < cols; j++ ) {
-			destRect.x = i * cellW;cellW
-			if (map[i][j] == -1) {
-
-			}
-			else {
-
+			destRect.x = i * cellW;
+			destRect.y = j * cellH;
+			if (map[i][j] != -1) {
+				texture->renderFrame(destRect, i, j);
 			}
 
 
 		}
 	}
+
+	SDL_RenderPresent(renderer);
 }
