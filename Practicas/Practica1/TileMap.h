@@ -1,27 +1,34 @@
-#include <vector>
+#pragma once
+
 #include "Texture.h"
 #include "Game.h"
+#include <SDL.h>
 
+#include <fstream>
+#include <iostream>
 
-#pragma once
+using uint = unsigned int;
+
+class Game;
 
 class TileMap
 {
 private:
 	std::vector<std::vector<int>> map;
-	Game* game;
 	Texture* texture; // Conjunto de patrones.
-	SDL_Rect destRect;
-	//uint cellW = Game::WIN_WIDTH / 18, cellH  = Game::WIN_HEIGHT / 16;
+	Game* game;
 
 public:
+
 	static constexpr uint TILE_SIDE = 16;
 	static constexpr uint TILE_MAP = 32;
-
-	TileMap(std::istream& entrada, Game* _game);
-	void Render(SDL_Renderer*);
-	//void Update();
+	TileMap();
+	TileMap(std::istream&, Game*);
+	void Render();
+	void Update();
 	//void Hit();
+
+
 
 };
 

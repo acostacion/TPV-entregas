@@ -17,7 +17,7 @@ const string textureRoot = "../assets/";
 
 // Especificación de las texturas del juego
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
-	TextureSpec{"maps/background.png", 8, 7}, // {Mapa, fils, cols}
+	TextureSpec{"imgs/background.png", 8, 7}, // {Mapa, fils, cols}
 };
 
 Game::Game()
@@ -46,7 +46,18 @@ Game::Game()
 
 	mapOffset = 0;
 
-	// Crea los objetos del juego
+	std::ifstream entrada("../assets/maps/world1.csv");
+	if (!entrada.is_open()) {
+		std::cout << "No se ha podido leer el archivo world1";
+	}
+
+
+	// Crea los objetos del juego 
+	tileMap = new TileMap(entrada, this);
+
+	entrada.close();
+
+
 	//perro = new Dog(this, -textures[BACKGROUND]->getFrameWidth(), 390);
 }
 
@@ -67,7 +78,7 @@ Game::~Game()
 	SDL_Quit();
 }
 
-/*
+
 void
 Game::run()
 {
@@ -88,7 +99,7 @@ Game::run()
 			SDL_Delay(FRAME_RATE - elapsed);
 	}
 }
-*/
+
 void
 Game::render() const
 {
@@ -96,12 +107,18 @@ Game::render() const
 
 	// Pinta los objetos del juego
 	textures[BACKGROUND]->render();
-	tileMap->Render(renderer);
+	tileMap->Render();
 
 	SDL_RenderPresent(renderer);
 }
 
-/*
+
+Texture* Game::getTexture(TextureName name) const {
+	return textures[name];
+}
+
+
+
 void
 Game::update()
 {
@@ -119,10 +136,10 @@ Game::handleEvents()
 		if (evento.type == SDL_QUIT)
 			seguir = false;
 		else if (evento.type == SDL_KEYDOWN) {
-			//perro->handleEvent(evento);
+			++mapOffset;
 		}
 	}
 }
 
 
-*/
+

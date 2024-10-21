@@ -69,9 +69,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Game.cpp" />
+    <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\Texture.cpp" />
     <ClCompile Include="..\TileMap.cpp" />
-    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\checkML.h" />

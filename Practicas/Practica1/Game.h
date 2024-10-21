@@ -2,79 +2,69 @@
 
 // Biblioteca estándar de C++.
 #include <array>
+#include <fstream>
+#include <iostream>
 
 // Biblioteca SDL.
 #include <SDL.h>
 
 // Nuestras clases
-#include "Texture.h"
 #include <vector>
 #include "Texture.h"
 //#include "Player.h"
-#include "TileMap.h"
+#include "TileMap.h"  // Ensure this is in place and correct
+
 //#include "Goomba.h"
 //#include "Block.h"
 //#include "Dog.h"
 
 using uint = unsigned int;
+class TileMap; 
 
-//
-// Clase que representa el juego y controla todos sus aspectos
-//
-class Game
-{
+class Game {
 public:
-	// Identificadores de las texturas
-	enum TextureName {
-		// De momento nada. Aquí irán Mario, Koopa...
-		BACKGROUND,
-		NUM_TEXTURES,  // Truco C++: número de texturas definidas
-	};
+    // Identificadores de las texturas
+    enum TextureName {
+        // De momento nada. Aquí irán Mario, Koopa...
+        BACKGROUND,
+        NUM_TEXTURES,  // Truco C++: número de texturas definidas
+    };
 
 private:
-	// Ventana de la SDL (se destruirá en el destructor)
-	SDL_Window* window = nullptr;
-	// Renderizador de la SDL (para dibujar)
-	SDL_Renderer* renderer = nullptr;
-	// Array con todas las texturas del juego
-	std::array<Texture*, NUM_TEXTURES> textures;
-	// Interruptor para terminar el juego
-	bool seguir;
+    // Ventana de la SDL (se destruirá en el destructor)
+    SDL_Window* window = nullptr;
 
-	int mapOffset;
+    // Renderizador de la SDL (para dibujar)
+    SDL_Renderer* renderer = nullptr;
 
-	// Objetos del juego
-	TileMap* tileMap;
+    // Array con todas las texturas del juego
+    std::array<Texture*, NUM_TEXTURES> textures;
 
-	//Player* player;
-	//std::vector<Goomba*> enemies;
-	//std::vector<Block*> blocks;
+    // Interruptor para terminar el juego
+    bool seguir;
+    int mapOffset;
 
+    // Objetos del juego
+    TileMap* tileMap;
+    //Player* player;
+    //std::vector<Goomba*> enemies;
+    //std::vector<Block*> blocks;
 
 public:
-	void run();
+    void run();
+    void update();
+    void render() const;
+    void handleEvents();
+    Texture* getTexture(TextureName) const;
+    //void LoadMap();
 
-	//void update();
-	void render() const;
-	//void handleEvents();
+    // Constante globales
+    static constexpr uint WIN_WIDTH = 800;
+    static constexpr uint WIN_HEIGHT = 600;
+    static constexpr uint FRAME_RATE = 50;
 
-	Texture* getTexture(TextureName name) const;
+    int getMapOffset() { return mapOffset; }
 
-	//void LoadMap();
-
-	// Constante globales
-	static constexpr uint WIN_WIDTH = 800;
-	static constexpr uint WIN_HEIGHT = 600;
-	static constexpr uint FRAME_RATE = 50;
-
-	int getMapOffset() { return mapOffset; }
-
-	Game();
-	~Game();
+    Game();
+    ~Game();
 };
-
-inline Texture*
-Game::getTexture(TextureName name) const
-{
-	return textures[name];
-}
