@@ -8,6 +8,8 @@
 /**
  * Object-oriented wrapper for SDL textures with frame support.
  */
+
+
 class Texture
 {
 	SDL_Renderer* renderer = nullptr;
