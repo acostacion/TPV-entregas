@@ -13,7 +13,7 @@ TileMap::TileMap(std::istream& entrada, Game* _game) {
 	texture = game->getTexture(Game::BACKGROUND);
 
 	// Lee el archivo CSV.
-	while (!std::cin) {
+	while (entrada) {
 		int c = 0;
 		char cAux = ','; // Se separa el archivo por comas.
 		std::vector<int> fila;
@@ -27,10 +27,7 @@ TileMap::TileMap(std::istream& entrada, Game* _game) {
 			// Get() lee el siguiente char (",").
 			cAux = entrada.get();
 		}
-		if (!fila.empty()) {
-			// Cuando se llena una fila, la mete al tilemap.
-			map.push_back(fila); 
-		}
+		map.push_back(fila);
 	}
 	/*APUNTES:
 	* entrada.get(): extrae caracteres de un istream.
@@ -40,26 +37,31 @@ TileMap::TileMap(std::istream& entrada, Game* _game) {
 }
 
 void TileMap::Render() {
-	// Filas y columnas totales.
-	//SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
-	//int fils = sizeof map / sizeof map[0]; // filas
-	//int cols = (sizeof map[0] / sizeof(map[0][0]))%9; // columnas
 
+	// Primera columna de la matriz del mapa visible en la ventana
+	int x0 = game->getMapOffset() / TILE_MAP;
+	// Anchura oculta de esa primera columna
+	int d0 = game->getMapOffset() % TILE_MAP;
 
-	int valor = TILE_MAP;
-	int x0 = game->getMapOffset() / valor;
-	int d0 = game->getMapOffset() % valor;
-	SDL_Rect destRect;
-	destRect.w = TILE_SIDE;
-	destRect.h = TILE_SIDE;
+	// Recuadro donde se pintar? la tesela en la ventana
+	SDL_Rect rect;
+	rect.w = Game::TILE_SIDE;
+	rect.h = Game::TILE_SIDE;
 
-	for (int i = 0; i < Game::WIN_WIDTH; i++) {
-		for (int j = 0; j < Game::WIN_HEIGHT; j++ ) {
+	// Pintamos los WINDOW_WIDTH + 1 (aunque se salga) x WINDOW_HEIGHT recuadros del mapa
+	for (int i = 0; i < Game::WIN_WIDTH + 1; ++i) {
+		for (int j = 0; j < Game::WIN_HEIGHT; ++j) {
+			// ?ndice en el conjunto de patrones de la matriz de ?ndices
 			int indice = map[x0 + i][j];
-			int fx = indice % 9, fy = indice / 9;
-			destRect.x = i * TILE_SIDE -d0;
-			destRect.y = j * TILE_SIDE;
-			texture->renderFrame(destRect, fx, fy);
+			// Separa n?mero de fila y de columna
+			int fx = indice % 9;
+			int fy = indice / 9;
+
+			rect.x = -d0 + i * Game::TILE_SIDE;
+			rect.y = j * Game::TILE_SIDE;
+
+			// Usa renderFrame para pintar la tesela
+			texture->renderFrame(rect, fx, fy);
 		}
 	}
 }

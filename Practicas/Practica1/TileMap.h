@@ -18,7 +18,6 @@ private:
 	Game* game; // Puntero a instancia de game para acceder a sus cosas.
 
 public:
-	static constexpr uint TILE_SIDE = 16; // Tamaño de cada tile.
 	static constexpr uint TILE_MAP = 32;
 
 	TileMap(); // Constructora default.

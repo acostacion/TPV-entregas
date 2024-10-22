@@ -59,9 +59,10 @@ public:
     //void LoadMap();
 
     // Constante globales
-    static constexpr uint WIN_WIDTH = 800;
-    static constexpr uint WIN_HEIGHT = 600;
+    static constexpr int WIN_WIDTH = 18;
+    static constexpr int WIN_HEIGHT = 16;
     static constexpr uint FRAME_RATE = 50;
+    static constexpr int TILE_SIDE = 32;
 
     int getMapOffset() { return mapOffset; }
 
