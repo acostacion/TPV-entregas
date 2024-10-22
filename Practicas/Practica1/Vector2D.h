@@ -45,11 +45,8 @@ public:
 	friend std::istream& operator>>(std::istream& in, Vector2D<T>& vec);
 };
 
-
-
-
 template <class T>
-std::istream& operator>>(std::istream& in, Vector2D<T> & vec) {
+inline std::istream& operator>>(std::istream& in, Vector2D<T> & vec) {
 	return (in >> vec.x >> vec.y);
 }
 
