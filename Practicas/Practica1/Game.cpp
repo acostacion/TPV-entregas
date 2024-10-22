@@ -1,5 +1,5 @@
 #include <string>
-
+#include <sstream>
 #include "Game.h"
 
 using namespace std;
@@ -18,6 +18,8 @@ const string textureRoot = "../assets/";
 // Especificaci√≥n de las texturas del juego
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"imgs/background.png", 8, 7}, // {Mapa, fils, cols}
+	TextureSpec{"imgs/mario.png", 1, 12}, // {Mapa, fils, cols}
+	TextureSpec{"imgs/supermario.png", 1, 22}, // {Mapa, fils, cols}
 };
 
 Game::Game()
@@ -33,7 +35,7 @@ Game::Game()
 	                          SDL_WINDOW_SHOWN);
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
+	SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
 	if (window == nullptr || renderer == nullptr)
 		throw "Error cargando SDL"s;
 
@@ -58,6 +60,7 @@ Game::Game()
 	entrada.close();
 
 
+
 	//perro = new Dog(this, -textures[BACKGROUND]->getFrameWidth(), 390);
 }
 
@@ -76,6 +79,34 @@ Game::~Game()
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+}
+
+
+void Game::loadObjectMap() {
+	std::ifstream entrada("../assets/maps/world1.txt");
+	if (!entrada.is_open()) {
+		std::cout << "No se ha podido leer el archivo world1";
+	}
+
+	// Leemos el mapa lÌnea a lÌnea para evitar acarreo de errores
+	// y permitir extensiones del formato
+	std::string line;
+	getline(entrada, line);
+
+	while (!entrada) {
+		// Usamos un stringstream para leer la lÌnea como si fuera un flujo
+		stringstream lineStream(line);
+
+		char tipo;
+		lineStream >> tipo;
+
+		switch (tipo) {
+		case 'M':
+			player = new Player(this, lineStream);
+			break;
+			// uno para cada objeto
+		}
+	}
 }
 
 
@@ -106,8 +137,8 @@ Game::render() const
 	SDL_RenderClear(renderer);
 
 	// Pinta los objetos del juego
-	textures[BACKGROUND]->render();
 	tileMap->Render();
+	player->render();
 
 	SDL_RenderPresent(renderer);
 }

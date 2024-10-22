@@ -11,7 +11,7 @@
 // Nuestras clases
 #include <vector>
 #include "Texture.h"
-//#include "Player.h"
+#include "Player.h"
 #include "TileMap.h"  // Ensure this is in place and correct
 
 //#include "Goomba.h"
@@ -20,6 +20,7 @@
 
 using uint = unsigned int;
 class TileMap; 
+class Player;
 
 class Game {
 public:
@@ -27,6 +28,8 @@ public:
     enum TextureName {
         // De momento nada. Aquí irán Mario, Koopa...
         BACKGROUND,
+        MARIO,
+        SUPERMARIO,
         NUM_TEXTURES,  // Truco C++: número de texturas definidas
     };
 
@@ -46,11 +49,12 @@ private:
 
     // Objetos del juego
     TileMap* tileMap;
-    //Player* player;
+    Player* player;
     //std::vector<Goomba*> enemies;
     //std::vector<Block*> blocks;
 
 public:
+    void loadObjectMap();
     void run();
     void update();
     void render() const;
@@ -59,10 +63,13 @@ public:
     //void LoadMap();
 
     // Constante globales
-    static constexpr int WIN_WIDTH = 18;
-    static constexpr int WIN_HEIGHT = 16;
-    static constexpr uint FRAME_RATE = 50;
+
     static constexpr int TILE_SIDE = 32;
+    static constexpr int WIN_TILE_WIDTH = 18;
+    static constexpr int WIN_TILE_HEIGHT = 16;
+    static constexpr int WIN_WIDTH = TILE_SIDE* WIN_TILE_WIDTH;
+    static constexpr int WIN_HEIGHT = TILE_SIDE * WIN_TILE_HEIGHT;
+    static constexpr int FRAME_RATE = 50;
 
     int getMapOffset() { return mapOffset; }
 
