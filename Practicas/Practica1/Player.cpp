@@ -4,6 +4,7 @@
 Player::Player(Game* game, std::istream& in) : game(game)
 {
 	in >> pos; // será in Point2D que sabe leerse
+	pos = pos - Point2D<float>(0, 1);
 	in >> life; // el número de vidas
 	dir = Point2D<float>(0,0);
 	superMario = false;
@@ -15,11 +16,11 @@ Player::Player(Game* game, std::istream& in) : game(game)
 void Player::render() {
 	SDL_Rect rect;
 	/*/if (!this->superMario) {*/
-		rect.w = Game::TILE_SIDE;
-		rect.h = Game::TILE_SIDE;
+	rect.w = texturaMario->getFrameWidth();
+		rect.h = texturaMario->getFrameHeight();
 		rect.x = pos.GetX() * Game::TILE_SIDE;
 		rect.y = pos.GetY() * Game::TILE_SIDE;
-		texturaMario->renderFrame(rect, 1, 1);
+		texturaMario->renderFrame(rect, 0, 0);
 }
 
 
