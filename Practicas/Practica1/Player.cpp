@@ -17,11 +17,9 @@ void Player::render() {
 	/*/if (!this->superMario) {*/
 		rect.w = Game::TILE_SIDE;
 		rect.h = Game::TILE_SIDE;
-		rect.x = pos.GetX();
-		rect.y = pos.GetY();
-		texturaMario->renderFrame(rect, 1, 0);
-
-	
+		rect.x = pos.GetX() * Game::TILE_SIDE;
+		rect.y = pos.GetY() * Game::TILE_SIDE;
+		texturaMario->renderFrame(rect, 1, 1);
 }
 
 

@@ -43,7 +43,7 @@ void TileMap::Render() {
 	// Anchura oculta de esa primera columna
 	int d0 = game->getMapOffset() % TILE_MAP;
 
-	// Recuadro donde se pintar? la tesela en la ventana
+	// tamaño del cuadro a pintarse
 	SDL_Rect rect;
 	rect.w = Game::TILE_SIDE;
 	rect.h = Game::TILE_SIDE;
