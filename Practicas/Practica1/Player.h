@@ -23,7 +23,7 @@ public:
 	void render();
 	void update();
 	void hit();
-	void handleEvent();
+	void handleEvent(SDL_Event);
 
 };
 

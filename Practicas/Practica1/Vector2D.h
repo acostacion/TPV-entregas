@@ -39,16 +39,14 @@ public:
 		return Vector2D(x * e, this->y *e);
 	}
 
-	int GetX() const { return x; }
-	int GetY() const { return y; }
+	T GetX() const { return this->x; }
+	T GetY() const { return this->y; }
 
-	friend std::istream& operator>>(std::istream& in, Vector2D<T>& vec);
+
+	friend std::istream& operator>>(std::istream& in, Vector2D& vec) {
+		return (in >> vec.x >> vec.y);
+	}
 };
-
-template <class T>
-inline std::istream& operator>>(std::istream& in, Vector2D<T> & vec) {
-	return (in >> vec.x >> vec.y);
-}
 
 template <class T>
 using Point2D = Vector2D<T>;

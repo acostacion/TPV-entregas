@@ -54,7 +54,11 @@ private:
     //std::vector<Block*> blocks;
 
 public:
-    void loadObjectMap();
+    Game();
+
+
+
+    void loadObjectMap(std::ifstream&);
     void run();
     void update();
     void render() const;
@@ -73,6 +77,5 @@ public:
 
     int getMapOffset() { return mapOffset; }
 
-    Game();
     ~Game();
 };

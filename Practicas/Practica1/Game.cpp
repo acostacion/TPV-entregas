@@ -17,10 +17,38 @@ const string textureRoot = "../assets/";
 
 // Especificaci√≥n de las texturas del juego
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
-	TextureSpec{"imgs/background.png", 9, 7}, // {Mapa, fils, cols}
-	TextureSpec{"imgs/mario.png", 1, 12}, // {Mapa, fils, cols}
-	TextureSpec{"imgs/supermario.png", 1, 22}, // {Mapa, fils, cols}
+	TextureSpec{"imgs/background.png", 9, 7}, // {Mapa, cols, fils}
+	TextureSpec{"imgs/mario.png", 12, 1}, // {Mapa, cols, fils}
+	TextureSpec{"imgs/supermario.png", 22, 1}, // {Mapa, cols, fils}
 };
+
+
+void Game::loadObjectMap(std::ifstream& entrada) {
+
+
+	// Leemos el mapa lÌnea a lÌnea para evitar acarreo de errores
+	// y permitir extensiones del formato
+	std::string line;
+	getline(entrada, line);
+
+	while (entrada) {
+		// Usamos un stringstream para leer la lÌnea como si fuera un flujo
+		stringstream lineStream(line);
+
+		char tipo;
+		lineStream >> tipo;
+
+		switch (tipo) {
+		case 'M':
+			this->player = new Player(this, lineStream);
+			break;
+			// uno para cada objeto
+		}
+
+		getline(entrada, line);
+
+	}
+}
 
 Game::Game()
  : seguir(true)
@@ -48,16 +76,28 @@ Game::Game()
 
 	mapOffset = 0;
 
+
+	// Crea los objetos del juego 
+
 	std::ifstream entrada("../assets/maps/world1.csv");
 	if (!entrada.is_open()) {
 		std::cout << "No se ha podido leer el archivo world1";
 	}
 
-
-	// Crea los objetos del juego 
 	tileMap = new TileMap(entrada, this);
 
 	entrada.close();
+
+
+	std::ifstream entrada2("../assets/maps/world1.txt");
+	if (!entrada2.is_open()) {
+		std::cout << "No se ha podido leer el archivo world1";
+	}
+	
+	loadObjectMap(entrada2);
+
+	entrada2.close();
+
 
 
 
@@ -82,32 +122,7 @@ Game::~Game()
 }
 
 
-void Game::loadObjectMap() {
-	std::ifstream entrada("../assets/maps/world1.txt");
-	if (!entrada.is_open()) {
-		std::cout << "No se ha podido leer el archivo world1";
-	}
 
-	// Leemos el mapa lÌnea a lÌnea para evitar acarreo de errores
-	// y permitir extensiones del formato
-	std::string line;
-	getline(entrada, line);
-
-	while (!entrada) {
-		// Usamos un stringstream para leer la lÌnea como si fuera un flujo
-		stringstream lineStream(line);
-
-		char tipo;
-		lineStream >> tipo;
-
-		switch (tipo) {
-		case 'M':
-			player = new Player(this, lineStream);
-			break;
-			// uno para cada objeto
-		}
-	}
-}
 
 
 void
@@ -167,6 +182,7 @@ Game::handleEvents()
 		if (evento.type == SDL_QUIT)
 			seguir = false;
 		else if (evento.type == SDL_KEYDOWN) {
+			player->handleEvent(evento);
 			++mapOffset;
 		}
 	}
