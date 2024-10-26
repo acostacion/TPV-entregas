@@ -3,16 +3,15 @@
 
 Player::Player(Game* game, std::istream& in) : game(game)
 {
-	in >> pos; // Lee la posición inicial.
-	pos = pos - Point2D<float>(0, 1); // Ajusta la pos.
+	in >> pos; // serï¿½ in Point2D que sabe leerse
+	pos = pos - Point2D<float>(0, 1);
+	in >> life; // el nï¿½mero de vidas
+	dir = Point2D<float>(0,0);
+	superMario = false;
 
-	in >> life; // Lee el número de vidas.
+    jumping = false;
+    onGround = true;
 
-	dir = Point2D<float>(0,0); 
-
-	superMario = false; 
-
-	// Pilla las texturas del game.
 	texturaMario = game->getTexture(Game::MARIO);
 	texturaSMario = game->getTexture(Game::SUPERMARIO);
 }
@@ -24,7 +23,7 @@ void Player::render() {
 	// 1. Se crea el rect.
 	SDL_Rect rect;
 
-	// 2. Se le da dimensiones y posición.
+	// 2. Se le da dimensiones y posiciï¿½n.
 	rect.w = texturaMario->getFrameWidth();
 	rect.h = texturaMario->getFrameHeight();
 	rect.x = pos.GetX() * Game::TILE_SIDE;
@@ -37,46 +36,57 @@ void Player::render() {
 // Input de teclado cambian la dir del jugador.
 void Player::handleEvent(SDL_Event evento) {
 
-	Point2D<float> nuevaDir;
-
-	SDL_Scancode tecla = evento.key.keysym.scancode;
-
-	if (tecla) {
-		if (evento.type == SDLK_LEFT || evento.type == SDLK_a) {
-			nuevaDir = Point2D<float>(-1, 0);
-		}
-		else if (evento.type == SDLK_RIGHT || evento.type == SDLK_d) {
-			nuevaDir = Point2D<float>(1, 0);
-		}
-		else if (evento.type == SDLK_UP || evento.type == SDLK_SPACE || evento.type == SDLK_w) {
-			nuevaDir = Point2D<float>(0, -1);
-		}
-		else if (evento.type == SDLK_DOWN || evento.type == SDLK_s) {
-			nuevaDir = Point2D<float>(0, 1);
-		}
-		else {
-			nuevaDir = Point2D<float>(0, 0);
-		}
-	}
-	// En base a la tecla presionada...
-	
-	
-	dir = nuevaDir * 2;
+    Point2D<float> nuevaDir;
+    if (evento.type == SDL_KEYDOWN) {
+        switch (evento.key.keysym.sym) {
+        case SDLK_LEFT:
+            nuevaDir = Point2D<float>(-0.1, 0);
+           
+            break;
+        case SDLK_RIGHT:
+            nuevaDir = Point2D<float>(0.1, 0);
+            break;
+        case SDLK_SPACE:
+            if (onGround) {  
+                nuevaDir = Point2D<float>(dir.GetX(), JUMP_FORCE);
+                onGround = false;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    else if (evento.type == SDL_KEYUP) {
+        switch (evento.key.keysym.sym) {
+        case SDLK_LEFT:
+        case SDLK_RIGHT:
+            nuevaDir = Point2D<float>(0, dir.GetY()); // Stop horizontal movement
+            break;
+        default:
+            break;
+        }
+    }
+    dir = nuevaDir;
 }
 
-void Player::update() { // PENDIENTE DE MODIFICAR.
+void Player::update() {
 
-	if (dir.GetX() == -1) {
-		pos = pos + dir;
-	}
-	else if (dir.GetX() == 1) {
-		pos = pos + dir;
-	}
-	else if (dir.GetY() == -1) {
-		pos = pos + dir;
-	}
-	else if (dir.GetY() == 1) {
-		pos = pos + dir;
-	}
-	
+    Point2D<float> nuevadir(dir.GetX(), dir.GetY() + GRAVITY);
+
+    if (!onGround) { // gravedad
+        if (dir.GetY() > MAX_FALL_SPEED) nuevadir = Point2D<float>(nuevadir.GetX(), MAX_FALL_SPEED); // Clamp fall speed
+        dir = nuevadir;
+
+    }
+
+    
+    if (dir.GetX() > 0) nuevadir = Point2D<float>(std::max(0.0f, dir.GetX() - ACCELERATION / 2), dir.GetY());
+    else if (dir.GetX() < 0) nuevadir = Point2D<float>(std::min(0.0f, dir.GetX() + ACCELERATION / 2), dir.GetY());
+
+    
+    pos = pos + dir;
+
+    
+    
+    
 }
