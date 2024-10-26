@@ -170,6 +170,7 @@ Game::update()
 {
 	// Actualiza los objetos del juego
 	tileMap->Update();
+	player->update();
 }
 
 void
@@ -181,9 +182,9 @@ Game::handleEvents()
 	while (SDL_PollEvent(&evento)) {
 		if (evento.type == SDL_QUIT)
 			seguir = false;
-		else if (evento.type == SDL_KEYDOWN) {
+		else if (evento.type == SDL_KEYDOWN || evento.type == SDL_KEYUP) {
 			player->handleEvent(evento);
-			++mapOffset;
+			//++mapOffset;
 		}
 	}
 }
