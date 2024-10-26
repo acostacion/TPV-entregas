@@ -29,11 +29,6 @@ TileMap::TileMap(std::istream& entrada, Game* _game) {
 		}
 		map.push_back(fila);
 	}
-	/*APUNTES:
-	* entrada.get(): extrae caracteres de un istream.
-	* fila.push_back():
-	* ...*/
-	
 }
 
 void TileMap::Render() {

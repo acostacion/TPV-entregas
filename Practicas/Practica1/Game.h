@@ -54,10 +54,8 @@ private:
     //std::vector<Block*> blocks;
 
 public:
+
     Game();
-
-
-
     void loadObjectMap(std::ifstream&);
     void run();
     void update();
@@ -74,6 +72,10 @@ public:
     static constexpr int WIN_WIDTH = TILE_SIDE* WIN_TILE_WIDTH;
     static constexpr int WIN_HEIGHT = TILE_SIDE * WIN_TILE_HEIGHT;
     static constexpr int FRAME_RATE = 50;
+
+    Uint64 NOW = SDL_GetPerformanceCounter();
+    Uint64 LAST = NOW;
+    double deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
 
     int getMapOffset() { return mapOffset; }
 

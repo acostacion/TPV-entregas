@@ -2,8 +2,9 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-template <class T>
 
+// Template para representar una clase de tipo T (genérica).
+template <class T>
 class Vector2D
 {
 private:
@@ -21,32 +22,36 @@ public:
 		y = _y;
 	}
 
-	Vector2D<T> operator-(const Vector2D<T>& other) const {
+	Vector2D<T> operator-(const Vector2D<T>& other) const { // Diferencia.
 		return Vector2D(x - other.GetX(), this->y - other.GetY());
 	}
 
-
-
-	Vector2D<T> operator+(const Vector2D<T>& other) const {
+	Vector2D<T> operator+(const Vector2D<T>& other) const { // Suma.
 		return Vector2D(x + other.GetX(), this->y + other.GetY());
 	}
 
-	int operator*(const Vector2D<T>& other) const {
+	int operator*(const Vector2D<T>& other) const { // Producto vectorial.
 		return (x * other.GetX + y * other.GetY);
 	}
 
-	Vector2D<T> operator*(const T e) const {
+	Vector2D<T> operator*(const T e) const { // Producto por un escalar.
 		return Vector2D(x * e, this->y *e);
 	}
 
+	bool operator==(const Vector2D<T>& other) const { // Igualdad.
+		return Vector2D(x == other.GetX(), this->y == other.GetY());
+	}
+
+	// Acceder a los valores x e y.
 	T GetX() const { return this->x; }
 	T GetY() const { return this->y; }
 
-
+	// Entrada para leer x e y.
 	friend std::istream& operator>>(std::istream& in, Vector2D& vec) {
 		return (in >> vec.x >> vec.y);
 	}
 };
 
+// Para llamar a Vector2D como Point2D.
 template <class T>
 using Point2D = Vector2D<T>;
