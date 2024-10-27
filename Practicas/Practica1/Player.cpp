@@ -61,14 +61,14 @@ void Player::handleEvent(SDL_Event evento) {
         nuevaDir = Point2D<float>(0, 0);
     }
 
-    dir = nuevaDir;
+    dir = nuevaDir*2;
 }
 
 void Player::update() {
 
-    /*Point2D<float> nuevadir(dir.GetX(), dir.GetY() + GRAVITY);
+    Point2D<float> nuevadir(dir.GetX(), dir.GetY() + GRAVITY);
 
-    if (!onGround) { // gravedad
+    if (!isGrounded) { // gravedad
         if (dir.GetY() > MAX_FALL_SPEED) nuevadir = Point2D<float>(nuevadir.GetX(), MAX_FALL_SPEED); // Clamp fall speed
         dir = nuevadir;
 
@@ -79,16 +79,16 @@ void Player::update() {
     else if (dir.GetX() < 0) nuevadir = Point2D<float>(std::min(0.0f, dir.GetX() + ACCELERATION / 2), dir.GetY());
 
     
-    pos = pos + dir;*/
+    pos = pos + dir;
 
-    // Si "left" y "right" ocurren a la vez...
+    /*// Si "left" y "right" ocurren a la vez...
     if (dir.GetX() == -1 == dir.GetX() == 1) {
         dir = Point2D<float>(0, 0);
     }
     // Cualquier otro caso...
     else{
         if (dir.GetY() == 1 && isGrounded) { // W (estando en el suelo).
-            //isGrounded = false; 
+            isGrounded = false; 
         }
         else if (dir.GetX() == -1) { // A.
             pos = Point2D<float>(pos.GetX() + dir.GetX() * 2, dir.GetY());
@@ -98,7 +98,7 @@ void Player::update() {
         }
     }
 
-    /*if (!isGrounded) {
+    if (!isGrounded) {
         pos = Point2D<float>(0, pos.GetY() + dir.GetY() * 2);
     }*/
     
