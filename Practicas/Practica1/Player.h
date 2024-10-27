@@ -21,12 +21,15 @@ private:
 
 public:
 	Player(Game*, std::istream&);
-	const float GRAVITY = 0.01f;
-	const float JUMP_FORCE = -0.7f;
-	const float MAX_FALL_SPEED = 0.2f;
-	const float MOVE_SPEED = 0.05f;
-	const float MAX_HORIZONTAL_SPEED = 0.1f;
-	const float ACCELERATION = 0.005f;
+
+	const float GRAVITY = 0.01f; // gravedad.
+
+	// En sdl ir para arriba es negativo e ir para abajo es positivo.
+	const float JUMP_FORCE = -0.7f; // fuerza de salto.
+	const float MAX_FALL_SPEED = 0.2f; // velocidad de caída máxima.
+
+	const float MOVE_SPEED = 0.05f; // velocidad de movimiento.
+
 	void render();
 	void update();
 	void hit();

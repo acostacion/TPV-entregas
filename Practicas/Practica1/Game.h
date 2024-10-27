@@ -53,6 +53,13 @@ private:
     //std::vector<Goomba*> enemies;
     //std::vector<Block*> blocks;
 
+    // --- MÉTODOS AUXILIARES ---.
+    // Constructora.
+    void createSDL();
+    void createTextures();
+    void createTilemap();
+    void createEntities();
+
 public:
 
     Game();

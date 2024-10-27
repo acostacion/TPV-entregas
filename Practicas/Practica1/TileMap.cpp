@@ -46,10 +46,9 @@ void TileMap::Render() {
 	// Pintamos los WINDOW_WIDTH + 1 (aunque se salga) x WINDOW_HEIGHT recuadros del mapa
 	for (int i = 0; i < Game::WIN_TILE_WIDTH + 1; ++i) {
 		for (int j = 0; j < Game::WIN_TILE_HEIGHT; ++j) {
+			// ?ndice en el conjunto de patrones de la matriz de ?ndices
 			int indice = map[j][i + x0];
 			if (indice != - 1) {
-				// ?ndice en el conjunto de patrones de la matriz de ?ndices
-				
 				// Separa n?mero de fila y de columna
 				int fx = indice % 9;
 				int fy = indice / 9;

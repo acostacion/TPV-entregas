@@ -26,58 +26,78 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 #pragma endregion
 
 // CONSTRUCTORA.
-Game::Game() : seguir(true)
-{
-	// Inicializa la SDL
-	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("First test with SDL",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		WIN_WIDTH,
-		WIN_HEIGHT,
-		SDL_WINDOW_SHOWN);
+Game::Game() : seguir(true){
+	// --- SDL ---.
+	createSDL();
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
-	if (window == nullptr || renderer == nullptr)
-		throw "Error cargando SDL"s;
-
-	// Carga las texturas
-	for (int i = 0; i < NUM_TEXTURES; ++i)
-		textures[i] = new Texture(renderer,
-			(textureRoot + textureSpec[i].name).c_str(),
-			textureSpec[i].numRows,
-			textureSpec[i].numColumns);
+	// --- TEXTURAS ---.
+	createTextures();
 
 	mapOffset = 0;
 
-
-	// Crea los objetos del juego 
-
-	std::ifstream entrada("../assets/maps/world1.csv");
-	if (!entrada.is_open()) {
-		std::cout << "No se ha podido leer el archivo world1";
-	}
-
-	tileMap = new TileMap(entrada, this);
-
-	entrada.close();
-
-
-	std::ifstream entrada2("../assets/maps/world1.txt");
-	if (!entrada2.is_open()) {
-		std::cout << "No se ha podido leer el archivo world1";
-	}
-
-	loadObjectMap(entrada2);
-
-	entrada2.close();
-
-
-
+	// --- GAME OBJECTS ---.
+	createTilemap();
+	createEntities();
 
 	//perro = new Dog(this, -textures[BACKGROUND]->getFrameWidth(), 390);
 }
+
+#pragma region Submétodos Constructora
+void Game::createTextures() {
+	for (int i = 0; i < NUM_TEXTURES; ++i) {
+		// Crea las texturas...
+		textures[i] = new Texture(renderer,
+			(textureRoot + textureSpec[i].name).c_str(), // Dirección.
+			textureSpec[i].numRows, // Filas.
+			textureSpec[i].numColumns); // Columnas
+	}
+}
+
+void Game::createSDL() {
+	// Inicializa SDL.
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+	// Crea la ventana con...
+	window = SDL_CreateWindow("Super Mario Bros 1", // Nombre.
+		SDL_WINDOWPOS_CENTERED, // Posición en X.
+		SDL_WINDOWPOS_CENTERED, // Posición en Y.
+		WIN_WIDTH, // Anchura.
+		WIN_HEIGHT, // Altura.
+		SDL_WINDOW_SHOWN); // Permitiendo su visibilidad.
+
+	// Crea el render con...
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	// Pone el color del fondo.
+	SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+
+	// Por si falla la carga de la ventana y el render.
+	if (window == nullptr || renderer == nullptr)
+		throw "Error cargando SDL"s;
+}
+
+void Game::createTilemap() {
+	std::ifstream entradaCSV(textureRoot + "maps/world1.csv");
+	if (!entradaCSV.is_open()) {
+		std::cout << "No se ha podido leer el archivo world1";
+	}
+
+	tileMap = new TileMap(entradaCSV, this);
+
+	entradaCSV.close();
+}
+
+void Game::createEntities() {
+	std::ifstream entradaTXT(textureRoot + "maps/world1.txt");
+	if (!entradaTXT.is_open()) {
+		std::cout << "No se ha podido leer el archivo world1";
+	}
+
+	loadObjectMap(entradaTXT);
+
+	entradaTXT.close();
+}
+#pragma endregion
 
 // DESTRUCTORA.
 Game::~Game()
@@ -85,13 +105,11 @@ Game::~Game()
 	// Elimina los objetos del juego
 	//delete perro;
 
-	// Elimina las texturas
-	for (Texture* texture : textures)
+	// Elimina las texturas.
+	for (Texture* texture : textures) 
 		delete texture;
 
-
-
-	// Desactiva la SDL
+	// Desactiva la SDL.
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
