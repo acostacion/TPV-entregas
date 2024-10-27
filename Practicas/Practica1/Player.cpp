@@ -3,8 +3,8 @@
 
 Player::Player(Game* game, std::istream& in) : game(game)
 {
-	in >> pos; // ser� in Point2D que sabe leerse
-	pos = pos - Point2D<float>(0, 1);
+	in >> pos; // lee pos.
+	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	in >> life; // el n�mero de vidas
 	dir = Point2D<float>(0,0);
 	superMario = false;
@@ -68,26 +68,30 @@ void Player::handleEvent(SDL_Event evento) {
     }
     dir = nuevaDir;*/
     Point2D<float> nuevaDir;
+
+    // Escanea la tecla.
     SDL_Scancode tecla = evento.key.keysym.scancode;
 
-    if (tecla) {
-        if (evento.type == SDLK_LEFT || evento.type == SDLK_a) {
-            nuevaDir = Point2D<float>(-1, 0);
-        }
-        else if (evento.type == SDLK_RIGHT || evento.type == SDLK_d) {
-            nuevaDir = Point2D<float>(1, 0);
-        }
-        else if (evento.type == SDLK_UP || evento.type == SDLK_SPACE || evento.type == SDLK_w) {
+
+    // Al pulsar la tecla...
+    if (evento.type == SDL_KEYDOWN) {
+        if (tecla == SDL_SCANCODE_W || tecla == SDL_SCANCODE_SPACE || tecla == SDL_SCANCODE_UP) {
             nuevaDir = Point2D<float>(0, -1);
         }
-        else if (evento.type == SDLK_DOWN || evento.type == SDLK_s) {
-            nuevaDir = Point2D<float>(0, 1);
+        else if (tecla == SDL_SCANCODE_A || tecla == SDL_SCANCODE_LEFT) {
+            nuevaDir = Point2D<float>(-1, 0);
         }
-        else {
-            nuevaDir = Point2D<float>(0, 0);
+        else if (tecla == SDL_SCANCODE_S || tecla == SDL_SCANCODE_DOWN) {
+            // Mario nunca va abajo, pero se pone la animacion de agacharse.
+        }
+        else if (tecla == SDL_SCANCODE_D || tecla == SDL_SCANCODE_RIGHT) {
+            nuevaDir = Point2D<float>(1, 0);
         }
     }
-    // En base a la tecla presionada...
+    // Al despulsar la tecla...
+    else if (evento.type == SDL_KEYUP) {
+        nuevaDir = Point2D<float>(0, 0);
+    }
 
 
     dir = nuevaDir * 2;
