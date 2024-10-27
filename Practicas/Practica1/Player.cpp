@@ -36,7 +36,7 @@ void Player::render() {
 // Input de teclado cambian la dir del jugador.
 void Player::handleEvent(SDL_Event evento) {
 
-    Point2D<float> nuevaDir;
+    /*Point2D<float> nuevaDir;
     if (evento.type == SDL_KEYDOWN) {
         switch (evento.key.keysym.sym) {
         case SDLK_LEFT:
@@ -66,7 +66,31 @@ void Player::handleEvent(SDL_Event evento) {
             break;
         }
     }
-    dir = nuevaDir;
+    dir = nuevaDir;*/
+    Point2D<float> nuevaDir;
+    SDL_Scancode tecla = evento.key.keysym.scancode;
+
+    if (tecla) {
+        if (evento.type == SDLK_LEFT || evento.type == SDLK_a) {
+            nuevaDir = Point2D<float>(-1, 0);
+        }
+        else if (evento.type == SDLK_RIGHT || evento.type == SDLK_d) {
+            nuevaDir = Point2D<float>(1, 0);
+        }
+        else if (evento.type == SDLK_UP || evento.type == SDLK_SPACE || evento.type == SDLK_w) {
+            nuevaDir = Point2D<float>(0, -1);
+        }
+        else if (evento.type == SDLK_DOWN || evento.type == SDLK_s) {
+            nuevaDir = Point2D<float>(0, 1);
+        }
+        else {
+            nuevaDir = Point2D<float>(0, 0);
+        }
+    }
+    // En base a la tecla presionada...
+
+
+    dir = nuevaDir * 2;
 }
 
 void Player::update() {
