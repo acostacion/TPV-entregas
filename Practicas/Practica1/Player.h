@@ -17,7 +17,7 @@ private:
 	Point2D<float> dir;
 	bool superMario;
 	bool jumping;
-	bool onGround;
+	bool isGrounded;
 
 public:
 	Player(Game*, std::istream&);
