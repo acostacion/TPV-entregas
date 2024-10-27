@@ -31,7 +31,7 @@ TileMap::TileMap(std::istream& entrada, Game* _game) {
 	}
 }
 
-void TileMap::Render() {
+void TileMap::render() {
 
 	// Primera columna de la matriz del mapa visible en la ventana
 	int x0 = game->getMapOffset() / TILE_MAP;
@@ -65,6 +65,6 @@ void TileMap::Render() {
 }
 
 
-void TileMap::Update() {
+void TileMap::update() {
 
 }

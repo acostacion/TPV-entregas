@@ -22,8 +22,8 @@ public:
 
 	TileMap(); // Constructora default.
 	TileMap(std::istream&, Game*); // Constructora desde flujo de entrada y referencia al juego.
-	void Render(); 
-	void Update();
+	void render(); 
+	void update();
 	//void Hit();
 
 

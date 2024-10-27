@@ -58,7 +58,7 @@ private:
     void createSDL();
     void createTextures();
     void createTilemap();
-    void createEntities();
+    void createEntitymap();
 
 public:
 

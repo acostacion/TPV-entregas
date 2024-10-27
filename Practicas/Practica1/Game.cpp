@@ -35,9 +35,9 @@ Game::Game() : seguir(true){
 
 	mapOffset = 0;
 
-	// --- GAME OBJECTS ---.
+	// --- MAPAS ---.
 	createTilemap();
-	createEntities();
+	createEntitymap();
 
 	//perro = new Dog(this, -textures[BACKGROUND]->getFrameWidth(), 390);
 }
@@ -87,14 +87,35 @@ void Game::createTilemap() {
 	entradaCSV.close();
 }
 
-void Game::createEntities() {
+void Game::createEntitymap() {
+
 	std::ifstream entradaTXT(textureRoot + "maps/world1.txt");
+
 	if (!entradaTXT.is_open()) {
 		std::cout << "No se ha podido leer el archivo world1";
 	}
 
-	loadObjectMap(entradaTXT);
+	// Leemos el mapa línea a línea para evitar acarreo de errores y permitir extensiones del formato
+	std::string line;
+	getline(entradaTXT, line);
 
+	while (entradaTXT) {
+		// Usamos un stringstream para leer la línea como si fuera un flujo
+		stringstream lineStream(line);
+
+		char tipo;
+		lineStream >> tipo;
+
+		switch (tipo) {
+		case 'M':
+			this->player = new Player(this, lineStream);
+			break;
+			// uno para cada objeto
+		}
+
+		getline(entradaTXT, line);
+
+	}
 	entradaTXT.close();
 }
 #pragma endregion
@@ -113,34 +134,6 @@ Game::~Game()
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
-}
-
-// MAPA DE OBJETOS (ENTITIES).
-void Game::loadObjectMap(std::ifstream& entrada) {
-
-
-	// Leemos el mapa línea a línea para evitar acarreo de errores
-	// y permitir extensiones del formato
-	std::string line;
-	getline(entrada, line);
-
-	while (entrada) {
-		// Usamos un stringstream para leer la línea como si fuera un flujo
-		stringstream lineStream(line);
-
-		char tipo;
-		lineStream >> tipo;
-
-		switch (tipo) {
-		case 'M':
-			this->player = new Player(this, lineStream);
-			break;
-			// uno para cada objeto
-		}
-
-		getline(entrada, line);
-
-	}
 }
 
 // BUCLE PRINCIPAL.
@@ -167,12 +160,14 @@ void Game::run()
 // RENDER.
 void Game::render() const
 {
+	// Se limpia la pantalla.
 	SDL_RenderClear(renderer);
 
-	// Pinta los objetos del juego
-	tileMap->Render();
+	// Pinta los objetos del juego.
+	tileMap->render();
 	player->render();
 
+	// Muestra todo lo renderizado.
 	SDL_RenderPresent(renderer);
 }
 
@@ -183,7 +178,7 @@ Texture* Game::getTexture(TextureName name) const {
 void Game::update()
 {
 	// Actualiza los objetos del juego
-	tileMap->Update();
+	tileMap->update();
 	player->update();
 }
 
