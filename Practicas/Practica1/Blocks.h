@@ -6,24 +6,29 @@
 #include "Vector2D.h"
 
 class Game;
-class Player
+class Blocks
 {
+public: 
+	enum Tipos {
+		ladrillo,
+		sorpresa,
+		vacío,
+		oculto,
+	};
+
+	enum Accion {
+		potenciador,
+		moneda,
+	};
+
 private:
 	Game* game;
-	Texture* texturaMario;
-	Texture* texturaSMario;
+	Texture* texturaGoomba;
 	Point2D<float> pos;
-	int life;
-	Point2D<float> dir;
-	bool superMario;
-	bool isGrounded;
-	bool movingDer;
-	bool moving;
 
 public:
-	Player(Game*, std::istream&);
+	Blocks(Game*, std::istream&);
 
-	const float GRAVITY = 0.1f; // gravedad.
 
 	// En sdl ir para arriba es negativo e ir para abajo es positivo.
 	const float JUMP_FORCE = -1.0f; // fuerza de salto.
@@ -34,14 +39,9 @@ public:
 	void render();
 	void update();
 	void hit();
-	void handleEvent(SDL_Event);
 
 	// Getter de la posX del player.
 	float getX()const { return this->pos.GetX(); }
-	bool getMovingDer()const { return movingDer; }
-	Point2D<float> getDir()const { return dir; }
-
-	
 
 };
 

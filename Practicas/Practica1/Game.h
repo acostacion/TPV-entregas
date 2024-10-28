@@ -14,13 +14,15 @@
 #include "Player.h"
 #include "TileMap.h"  // Ensure this is in place and correct
 
-//#include "Goomba.h"
+#include "Goomba.h"
 //#include "Block.h"
 //#include "Dog.h"
 
 using uint = unsigned int;
 class TileMap; 
 class Player;
+class Goomba;
+class Block;
 
 class Game {
 public:
@@ -30,6 +32,8 @@ public:
         BACKGROUND,
         MARIO,
         SUPERMARIO,
+        GOOMBA,
+        BLOCKS,
         NUM_TEXTURES,  // Truco C++: número de texturas definidas
     };
 
@@ -48,10 +52,14 @@ private:
 
     // Lleva la coordenada x del extremo izquierdo de la vista.
     int mapOffset;
+    int mapMove;
 
     // Objetos del juego
     TileMap* tileMap;
     Player* player;
+    std::array <Goomba*, 20> goombas;
+    std::array <Goomba*, 20> blocks;
+
     //std::vector<Goomba*> enemies;
     //std::vector<Block*> blocks;
 
@@ -87,6 +95,7 @@ public:
     double deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
 
     int getMapOffset() { return mapOffset; }
+    void setMapOffset(int e) { mapOffset = e; }
 
     ~Game();
 };

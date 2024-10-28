@@ -39,7 +39,7 @@ public:
 	}
 
 	bool operator==(const Vector2D<T>& other) const { // Igualdad.
-		return Vector2D(x == other.GetX(), this->y == other.GetY());
+		return (x == other.GetX() && this->y == other.GetY());
 	}
 
 	// Acceder a los valores x e y.

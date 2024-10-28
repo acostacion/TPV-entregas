@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include <algorithm>
 
 Player::Player(Game* game, std::istream& in) : game(game)
 {
@@ -8,8 +8,9 @@ Player::Player(Game* game, std::istream& in) : game(game)
 	in >> life; // el n�mero de vidas
 	dir = Point2D<float>(0,0);
 	superMario = false;
-
-    jumping = false;
+    
+    movingDer = false;
+    moving = false;
     isGrounded = true;
 
 	texturaMario = game->getTexture(Game::MARIO);
@@ -35,79 +36,82 @@ void Player::render() {
 
 // Input de teclado cambian la dir del jugador.
 void Player::handleEvent(SDL_Event evento) {
-    Point2D<float> nuevaDir;
-
+    Point2D<float> nuevaDir = dir;
+    movingDer = false;
+    moving = false;
+    
     // Escanea la tecla.
     SDL_Scancode tecla = evento.key.keysym.scancode;
 
 
     // Al pulsar la tecla...
     if (evento.type == SDL_KEYDOWN) {
-        if (tecla == SDL_SCANCODE_W || tecla == SDL_SCANCODE_SPACE || tecla == SDL_SCANCODE_UP) {
-            nuevaDir = Point2D<float>(0, -1);
+        if ((tecla == SDL_SCANCODE_W || tecla == SDL_SCANCODE_SPACE || tecla == SDL_SCANCODE_UP) && isGrounded) {
+            nuevaDir = Point2D<float>(dir.GetX(), JUMP_FORCE);
+            isGrounded = false; 
+            
         }
         else if (tecla == SDL_SCANCODE_A || tecla == SDL_SCANCODE_LEFT) {
-            nuevaDir = Point2D<float>(-1, 0);
+            nuevaDir = Point2D<float>(-MOVE_SPEED, dir.GetY());
         }
         else if (tecla == SDL_SCANCODE_S || tecla == SDL_SCANCODE_DOWN) {
             // Mario nunca va abajo, pero se pone la animacion de agacharse.
         }
         else if (tecla == SDL_SCANCODE_D || tecla == SDL_SCANCODE_RIGHT) {
-            nuevaDir = Point2D<float>(1, 0);
+            nuevaDir = Point2D<float>(MOVE_SPEED, dir.GetY());
+            movingDer = true;
         }
+        moving = true;
+
     }
     // Al despulsar la tecla...
     else if (evento.type == SDL_KEYUP) {
-        nuevaDir = Point2D<float>(0, 0);
+        if (tecla == SDL_SCANCODE_A || tecla == SDL_SCANCODE_LEFT || tecla == SDL_SCANCODE_D || tecla == SDL_SCANCODE_RIGHT) {
+            nuevaDir = Point2D<float>(dir.GetX() * 0.2, dir.GetY()); // Reduce speed slightly for sliding effect 
+            moving = false;
+        }
     }
     dir = nuevaDir;
 }
 
 void Player::update() {
 
-    /*Point2D<float> nuevadir(dir.GetX(), dir.GetY() + GRAVITY);
-
-    if (!isGrounded) { // gravedad
-        if (dir.GetY() > MAX_FALL_SPEED) nuevadir = Point2D<float>(nuevadir.GetX(), MAX_FALL_SPEED); // Clamp fall speed
-        dir = nuevadir;
-
-    }
-
-    
-    if (dir.GetX() > 0) nuevadir = Point2D<float>(std::max(0.0f, dir.GetX() - ACCELERATION / 2), dir.GetY());
-    else if (dir.GetX() < 0) nuevadir = Point2D<float>(std::min(0.0f, dir.GetX() + ACCELERATION / 2), dir.GetY());
-
-    
-    pos = pos + dir;*/
-
-    /*// Si "left" y "right" ocurren a la vez...
-    if (dir.GetX() == -1 == dir.GetX() == 1) {
-        dir = Point2D<float>(0, 0);
-    }
-    // Cualquier otro caso...
-    else{
-        if (dir.GetY() == -1 && isGrounded) { // W (estando en el suelo).
-            isGrounded = false; 
-            dir = Point2D<float>(0, 1);
-
-        }
-        else if (dir.GetX() == -1) { // A.
-            pos = Point2D<float>(pos.GetX() + dir.GetX() * 2, 0);
-        }
-        else if(dir.GetX() == 1){ // D.
-            pos = Point2D<float>(pos.GetX() + dir.GetX() * 2, 0);
-        }
-    }
-
     if (!isGrounded) {
-        dir = Point2D<float>(0, pos.GetY() + dir.GetY() * 2);
-    }*/
+        dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
+        if (dir.GetY() > MAX_FALL_SPEED) {
+            dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
+        }
+    }
+
+    if (!moving) {
+        if (std::abs(dir.GetX()) < DECELERATION) {
+            dir = Point2D<float>(0, dir.GetY());
+        }
+        else {
+            dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
+        }
+    }
+    
+   
+
+    pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
 
     // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
-    if (dir.GetX() == -1) {
-        pos = Point2D<float>(pos.GetX() + dir.GetX() * 2, 13);
+
+
+    if (pos.GetY() >= 13) { // por ahora
+        pos = Point2D<float>(pos.GetX(), 13); 
+        isGrounded = true; 
+        dir = Point2D<float>(dir.GetX(), 0); 
     }
-    else if (dir.GetX() == 1) {
-        pos = Point2D<float>(pos.GetX() + dir.GetX() * 2, 13);
+
+    if (pos.GetX() < 0) { // no se vaya por la izquierda
+        pos = Point2D<float>(0, pos.GetY()); 
+    } 
+    else if (pos.GetX() > Game::WIN_TILE_WIDTH/2)
+    {
+        pos = Point2D<float>(game->WIN_TILE_WIDTH /2, pos.GetY());
     }
+
+
 }

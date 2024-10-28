@@ -21,7 +21,9 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	// {Mapa, cols, fils}
 	TextureSpec{"imgs/background.png", 9, 7}, 
 	TextureSpec{"imgs/mario.png", 12, 1}, 
-	TextureSpec{"imgs/supermario.png", 22, 1}, 
+	TextureSpec{"imgs/supermario.png", 22, 1},
+	TextureSpec{"imgs/goomba.png", 3, 1},
+	TextureSpec{"imgs/blocks.png", 3, 1},
 };
 #pragma endregion
 
@@ -34,6 +36,7 @@ Game::Game() : seguir(true){
 	createTextures();
 
 	mapOffset = 0;
+	mapMove = WIN_WIDTH / 2 -2;
 
 	// --- MAPAS ---.
 	createTilemap();
@@ -99,6 +102,7 @@ void Game::createEntitymap() {
 	std::string line;
 	getline(entradaTXT, line);
 
+	int i = 0;
 	while (entradaTXT) {
 		// Usamos un stringstream para leer la línea como si fuera un flujo
 		stringstream lineStream(line);
@@ -111,6 +115,9 @@ void Game::createEntitymap() {
 			this->player = new Player(this, lineStream);
 			break;
 			// uno para cada objeto
+		case 'G':
+			this->goombas[i] = new Goomba(this, lineStream);
+			i++;
 		}
 
 		getline(entradaTXT, line);
@@ -166,6 +173,7 @@ void Game::render() const
 	// Pinta los objetos del juego.
 	tileMap->render();
 	player->render();
+	goombas[0]->render();
 
 	// Muestra todo lo renderizado.
 	SDL_RenderPresent(renderer);
@@ -179,11 +187,12 @@ void Game::update()
 {
 	// Actualiza los objetos del juego
 	tileMap->update();
+	goombas[0]->update();
 	player->update();
 	// Si la posición del player supera la mitad, avanza (corregir).
-	if (player->getX() > WIN_TILE_WIDTH / 2) {
-		mapOffset++;
-		player->setX(WIN_TILE_WIDTH / 2);
+	if (player->getX() > 8 && player->getMovingDer()) {
+		mapOffset += 12;
+		mapMove+= 12;
 	}
 }
 
