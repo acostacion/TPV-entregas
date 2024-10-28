@@ -183,6 +183,7 @@ void Game::update()
 	// Si la posición del player supera la mitad, avanza (corregir).
 	if (player->getX() > WIN_TILE_WIDTH / 2) {
 		mapOffset++;
+		player->setX(WIN_TILE_WIDTH / 2);
 	}
 }
 

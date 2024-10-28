@@ -46,6 +46,10 @@ public:
 	T GetX() const { return this->x; }
 	T GetY() const { return this->y; }
 
+	// Setear valores x e y.
+	void SetX(T otherX) { this->x = otherX; }
+	void SetY(T otherY) { this->y = otherY; }
+
 	// Entrada para leer x e y.
 	friend std::istream& operator>>(std::istream& in, Vector2D& vec) {
 		return (in >> vec.x >> vec.y);

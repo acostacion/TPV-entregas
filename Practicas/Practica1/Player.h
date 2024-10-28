@@ -38,5 +38,9 @@ public:
 	// Getter de la posX del player.
 	float getX()const { return this->pos.GetX(); }
 
+	// Setter de la posX del player.
+	void setX(float _x)const { pos.SetX(_x); }
+
+
 };
 
