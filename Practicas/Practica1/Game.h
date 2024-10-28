@@ -45,6 +45,8 @@ private:
 
     // Interruptor para terminar el juego
     bool seguir;
+
+    // Lleva la coordenada x del extremo izquierdo de la vista.
     int mapOffset;
 
     // Objetos del juego

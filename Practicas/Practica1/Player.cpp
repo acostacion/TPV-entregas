@@ -80,7 +80,7 @@ void Player::update() {
     
     pos = pos + dir;*/
 
-    // Si "left" y "right" ocurren a la vez...
+    /*// Si "left" y "right" ocurren a la vez...
     if (dir.GetX() == -1 == dir.GetX() == 1) {
         dir = Point2D<float>(0, 0);
     }
@@ -101,5 +101,13 @@ void Player::update() {
 
     if (!isGrounded) {
         dir = Point2D<float>(0, pos.GetY() + dir.GetY() * 2);
+    }*/
+
+    // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
+    if (dir.GetX() == -1) {
+        pos = Point2D<float>(pos.GetX() + dir.GetX() * 2, 13);
+    }
+    else if (dir.GetX() == 1) {
+        pos = Point2D<float>(pos.GetX() + dir.GetX() * 2, 13);
     }
 }

@@ -180,6 +180,10 @@ void Game::update()
 	// Actualiza los objetos del juego
 	tileMap->update();
 	player->update();
+	// Si la posición del player supera la mitad, avanza (corregir).
+	if (player->getX() > WIN_TILE_WIDTH / 2) {
+		mapOffset++;
+	}
 }
 
 void Game::handleEvents()
@@ -192,7 +196,6 @@ void Game::handleEvents()
 			seguir = false;
 		else if (evento.type == SDL_KEYDOWN || evento.type == SDL_KEYUP) {
 			player->handleEvent(evento);
-			//++mapOffset;
 		}
 	}
 }

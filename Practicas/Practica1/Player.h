@@ -35,5 +35,8 @@ public:
 	void hit();
 	void handleEvent(SDL_Event);
 
+	// Getter de la posX del player.
+	float getX()const { return this->pos.GetX(); }
+
 };
 
