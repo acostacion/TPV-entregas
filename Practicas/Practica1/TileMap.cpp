@@ -1,5 +1,5 @@
 #include "TileMap.h"
-
+#include "SDL_rect.h"
 TileMap::TileMap(){
 	// Constructora default -> todo a nullptr.
 	texture = nullptr;
@@ -11,23 +11,30 @@ TileMap::TileMap(std::istream& entrada, Game* _game) {
 	// Asigna game y carga la textura BACKGROUND valiéndose del game.
 	game = _game;
 	texture = game->getTexture(Game::BACKGROUND);
-
+	int x = 0, y = 0;
 	// Lee el archivo CSV.
 	while (entrada) {
 		int c = 0;
 		char cAux = ','; // Se separa el archivo por comas.
 		std::vector<int> fila;
-
+		x = 0;
 		// Mientras cAux siga obteniendo ","... (lee la fila).
 		while (cAux == ',') {
 			// Lee el entero y lo añade a la fila actual.
 			entrada >> c; 
 			fila.push_back(c);
-
+			SDL_Rect rect;
+			rect.w = Game::TILE_SIDE;
+			rect.h = Game::TILE_SIDE;
+			rect.x = x;
+			rect.y = y;
+			collider.push_back(rect);
 			// Get() lee el siguiente char (",").
+			x++;
 			cAux = entrada.get();
 		}
 		map.push_back(fila);
+		y++;
 	}
 }
 
@@ -66,4 +73,8 @@ void TileMap::render() {
 
 void TileMap::update() {
 
+}
+
+bool TileMap::hit(SDL_Rect rect) {
+	
 }

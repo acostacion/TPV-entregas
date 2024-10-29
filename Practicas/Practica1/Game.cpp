@@ -125,7 +125,6 @@ void Game::createEntitymap() {
 			break;
 		case 'K':
 			this->koopas.push_back( new Koopa(this, lineStream));
-		
 			break;
 		}
 
@@ -231,10 +230,22 @@ Texture* Game::getTexture(TextureName name) const {
 	return textures[name];
 }
 
-void Game::checkCollision(SDL_Rect rect) {
-	/*for(){
+Game::Collision Game::checkCollision(SDL_Rect rect) {
 	
-	}*/
+
+	// pregunta al hit de todas las entidades del juego, si se colisiona con alguna
+	// todos con el tilemap
+	// player -> goomba (si es por la der o iz -vida, por arriba muerte de goomba)
+	// player -> koopa (si es por la der o iz -vida, por arriba "muerte" de koopa)
+	// player -> seta (super mario y muerte/desaparece seta)
+	// player -> blocks -> ladrillo(no avanza si es por abajo der iz), "?" se vuelve vacio, vacio nada
+	// playerSUPER -> blocks -> ladrillo(destruye), "?" se vuelve vacio
+	// 
+	// entities chocan con entities
+
+	
+	bool asdas = tileMap->hit(rect);
+
 }
 
 

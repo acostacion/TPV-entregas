@@ -40,6 +40,12 @@ public:
         NUM_TEXTURES,  // Truco C++: número de texturas definidas
     };
 
+    struct Collision {
+        bool collisionE;
+        bool collisionS;
+        bool fromPlayer;
+    };
+
 private:
     // Ventana de la SDL (se destruirá en el destructor)
     SDL_Window* window = nullptr;
@@ -92,7 +98,7 @@ public:
     void render() const;
     void handleEvents();
 
-    void checkCollision(SDL_Rect);
+    Collision checkCollision(SDL_Rect);
 
     Texture* getTexture(TextureName) const;
     //void LoadMap();
