@@ -28,12 +28,10 @@ public:
 	void update();
 	void hit();
 
-	// Getter de la posX del player.
+	// Getter de la posX del Goomba.
 	float getX()const { return this->pos.GetX(); }
 	bool getMoving()const { return startMoving; }
 	Point2D<float> getDir()const { return dir; }
-
-	
 
 };
 
