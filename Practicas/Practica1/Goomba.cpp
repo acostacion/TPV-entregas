@@ -7,6 +7,7 @@ Goomba::Goomba(Game* game, std::istream& in) : game(game)
 	dir = Point2D<float>(0,0);
     startMoving = true;
 	dead = false;
+	timer = 3;
 	anim = 0;
     texturaGoomba = game->getTexture(Game::GOOMBA);
 }
@@ -24,14 +25,16 @@ void Goomba::render() {
 
 
 	// 3. Frame de la animacion
-
 	if (dead) {
 		anim = 2;
 	}
-	else {
+
+	if (timer == 0 && !dead) {
 		if (anim == 0) anim = 1;
 		else anim = 0;
 	}
+	
+	
 
 	// Se renderiza.
     texturaGoomba->renderFrame(rect, 0, anim);
@@ -39,6 +42,13 @@ void Goomba::render() {
 
 
 void Goomba::update() {
+
+	if (timer >= 0) {
+		timer--;
+	}
+	else {
+		timer = 3;
+	}
 
     if (startMoving) {
 		dir = Point2D<float>(-MOVE_SPEED, 0);

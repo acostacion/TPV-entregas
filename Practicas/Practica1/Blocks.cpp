@@ -9,12 +9,13 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 	action = Accion::nada;
 	tipo = Tipos::ladrillo;
 	fx = 0;
+	timer = 3;
 
 	// Lee el tipo del txt.
 	char c;
 	in >> c;
 	switch (c) {
-	case 'B': // Si es un bloque normal... 
+	case 'B': // Si es un bloque ladrillo... 
 		tipo = Tipos::ladrillo;
 		action = Accion::nada;
 		fx = 5;
@@ -52,12 +53,16 @@ void Blocks::render() {
 	rect.x = pos.GetX() * Game::TILE_SIDE - game->getMapOffset();
 	rect.y = pos.GetY() * Game::TILE_SIDE;
 
-	if (anim) {
-		if (fx == 0) fx = 1;
-		else if (fx == 1) fx = 2;
-		else if (fx == 2) fx = 3;
-		else if (fx == 3) fx = 0;
+	// si es el sorpresa
+	if (timer == 0) {
+		if (anim) {
+			if (fx == 0) fx = 1;
+			else if (fx == 1) fx = 2;
+			else if (fx == 2) fx = 3;
+			else if (fx == 3) fx = 0;
+		}
 	}
+	
 
 
 	// Se renderiza.
@@ -66,5 +71,10 @@ void Blocks::render() {
 
 
 void Blocks::update() {
-	
+	if (timer >= 0) {
+		timer--;
+	}
+	else {
+		timer = 3;
+	}
 }

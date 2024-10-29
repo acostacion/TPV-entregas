@@ -64,8 +64,8 @@ void Player::handleEvent(SDL_Event evento) {
     if (evento.type == SDL_KEYDOWN) {
         if ((tecla == SDL_SCANCODE_W || tecla == SDL_SCANCODE_SPACE || tecla == SDL_SCANCODE_UP) && isGrounded) {
             nuevaDir = Point2D<float>(dir.GetX(), JUMP_FORCE);
+            if (dir.GetX() > 0) movingDer = true;
             isGrounded = false; 
-            
         }
         else if (tecla == SDL_SCANCODE_A || tecla == SDL_SCANCODE_LEFT) {
             nuevaDir = Point2D<float>(-MOVE_SPEED, dir.GetY());
@@ -81,7 +81,6 @@ void Player::handleEvent(SDL_Event evento) {
             
         }
         moving = true;
-
     }
     // Al despulsar la tecla...
     else if (evento.type == SDL_KEYUP) {
@@ -95,6 +94,7 @@ void Player::handleEvent(SDL_Event evento) {
 
 void Player::update() {
 
+    //gravedad
     if (!isGrounded) {
         dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
         if (dir.GetY() > MAX_FALL_SPEED) {
@@ -102,6 +102,13 @@ void Player::update() {
         }
     }
 
+    if (pos.GetY() >= Game::WIN_TILE_HEIGHT - 3) { // por ahora
+        pos = Point2D<float>(pos.GetX(), Game::WIN_TILE_HEIGHT - 3);
+        isGrounded = true;
+        dir = { dir.GetX(), 0 };
+    }
+
+    // patinar
     if (!moving) {
         if (std::abs(dir.GetX()) < DECELERATION) {
             dir = Point2D<float>(0, dir.GetY());
@@ -118,16 +125,11 @@ void Player::update() {
     // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
 
 
-    if (pos.GetY() >= 13) { // por ahora
-        pos = Point2D<float>(pos.GetX(), 13); 
-        isGrounded = true; 
-        dir = Point2D<float>(dir.GetX(), 0); 
-    }
 
     if (pos.GetX() < 0) { // no se vaya por la izquierda
         pos = Point2D<float>(0, pos.GetY()); 
     } 
-    else if (pos.GetX() > Game::WIN_TILE_WIDTH/2)
+    else if (pos.GetX() > Game::WIN_TILE_WIDTH/2) // no pase de la mitad
     {
         pos = Point2D<float>(game->WIN_TILE_WIDTH /2, pos.GetY());
     }

@@ -62,7 +62,7 @@ private:
     TileMap* tileMap;
     Player* player;
     std::array <Goomba*, 20> goombas;
-    std::array <Blocks*, 70> blocks;
+    std::array <Blocks*, 50> blocks;
     std::array <Koopa*, 3> koopas;
 
     //std::vector<Goomba*> enemies;
@@ -77,6 +77,9 @@ private:
     void renderBlocks() const;
     void renderGoombas() const;
     void renderKoopas() const;
+    void updateKoopas() const;
+    void updateGoombas() const;
+    void updateBlocks() const;
 
 
 public:
