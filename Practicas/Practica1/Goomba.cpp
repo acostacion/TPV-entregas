@@ -11,8 +11,6 @@ Goomba::Goomba(Game* game, std::istream& in) : game(game)
 
 void Goomba::render() {
 	
-	/*/if (!this->superMario) {*/
-
 	// 1. Se crea el rect.
 	SDL_Rect rect;
 

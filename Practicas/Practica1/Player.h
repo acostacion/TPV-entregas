@@ -19,6 +19,7 @@ private:
 	bool isGrounded;
 	bool movingDer;
 	bool moving;
+	int anim;
 
 public:
 	Player(Game*, std::istream&);

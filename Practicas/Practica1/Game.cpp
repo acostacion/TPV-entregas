@@ -23,7 +23,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"imgs/mario.png", 12, 1}, 
 	TextureSpec{"imgs/supermario.png", 22, 1},
 	TextureSpec{"imgs/goomba.png", 3, 1},
-	TextureSpec{"imgs/blocks.png", 3, 1},
+	TextureSpec{"imgs/blocks.png", 6, 1},
 };
 #pragma endregion
 
@@ -102,7 +102,7 @@ void Game::createEntitymap() {
 	std::string line;
 	getline(entradaTXT, line);
 
-	int i = 0;
+	int g = 0, b = 0;
 	while (entradaTXT) {
 		// Usamos un stringstream para leer la línea como si fuera un flujo
 		stringstream lineStream(line);
@@ -116,8 +116,13 @@ void Game::createEntitymap() {
 			break;
 			// uno para cada objeto
 		case 'G':
-			this->goombas[i] = new Goomba(this, lineStream);
-			i++;
+			this->goombas[g] = new Goomba(this, lineStream);
+			g++;
+			break;
+		case 'B':
+			this->blocks[b] = new Blocks(this, lineStream);
+			b++;
+			break;
 		}
 
 		getline(entradaTXT, line);
@@ -125,6 +130,20 @@ void Game::createEntitymap() {
 	}
 	entradaTXT.close();
 }
+
+
+void Game::renderBlocks() {
+	for (int i = 0; i < blocks.size(); ++i) {
+		blocks[i]->render();
+	}
+}
+
+void Game::blocksMove() {
+	for (int i = 0; i < blocks.size(); ++i) {
+		blocks[i]->update();
+	}
+}
+
 #pragma endregion
 
 // DESTRUCTORA.
@@ -164,6 +183,9 @@ void Game::run()
 	}
 }
 
+
+
+
 // RENDER.
 void Game::render() const
 {
@@ -174,6 +196,7 @@ void Game::render() const
 	tileMap->render();
 	player->render();
 	goombas[0]->render();
+	blocks[0]->render();
 
 	// Muestra todo lo renderizado.
 	SDL_RenderPresent(renderer);
@@ -193,6 +216,7 @@ void Game::update()
 	if (player->getX() > 8 && player->getMovingDer()) {
 		mapOffset += 12;
 		mapMove+= 12;
+		blocksMove();
 	}
 }
 

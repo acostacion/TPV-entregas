@@ -23,11 +23,11 @@ public:
 	}
 
 	Vector2D<T> operator-(const Vector2D<T>& other) const { // Diferencia.
-		return Vector2D(x - other.GetX(), this->y - other.GetY());
+		return Vector2D<T>(x - other.GetX(), y - other.GetY());
 	}
 
 	Vector2D<T> operator+(const Vector2D<T>& other) const { // Suma.
-		return Vector2D(x + other.GetX(), this->y + other.GetY());
+		return Vector2D<T>(x + other.GetX(), this->y + other.GetY());
 	}
 
 	int operator*(const Vector2D<T>& other) const { // Producto vectorial.
@@ -35,7 +35,7 @@ public:
 	}
 
 	Vector2D<T> operator*(const T e) const { // Producto por un escalar.
-		return Vector2D(x * e, this->y *e);
+		return Vector2D<T>(x * e, this->y *e);
 	}
 
 	bool operator==(const Vector2D<T>& other) const { // Igualdad.

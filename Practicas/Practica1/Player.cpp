@@ -8,7 +8,7 @@ Player::Player(Game* game, std::istream& in) : game(game)
 	in >> life; // el n�mero de vidas
 	dir = Point2D<float>(0,0);
 	superMario = false;
-    
+    anim = 0;
     movingDer = false;
     moving = false;
     isGrounded = true;
@@ -30,15 +30,25 @@ void Player::render() {
 	rect.x = pos.GetX() * Game::TILE_SIDE;
 	rect.y = pos.GetY() * Game::TILE_SIDE;
 
+
+    if (!isGrounded) anim = 6;
+    else if (moving) {
+        if (anim == 0) anim = 2;
+        if (anim == 2) anim = 3;
+        if (anim == 3) anim = 4;
+        if (anim == 4) anim = 0;
+    }
+    else anim = 0;
+
+
 	// Se renderiza.
-	texturaMario->renderFrame(rect, 0, 0);
+	texturaMario->renderFrame(rect, anim, 0);
 }
 
 // Input de teclado cambian la dir del jugador.
 void Player::handleEvent(SDL_Event evento) {
     Point2D<float> nuevaDir = dir;
     movingDer = false;
-    moving = false;
     
     // Escanea la tecla.
     SDL_Scancode tecla = evento.key.keysym.scancode;

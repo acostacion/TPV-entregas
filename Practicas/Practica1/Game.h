@@ -15,14 +15,14 @@
 #include "TileMap.h"  // Ensure this is in place and correct
 
 #include "Goomba.h"
-//#include "Block.h"
+#include "Blocks.h"
 //#include "Dog.h"
 
 using uint = unsigned int;
 class TileMap; 
 class Player;
 class Goomba;
-class Block;
+class Blocks;
 
 class Game {
 public:
@@ -58,7 +58,7 @@ private:
     TileMap* tileMap;
     Player* player;
     std::array <Goomba*, 20> goombas;
-    std::array <Goomba*, 20> blocks;
+    std::array <Blocks*, 70> blocks;
 
     //std::vector<Goomba*> enemies;
     //std::vector<Block*> blocks;
@@ -69,6 +69,8 @@ private:
     void createTextures();
     void createTilemap();
     void createEntitymap();
+    void renderBlocks();
+    void blocksMove();
 
 public:
 
