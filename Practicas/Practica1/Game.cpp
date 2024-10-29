@@ -132,15 +132,15 @@ void Game::createEntitymap() {
 }
 
 
-void Game::renderBlocks() {
-	for (int i = 0; i < blocks.size(); ++i) {
+void Game::renderBlocks() const{
+	for (int i = 0; i < 10; ++i) {
 		blocks[i]->render();
 	}
 }
 
-void Game::blocksMove() {
-	for (int i = 0; i < blocks.size(); ++i) {
-		blocks[i]->update();
+void Game::renderGoombas() const{
+	for (int i = 0; i < 10; ++i) {
+		goombas[i]->update();
 	}
 }
 
@@ -185,7 +185,6 @@ void Game::run()
 
 
 
-
 // RENDER.
 void Game::render() const
 {
@@ -196,7 +195,7 @@ void Game::render() const
 	tileMap->render();
 	player->render();
 	goombas[0]->render();
-	blocks[0]->render();
+	renderBlocks();
 
 	// Muestra todo lo renderizado.
 	SDL_RenderPresent(renderer);
@@ -216,7 +215,6 @@ void Game::update()
 	if (player->getX() > 8 && player->getMovingDer()) {
 		mapOffset += 12;
 		mapMove+= 12;
-		blocksMove();
 	}
 }
 

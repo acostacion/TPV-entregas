@@ -31,10 +31,11 @@ void Blocks::render() {
 	// 1. Se crea el rect.
 	SDL_Rect rect;
 
+
 	// 2. Se le da dimensiones y posici�n.
 	rect.w = texturaBlock->getFrameWidth() *2;
-	rect.h = texturaBlock->getFrameHeight()*2 ;
-	rect.x = pos.GetX() * Game::TILE_SIDE;
+	rect.h = texturaBlock->getFrameHeight() *2;
+	rect.x = pos.GetX() * Game::TILE_SIDE - game->getMapOffset();
 	rect.y = pos.GetY() * Game::TILE_SIDE;
 
 	int fx = 0;
@@ -51,11 +52,10 @@ void Blocks::render() {
 	case Tipos::vacio:
 		fx = 4;
 		break;
-
 	}
 
 	// Se renderiza.
-	texturaBlock->renderFrame(rect, fx, 0);
+	texturaBlock->renderFrame(rect, 0, fx);
 }
 
 

@@ -69,8 +69,8 @@ private:
     void createTextures();
     void createTilemap();
     void createEntitymap();
-    void renderBlocks();
-    void blocksMove();
+    void renderBlocks() const;
+    void renderGoombas() const;
 
 public:
 
