@@ -32,17 +32,17 @@ void Player::render() {
 
 
     if (!isGrounded) anim = 6;
-    else if (moving) {
+    else {
         if (anim == 0) anim = 2;
         if (anim == 2) anim = 3;
         if (anim == 3) anim = 4;
         if (anim == 4) anim = 0;
+        if (anim == 6) anim = 0;
     }
-    else anim = 0;
-
+    
 
 	// Se renderiza.
-	texturaMario->renderFrame(rect, anim, 0);
+	texturaMario->renderFrame(rect, 0, anim);
 }
 
 // Input de teclado cambian la dir del jugador.
