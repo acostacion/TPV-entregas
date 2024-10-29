@@ -42,7 +42,6 @@ void Goomba::render() {
 
 
 void Goomba::update() {
-
 	if (timer >= 0) {
 		timer--;
 	}

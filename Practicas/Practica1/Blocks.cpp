@@ -62,8 +62,6 @@ void Blocks::render() {
 			else if (fx == 3) fx = 0;
 		}
 	}
-	
-
 
 	// Se renderiza.
 	texturaBlock->renderFrame(rect, 0, fx);
@@ -76,5 +74,19 @@ void Blocks::update() {
 	}
 	else {
 		timer = 3;
+	}
+}
+
+void Blocks::hit() {
+	if (tipo == Tipos::ladrillo) {
+		/*if () {
+
+		}*/
+	}
+	else if (tipo == Tipos::sorpresa) {
+
+	}
+	else if (tipo == Tipos::vacio) {
+
 	}
 }

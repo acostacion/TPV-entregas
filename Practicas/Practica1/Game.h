@@ -61,12 +61,13 @@ private:
     // Objetos del juego
     TileMap* tileMap;
     Player* player;
-    std::array <Goomba*, 20> goombas;
-    std::array <Blocks*, 50> blocks;
-    std::array <Koopa*, 3> koopas;
+    //std::array <Goomba*, 20> goombas;
+    //std::array <Blocks*, 50> blocks;
+    //std::array <Koopa*, 3> koopas;
 
-    //std::vector<Goomba*> enemies;
-    //std::vector<Block*> blocks;
+    std::vector<Goomba*> goombas;
+    std::vector<Blocks*> blocks;
+    std::vector<Koopa*> koopas;
 
     // --- MÉTODOS AUXILIARES ---.
     // Constructora.
@@ -90,6 +91,9 @@ public:
     void update();
     void render() const;
     void handleEvents();
+
+    void checkCollision(SDL_Rect);
+
     Texture* getTexture(TextureName) const;
     //void LoadMap();
 

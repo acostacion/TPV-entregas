@@ -102,7 +102,7 @@ void Game::createEntitymap() {
 	std::string line;
 	getline(entradaTXT, line);
 
-	int g = 0, b = 0, k = 0;
+
 	while (entradaTXT) {
 		// Usamos un stringstream para leer la línea como si fuera un flujo
 		stringstream lineStream(line);
@@ -116,16 +116,16 @@ void Game::createEntitymap() {
 			break;
 			// uno para cada objeto
 		case 'G':
-			this->goombas[g] = new Goomba(this, lineStream);
-			g++;
+			this->goombas.push_back(new Goomba(this, lineStream));
+
 			break;
 		case 'B':
-			this->blocks[b] = new Blocks(this, lineStream);
-			b++;
+			this->blocks.push_back(new Blocks(this, lineStream));
+			
 			break;
 		case 'K':
-			this->koopas[k] = new Koopa(this, lineStream);
-			k++;
+			this->koopas.push_back( new Koopa(this, lineStream));
+		
 			break;
 		}
 
@@ -137,36 +137,35 @@ void Game::createEntitymap() {
 
 
 void Game::renderBlocks() const{
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < blocks.size(); ++i) {
 		blocks[i]->render();
 	}
 }
 
-
 void Game::renderGoombas() const{
-	for (int i = 0; i < 10; ++i) { // no he contado cuantos hay en total
+	for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
 		goombas[i]->render();
 	}
 }
 
 void Game::renderKoopas() const {
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < koopas.size(); ++i) {
 		koopas[i]->render();
 	}
 }
 
 void Game::updateKoopas() const {
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < koopas.size(); ++i) {
 		koopas[i]->update();
 	}
 }
 void Game::updateGoombas() const {
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < goombas.size(); ++i) {
 		goombas[i]->update();
 	}
 }
 void Game::updateBlocks() const {
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < blocks.size(); ++i) {
 		blocks[i]->update();
 	}
 }
@@ -199,7 +198,7 @@ void Game::run()
 		update();       // Actualiza el estado de los objetos del juego
 		render();       // Dibuja los objetos en la venta
 		handleEvents(); // Maneja los eventos de la SDL
-
+		
 		// Tiempo que se ha tardado en ejecutar lo anterior
 		uint32_t elapsed = SDL_GetTicks() - inicio;
 
@@ -231,6 +230,14 @@ void Game::render() const
 Texture* Game::getTexture(TextureName name) const {
 	return textures[name];
 }
+
+void Game::checkCollision(SDL_Rect rect) {
+	/*for(){
+	
+	}*/
+}
+
+
 
 void Game::update()
 {
