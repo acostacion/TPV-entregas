@@ -28,7 +28,8 @@ private:
 	Point2D<float> pos;
 	Tipos tp;
 	Accion ac;
-
+	int fx;
+	bool anim;
 public:
 	Blocks(Game*, std::istream&);
 

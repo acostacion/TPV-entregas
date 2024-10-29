@@ -6,6 +6,8 @@ Goomba::Goomba(Game* game, std::istream& in) : game(game)
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	dir = Point2D<float>(0,0);
     startMoving = true;
+	dead = false;
+	anim = 0;
     texturaGoomba = game->getTexture(Game::GOOMBA);
 }
 
@@ -20,8 +22,16 @@ void Goomba::render() {
 	rect.x = pos.GetX() * Game::TILE_SIDE;
 	rect.y = pos.GetY() * Game::TILE_SIDE;
 
+	if (dead) {
+		anim = 2;
+	}
+	else {
+		if (anim == 0) anim = 1;
+		else anim = 0;
+	}
+
 	// Se renderiza.
-    texturaGoomba->renderFrame(rect, 0, 0);
+    texturaGoomba->renderFrame(rect, 0, anim);
 }
 
 

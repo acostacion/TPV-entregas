@@ -14,6 +14,8 @@ private:
 	Point2D<float> pos;
 	Point2D<float> dir;
 	bool startMoving;
+	bool dead;
+	int anim;
 
 public:
 	Goomba(Game*, std::istream&);
