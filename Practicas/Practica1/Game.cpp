@@ -36,7 +36,6 @@ Game::Game() : seguir(true){
 	createTextures();
 
 	mapOffset = 0;
-	mapMove = WIN_WIDTH / 2 -2;
 
 	// --- MAPAS ---.
 	createTilemap();
@@ -140,7 +139,7 @@ void Game::renderBlocks() const{
 
 void Game::renderGoombas() const{
 	for (int i = 0; i < 10; ++i) {
-		goombas[i]->update();
+		goombas[i]->render();
 	}
 }
 
@@ -194,7 +193,7 @@ void Game::render() const
 	// Pinta los objetos del juego.
 	tileMap->render();
 	player->render();
-	goombas[0]->render();
+	renderGoombas();
 	renderBlocks();
 
 	// Muestra todo lo renderizado.
@@ -214,7 +213,6 @@ void Game::update()
 	// Si la posición del player supera la mitad, avanza (corregir).
 	if (player->getX() > 8 && player->getMovingDer()) {
 		mapOffset += 12;
-		mapMove+= 12;
 	}
 }
 

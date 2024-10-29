@@ -52,7 +52,6 @@ private:
 
     // Lleva la coordenada x del extremo izquierdo de la vista.
     int mapOffset;
-    int mapMove;
 
     // Objetos del juego
     TileMap* tileMap;

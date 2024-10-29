@@ -20,6 +20,7 @@ private:
 	bool movingDer;
 	bool moving;
 	int anim;
+	SDL_RendererFlip flip;
 
 public:
 	Player(Game*, std::istream&);

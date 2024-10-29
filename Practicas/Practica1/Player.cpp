@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <algorithm>
 
-Player::Player(Game* game, std::istream& in) : game(game)
+Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
@@ -34,9 +34,7 @@ void Player::render() {
     if (!isGrounded) anim = 6;
     else {
         if (moving) {
-            if (anim == 0) {
-                anim = 2;
-            }
+            if (anim == 0) anim = 2;
             else if (anim == 2) anim = 3;
             else if (anim == 3) anim = 4;
             else if (anim == 4) anim = 0;
@@ -48,7 +46,7 @@ void Player::render() {
     
 
 	// Se renderiza.
-	texturaMario->renderFrame(rect, 0, anim);
+	texturaMario->renderFrame(rect, 0, anim, flip);
 }
 
 // Input de teclado cambian la dir del jugador.
@@ -69,6 +67,7 @@ void Player::handleEvent(SDL_Event evento) {
         }
         else if (tecla == SDL_SCANCODE_A || tecla == SDL_SCANCODE_LEFT) {
             nuevaDir = Point2D<float>(-MOVE_SPEED, dir.GetY());
+            flip = SDL_FLIP_HORIZONTAL;
         }
         else if (tecla == SDL_SCANCODE_S || tecla == SDL_SCANCODE_DOWN) {
             // Mario nunca va abajo, pero se pone la animacion de agacharse.
@@ -76,6 +75,8 @@ void Player::handleEvent(SDL_Event evento) {
         else if (tecla == SDL_SCANCODE_D || tecla == SDL_SCANCODE_RIGHT) {
             nuevaDir = Point2D<float>(MOVE_SPEED, dir.GetY());
             movingDer = true;
+            flip = SDL_FLIP_NONE;
+            
         }
         moving = true;
 
