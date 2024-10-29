@@ -4,31 +4,37 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
-	texturaBlock = game->getTexture(Game::BLOCKS);
-	anim = false;
-	ac = Accion::nada;
-	tp = Tipos::ladrillo;
+	texturaBlock = game->getTexture(Game::BLOCKS); // obtiene la textura.
+	anim = false; 
+	action = Accion::nada;
+	tipo = Tipos::ladrillo;
 	fx = 0;
+
+	// Lee el tipo del txt.
 	char c;
 	in >> c;
 	switch (c) {
-	case 'B':
-		tp = Tipos::ladrillo;
-		ac = Accion::nada;
+	case 'B': // Si es un bloque normal... 
+		tipo = Tipos::ladrillo;
+		action = Accion::nada;
 		fx = 5;
 		break;
-	case '?':
-		tp = Tipos::sorpresa;
+
+	case '?': // Si es un bloque "?"...
+		tipo = Tipos::sorpresa;
 		in >> c;
 		anim = true;
-		if ( c == 'C') ac = Accion::moneda;
-		else ac = Accion::potenciador;
+
+		if ( c == 'C') action = Accion::moneda; // Caso "coin".
+		else action = Accion::potenciador; // Caso "potentiator".
 		fx = 0;
 		break;
+
+		// Si es un bloque oculto...
 	case 'H':
-		tp = Tipos::oculto;
-		if (c == 'C') ac = Accion::moneda;
-		else ac = Accion::potenciador;
+		tipo = Tipos::oculto;
+		if (c == 'C') action = Accion::moneda;
+		else action = Accion::potenciador;
 		fx = 5;
 		break;
 	}

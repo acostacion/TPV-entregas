@@ -26,8 +26,8 @@ private:
 	Game* game;
 	Texture* texturaBlock;
 	Point2D<float> pos;
-	Tipos tp;
-	Accion ac;
+	Tipos tipo;
+	Accion action;
 	int fx;
 	bool anim;
 public:
