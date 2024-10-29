@@ -15,6 +15,7 @@
 #include "TileMap.h"  // Ensure this is in place and correct
 
 #include "Goomba.h"
+#include "Koopa.h"
 #include "Blocks.h"
 //#include "Dog.h"
 
@@ -22,6 +23,7 @@ using uint = unsigned int;
 class TileMap; 
 class Player;
 class Goomba;
+class Koopa;
 class Blocks;
 
 class Game {
@@ -34,6 +36,7 @@ public:
         SUPERMARIO,
         GOOMBA,
         BLOCKS,
+        KOOPA,
         NUM_TEXTURES,  // Truco C++: número de texturas definidas
     };
 
@@ -58,6 +61,7 @@ private:
     Player* player;
     std::array <Goomba*, 20> goombas;
     std::array <Blocks*, 70> blocks;
+    std::array <Koopa*, 70> koopas;
 
     //std::vector<Goomba*> enemies;
     //std::vector<Block*> blocks;
@@ -70,6 +74,8 @@ private:
     void createEntitymap();
     void renderBlocks() const;
     void renderGoombas() const;
+    void renderKoopas() const;
+
 
 public:
 

@@ -24,6 +24,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"imgs/supermario.png", 22, 1},
 	TextureSpec{"imgs/goomba.png", 3, 1},
 	TextureSpec{"imgs/blocks.png", 6, 1},
+	TextureSpec{"imgs/koopa.png", 4, 1},
 };
 #pragma endregion
 
@@ -101,7 +102,7 @@ void Game::createEntitymap() {
 	std::string line;
 	getline(entradaTXT, line);
 
-	int g = 0, b = 0;
+	int g = 0, b = 0, k = 0;
 	while (entradaTXT) {
 		// Usamos un stringstream para leer la línea como si fuera un flujo
 		stringstream lineStream(line);
@@ -121,6 +122,10 @@ void Game::createEntitymap() {
 		case 'B':
 			this->blocks[b] = new Blocks(this, lineStream);
 			b++;
+			break;
+		case 'K':
+			this->koopas[k] = new Koopa(this, lineStream);
+			k++;
 			break;
 		}
 
@@ -143,6 +148,11 @@ void Game::renderGoombas() const{
 	}
 }
 
+void Game::renderKoopas() const {
+	for (int i = 0; i < 1; ++i) {
+		koopas[i]->render();
+	}
+}
 #pragma endregion
 
 // DESTRUCTORA.
@@ -194,6 +204,7 @@ void Game::render() const
 	tileMap->render();
 	player->render();
 	renderGoombas();
+	renderKoopas();
 	renderBlocks();
 
 	// Muestra todo lo renderizado.
