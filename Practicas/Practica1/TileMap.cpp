@@ -72,7 +72,7 @@ void TileMap::render() {
 
 
 void TileMap::update() {
-
+	
 }
 
 bool TileMap::hit(SDL_Rect rect) {

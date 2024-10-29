@@ -119,5 +119,7 @@ public:
     int getMapOffset() { return mapOffset; }
     void setMapOffset(int e) { mapOffset = e; }
 
+
+
     ~Game();
 };

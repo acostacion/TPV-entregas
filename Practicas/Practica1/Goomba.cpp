@@ -54,6 +54,8 @@ void Goomba::update() {
     }
 	pos = pos + dir;
 
+	if()
+
 }
 
 void Goomba::hit() {
