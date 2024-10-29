@@ -142,8 +142,9 @@ void Game::renderBlocks() const{
 	}
 }
 
+
 void Game::renderGoombas() const{
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < 10; ++i) { // no he contado cuantos hay en total
 		goombas[i]->render();
 	}
 }
@@ -222,8 +223,8 @@ void Game::update()
 	goombas[0]->update();
 	player->update();
 	// Si la posición del player supera la mitad, avanza (corregir).
-	if (player->getX() > 8 && player->getMovingDer()) {
-		mapOffset += 12;
+	if (player->getX() > WIN_TILE_WIDTH/2 -1 && player->getMovingDer()) {
+		mapOffset += sumMapOffset;
 	}
 }
 

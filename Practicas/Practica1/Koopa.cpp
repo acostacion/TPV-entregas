@@ -22,6 +22,7 @@ void Koopa::render() {
 	rect.x = pos.GetX() * Game::TILE_SIDE;
 	rect.y = pos.GetY() * Game::TILE_SIDE;
 
+	// 3. Frame de la animacion
 	if (dead) {
 		anim = 2;
 	}

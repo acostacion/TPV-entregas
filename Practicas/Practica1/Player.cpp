@@ -31,6 +31,8 @@ void Player::render() {
 	rect.y = pos.GetY() * Game::TILE_SIDE;
 
 
+    // 3. Frame de la animacion
+
     if (!isGrounded) anim = 6;
     else {
         if (moving) {

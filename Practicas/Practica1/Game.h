@@ -56,12 +56,14 @@ private:
     // Lleva la coordenada x del extremo izquierdo de la vista.
     int mapOffset;
 
+    const int sumMapOffset = 12;
+
     // Objetos del juego
     TileMap* tileMap;
     Player* player;
     std::array <Goomba*, 20> goombas;
     std::array <Blocks*, 70> blocks;
-    std::array <Koopa*, 70> koopas;
+    std::array <Koopa*, 3> koopas;
 
     //std::vector<Goomba*> enemies;
     //std::vector<Block*> blocks;
