@@ -59,7 +59,6 @@ void TileMap::render() {
 				// Usa renderFrame para pintar la tesela
 				texture->renderFrame(rect, fy, fx);
 			}
-			
 		}
 	}
 }

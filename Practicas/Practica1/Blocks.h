@@ -25,11 +25,12 @@ public:
 private:
 	Game* game;
 	Texture* texturaBlock;
-	Point2D<float> pos;
-	Tipos tipo;
-	Accion action;
-	int fx;
-	bool anim;
+	Point2D<float> pos; 
+	Tipos tipo; // ladrillo, sorpresa, vacio, oculto
+	Accion action; // potenciador, moneda, nada
+	int fx; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
+	bool anim; // si tiene que animarse, seria solo el sorpresa
+	int timer;
 public:
 	Blocks(Game*, std::istream&);
 

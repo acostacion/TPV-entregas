@@ -154,6 +154,22 @@ void Game::renderKoopas() const {
 		koopas[i]->render();
 	}
 }
+
+void Game::updateKoopas() const {
+	for (int i = 0; i < 1; ++i) {
+		koopas[i]->update();
+	}
+}
+void Game::updateGoombas() const {
+	for (int i = 0; i < 1; ++i) {
+		goombas[i]->update();
+	}
+}
+void Game::updateBlocks() const {
+	for (int i = 0; i < 6; ++i) {
+		blocks[i]->update();
+	}
+}
 #pragma endregion
 
 // DESTRUCTORA.
@@ -220,8 +236,15 @@ void Game::update()
 {
 	// Actualiza los objetos del juego
 	tileMap->update();
-	goombas[0]->update();
+
+	updateGoombas();
+
 	player->update();
+
+	updateBlocks();
+
+	updateKoopas();
+
 	// Si la posición del player supera la mitad, avanza (corregir).
 	if (player->getX() > WIN_TILE_WIDTH/2 -1 && player->getMovingDer()) {
 		mapOffset += sumMapOffset;

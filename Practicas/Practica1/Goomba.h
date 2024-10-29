@@ -15,6 +15,7 @@ private:
 	Point2D<float> dir;
 	bool startMoving;
 	bool dead;
+	int timer;
 	int anim;
 
 public:
