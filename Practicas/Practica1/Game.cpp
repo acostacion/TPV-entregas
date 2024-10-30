@@ -140,19 +140,16 @@ void Game::renderBlocks() const{
 		blocks[i]->render();
 	}
 }
-
 void Game::renderGoombas() const{
 	for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
 		goombas[i]->render();
 	}
 }
-
 void Game::renderKoopas() const {
 	for (int i = 0; i < koopas.size(); ++i) {
 		koopas[i]->render();
 	}
 }
-
 void Game::updateKoopas() const {
 	for (int i = 0; i < koopas.size(); ++i) {
 		koopas[i]->update();
@@ -232,7 +229,7 @@ Texture* Game::getTexture(TextureName name) const {
 
 Game::Collision Game::checkCollision(SDL_Rect rect) {
 	
-
+	/*
 	// pregunta al hit de todas las entidades del juego, si se colisiona con alguna
 	// todos con el tilemap
 	// player -> goomba (si es por la der o iz -vida, por arriba muerte de goomba)
@@ -241,11 +238,16 @@ Game::Collision Game::checkCollision(SDL_Rect rect) {
 	// player -> blocks -> ladrillo(no avanza si es por abajo der iz), "?" se vuelve vacio, vacio nada
 	// playerSUPER -> blocks -> ladrillo(destruye), "?" se vuelve vacio
 	// 
-	// entities chocan con entities
+	// entities chocan con entities*/
 
+	// Enemigo, bloque, player.
+	Collision colision = { false, false, false };
 	
-	bool asdas = tileMap->hit(rect);
+	//  --- ENEMIGOS ---.
+	//if (blocks)
 
+
+		return colision;
 }
 
 

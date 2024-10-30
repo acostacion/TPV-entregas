@@ -8,16 +8,14 @@
 // Biblioteca SDL.
 #include <SDL.h>
 
-// Nuestras clases
+// Nuestras clases.
 #include <vector>
 #include "Texture.h"
 #include "Player.h"
-#include "TileMap.h"  // Ensure this is in place and correct
-
+#include "TileMap.h"  
 #include "Goomba.h"
 #include "Koopa.h"
 #include "Blocks.h"
-//#include "Dog.h"
 
 using uint = unsigned int;
 class TileMap; 
@@ -30,7 +28,6 @@ class Game {
 public:
     // Identificadores de las texturas
     enum TextureName {
-        // De momento nada. Aquí irán Mario, Koopa...
         BACKGROUND,
         MARIO,
         SUPERMARIO,
@@ -41,9 +38,9 @@ public:
     };
 
     struct Collision {
-        bool collisionE;
-        bool collisionS;
-        bool fromPlayer;
+        bool isEnemy;
+        bool isBlock;
+        bool isPlayer;
     };
 
 private:
@@ -68,7 +65,7 @@ private:
     TileMap* tileMap;
     Player* player;
     //std::array <Goomba*, 20> goombas;
-    //std::array <Blocks*, 50> blocks;
+    std::array <Blocks*, 50> blocks;
     //std::array <Koopa*, 3> koopas;
 
     std::vector<Goomba*> goombas;

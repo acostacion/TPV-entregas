@@ -28,7 +28,7 @@ private:
 	Point2D<float> pos; 
 	Tipos tipo; // ladrillo, sorpresa, vacio, oculto
 	Accion action; // potenciador, moneda, nada
-	int fx; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
+	int animFrame; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
 	bool anim; // si tiene que animarse, seria solo el sorpresa
 	int timer;
 public:
@@ -36,7 +36,10 @@ public:
 
 	void render();
 	void update();
-	void hit();
+	void hit(SDL_Rect* otherRect);
+
+	// Submétodos.
+	SDL_Rect createBlockRect();
 
 };
 

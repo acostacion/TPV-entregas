@@ -17,19 +17,27 @@ Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE)
 	texturaSMario = game->getTexture(Game::SUPERMARIO);
 }
 
+SDL_Rect Player::createRect(int w, int h, int x, int y) {
+    // Se crea el rect.
+    SDL_Rect rect;
+
+    // Se le da dimensiones y posición.
+    rect.w = w;
+    rect.h = h;
+    rect.x = x;
+    rect.y = y;
+
+    return rect;
+}
+
 void Player::render() {
 	
 	/*/if (!this->superMario) {*/
 
-	// 1. Se crea el rect.
-	SDL_Rect rect;
-
-	// 2. Se le da dimensiones y posici�n.
-	rect.w = texturaMario->getFrameWidth();
-	rect.h = texturaMario->getFrameHeight();
-	rect.x = pos.GetX() * Game::TILE_SIDE;
-	rect.y = pos.GetY() * Game::TILE_SIDE;
-
+    SDL_Rect renderRect = createRect(texturaMario->getFrameWidth(), // w.
+                                     texturaMario->getFrameHeight(),  // h.
+                                     pos.GetX() * Game::TILE_SIDE,  // x.
+                                     pos.GetY() * Game::TILE_SIDE); // y.
 
     // 3. Frame de la animacion
 
@@ -48,7 +56,7 @@ void Player::render() {
     
 
 	// Se renderiza.
-	texturaMario->renderFrame(rect, 0, anim, flip);
+	texturaMario->renderFrame(renderRect, 0, anim, flip);
 }
 
 // Input de teclado cambian la dir del jugador.
@@ -134,5 +142,12 @@ void Player::update() {
         pos = Point2D<float>(game->WIN_TILE_WIDTH /2, pos.GetY());
     }
 
+
+}
+
+void Player::hit(SDL_Rect* otherRect) {
+    // Creamos los rectángulos de la cabeza y los pies de mario para las colisiones.
+    SDL_Rect headRect;
+    SDL_Rect feetRect;
 
 }

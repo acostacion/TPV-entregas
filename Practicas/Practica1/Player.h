@@ -35,7 +35,7 @@ public:
 
 	void render();
 	void update();
-	void hit();
+	void hit(SDL_Rect* otherRect);
 	void handleEvent(SDL_Event);
 
 	// Getter de la posX del player.
@@ -43,6 +43,8 @@ public:
 	bool getMovingDer()const { return movingDer; }
 	Point2D<float> getDir()const { return dir; }
 
+	// Submétodos.
+	SDL_Rect createRect(int w, int h, int x, int y);
 	
 
 };

@@ -8,7 +8,7 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 	anim = false; 
 	action = Accion::nada;
 	tipo = Tipos::ladrillo;
-	fx = 0;
+	animFrame = 0;
 	timer = 3;
 
 	// Lee el tipo del txt.
@@ -18,7 +18,7 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 	case 'B': // Si es un bloque ladrillo... 
 		tipo = Tipos::ladrillo;
 		action = Accion::nada;
-		fx = 5;
+		animFrame = 5;
 		break;
 
 	case '?': // Si es un bloque "?"...
@@ -28,7 +28,7 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 
 		if ( c == 'C') action = Accion::moneda; // Caso "coin".
 		else action = Accion::potenciador; // Caso "potentiator".
-		fx = 0;
+		animFrame = 0;
 		break;
 
 		// Si es un bloque oculto...
@@ -36,35 +36,41 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 		tipo = Tipos::oculto;
 		if (c == 'C') action = Accion::moneda;
 		else action = Accion::potenciador;
-		fx = 5;
+		animFrame = 5;
 		break;
 	}
 }
 
 void Blocks::render() {
 
+	// si es el sorpresa
+	if (timer == 0) {
+		if (anim) {
+			if (animFrame == 0) animFrame = 1;
+			else if (animFrame == 1) animFrame = 2;
+			else if (animFrame == 2) animFrame = 3;
+			else if (animFrame == 3) animFrame = 0;
+		}
+	}
+
+	// Se renderiza.
+	texturaBlock->renderFrame(createBlockRect(), 0, animFrame);
+}
+
+// Submétodos.
+SDL_Rect Blocks::createBlockRect() {
+
 	// 1. Se crea el rect.
 	SDL_Rect rect;
 
 
 	// 2. Se le da dimensiones y posici�n.
-	rect.w = texturaBlock->getFrameWidth() *2;
-	rect.h = texturaBlock->getFrameHeight() *2;
+	rect.w = texturaBlock->getFrameWidth() * 2;
+	rect.h = texturaBlock->getFrameHeight() * 2;
 	rect.x = pos.GetX() * Game::TILE_SIDE - game->getMapOffset();
 	rect.y = pos.GetY() * Game::TILE_SIDE;
 
-	// si es el sorpresa
-	if (timer == 0) {
-		if (anim) {
-			if (fx == 0) fx = 1;
-			else if (fx == 1) fx = 2;
-			else if (fx == 2) fx = 3;
-			else if (fx == 3) fx = 0;
-		}
-	}
-
-	// Se renderiza.
-	texturaBlock->renderFrame(rect, 0, fx);
+	return rect;
 }
 
 
@@ -77,16 +83,25 @@ void Blocks::update() {
 	}
 }
 
-void Blocks::hit() {
-	if (tipo == Tipos::ladrillo) {
-		/*if () {
+void Blocks::hit(SDL_Rect* otherRect) {
 
-		}*/
+	// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
+	SDL_Rect blockRect = createBlockRect();
+
+	// Colisiona un rect que viene de fuera con el del bloque.
+	SDL_bool collision = SDL_HasIntersection(&blockRect, otherRect)
+
+		/*
+	if (tipo == Tipos::ladrillo) {
+		// Si mario choca con los ladrillos siendo M.
+		if()
+		// Si mario choca con los ladrillos siendo SM.
 	}
 	else if (tipo == Tipos::sorpresa) {
-
+		// Si mario choca con los sorpresa siendo M.
+		// Si mario choca con los sorpresa siendo SM.
 	}
 	else if (tipo == Tipos::vacio) {
-
-	}
+		// Si mario siendo M o SM choca con los vacios.
+	}*/
 }
