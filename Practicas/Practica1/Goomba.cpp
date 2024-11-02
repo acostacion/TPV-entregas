@@ -55,7 +55,10 @@ void Goomba::update() {
 	pos = pos + dir;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of dbb20b5 (Merge branch 'main' of https://github.com/acostacion/TPV-entregas)
 =======
 >>>>>>> parent of dbb20b5 (Merge branch 'main' of https://github.com/acostacion/TPV-entregas)
 }
