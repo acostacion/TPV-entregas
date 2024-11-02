@@ -72,6 +72,6 @@ void TileMap::render() {
 
 
 void TileMap::update() {
-	
+
 }
 
