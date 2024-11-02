@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "Vector2D.h"
+#include "Collision.h"
 
 class Game;
 class Koopa
@@ -24,7 +25,7 @@ public:
 
 	void render();
 	void update();
-	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+	Collision hit(const SDL_Rect&, bool);
 
 	// Getter de la posX del player.
 	float getX()const { return this->pos.GetX(); }

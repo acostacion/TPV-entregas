@@ -43,3 +43,7 @@ void Koopa::update() {
     }
 	pos = pos + dir;
 }
+
+Collision Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
+	return { true, true };
+}

@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "Vector2D.h"
+#include "Collision.h"
 
 class Game;
 class Player
@@ -44,7 +45,7 @@ public:
 	Point2D<float> getDir()const { return dir; }
 
 	// Submétodos.
-	SDL_Rect createRect(int w, int h, int x, int y);
+	SDL_Rect createRect(int, int, int, int);
 	
 
 };

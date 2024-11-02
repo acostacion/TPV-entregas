@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "Vector2D.h"
+#include "Collision.h"
 
 class Game;
 class Blocks
@@ -36,7 +37,7 @@ public:
 
 	void render();
 	void update();
-	void hit(SDL_Rect* otherRect);
+	Collision hit(const SDL_Rect&, bool);
 
 	// Submétodos.
 	SDL_Rect createBlockRect();

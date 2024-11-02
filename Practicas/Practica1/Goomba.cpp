@@ -63,6 +63,6 @@ void Goomba::update() {
 >>>>>>> parent of dbb20b5 (Merge branch 'main' of https://github.com/acostacion/TPV-entregas)
 }
 
-void Goomba::hit() {
-
+Collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
+	return { true, true };
 }
