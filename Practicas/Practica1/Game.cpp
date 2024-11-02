@@ -228,7 +228,7 @@ Texture* Game::getTexture(TextureName name) const {
 	return textures[name];
 }
 
-Game::Collision Game::checkCollision(SDL_Rect rect) {
+Collision checkCollision(const SDL_Rect& rect, bool fromPlayer) {
 	
 	/*
 	// pregunta al hit de todas las entidades del juego, si se colisiona con alguna
@@ -239,7 +239,7 @@ Game::Collision Game::checkCollision(SDL_Rect rect) {
 	// player -> blocks -> ladrillo(no avanza si es por abajo der iz), "?" se vuelve vacio, vacio nada
 	// playerSUPER -> blocks -> ladrillo(destruye), "?" se vuelve vacio
 	// 
-	// entities chocan con entities*/
+	// entities chocan con entities
 
 	// Enemigo, bloque, player.
 	Collision colision = { false, false, false };
@@ -252,7 +252,8 @@ Game::Collision Game::checkCollision(SDL_Rect rect) {
 	if(SDL_HasIntersection(playerHead, )
 
 
-		return colision;
+		return colision;*/
+	return { true, true };
 }
 
 

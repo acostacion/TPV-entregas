@@ -57,6 +57,6 @@ void Goomba::update() {
 
 }
 
-void Goomba::hit() {
-
+Collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
+	return { true, true };
 }

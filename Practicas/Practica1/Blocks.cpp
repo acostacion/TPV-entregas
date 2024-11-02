@@ -83,9 +83,9 @@ void Blocks::update() {
 	}
 }
 
-void Blocks::hit(SDL_Rect* otherRect) {
+Collision Blocks::hit(const SDL_Rect& rect, bool fromPlayer) {
 
-	// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
+	/*// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
 	SDL_Rect blockRect = createBlockRect();
 
 	// Colisiona un rect que viene de fuera con el del bloque.
@@ -104,4 +104,5 @@ void Blocks::hit(SDL_Rect* otherRect) {
 	else if (tipo == Tipos::vacio) {
 		// Si mario siendo M o SM choca con los vacios.
 	}*/
+	return { true, true };
 }

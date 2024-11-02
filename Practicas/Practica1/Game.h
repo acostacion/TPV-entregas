@@ -40,28 +40,19 @@ public:
     };
 
 private:
-    // Ventana de la SDL (se destruirá en el destructor)
-    SDL_Window* window = nullptr;
-
-    // Renderizador de la SDL (para dibujar)
-    SDL_Renderer* renderer = nullptr;
-
-    // Array con todas las texturas del juego
-    std::array<Texture*, NUM_TEXTURES> textures;
-
-    // Interruptor para terminar el juego
-    bool seguir;
-
-    // Lleva la coordenada x del extremo izquierdo de la vista.
-    int mapOffset;
-
+    
+    SDL_Window* window = nullptr; // Ventana de la SDL (se destruirá en el destructor)
+    SDL_Renderer* renderer = nullptr; // Renderizador de la SDL (para dibujar)
+    std::array<Texture*, NUM_TEXTURES> textures; // Array con todas las texturas del juego
+    bool seguir; // Interruptor para terminar el juego
+    int mapOffset; // Lleva la coordenada x del extremo izquierdo de la vista.
     const int sumMapOffset = 12;
 
     // Objetos del juego
     TileMap* tileMap;
     Player* player;
     //std::array <Goomba*, 20> goombas;
-    std::array <Blocks*, 50> blocks;
+    //std::array <Blocks*, 50> blocks;
     //std::array <Koopa*, 3> koopas;
 
     std::vector<Goomba*> goombas;
@@ -91,7 +82,7 @@ public:
     void render() const;
     void handleEvents();
 
-    Collision checkCollision(const SDL_Rect, bool);
+    Collision checkCollision(const SDL_Rect&, bool);
 
     Texture* getTexture(TextureName) const;
     //void LoadMap();

@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClInclude Include="..\Blocks.h" />
     <ClInclude Include="..\checkML.h" />
+    <ClInclude Include="..\Collision.h" />
     <ClInclude Include="..\Game.h" />
     <ClInclude Include="..\Goomba.h" />
     <ClInclude Include="..\Koopa.h" />
