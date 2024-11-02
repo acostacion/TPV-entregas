@@ -53,14 +53,6 @@ void Goomba::update() {
 		dir = Point2D<float>(-MOVE_SPEED, 0);
     }
 	pos = pos + dir;
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of dbb20b5 (Merge branch 'main' of https://github.com/acostacion/TPV-entregas)
-=======
->>>>>>> parent of dbb20b5 (Merge branch 'main' of https://github.com/acostacion/TPV-entregas)
 }
 
 Collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {

@@ -110,6 +110,8 @@ void Player::update() {
         }
     }
 
+    pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
+
     if (pos.GetY() >= Game::WIN_TILE_HEIGHT - 3) { // por ahora
         pos = Point2D<float>(pos.GetX(), Game::WIN_TILE_HEIGHT - 3);
         isGrounded = true;
@@ -128,7 +130,7 @@ void Player::update() {
     
    
 
-    pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
+   
 
     // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
 
