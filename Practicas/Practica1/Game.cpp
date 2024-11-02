@@ -243,13 +243,9 @@ Game::Collision Game::checkCollision(SDL_Rect rect) {
 
 	// Enemigo, bloque, player.
 	Collision colision = { false, false, false };
-
-	SDL_Rect playerHead = player->hit(true); // cuadrado de cabeza del player.
-	SDL_Rect playerFeet = player->hit(false); // cuadrado de pies del player.
 	
-	//  ---PLAYER---.
-	// Si colisiona la cabeza del player con bloque...
-	if(SDL_HasIntersection(playerHead, )
+	//  --- ENEMIGOS ---.
+	//if (blocks)
 
 
 		return colision;

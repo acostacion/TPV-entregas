@@ -34,11 +34,10 @@ void Player::render() {
 	
 	/*/if (!this->superMario) {*/
 
-    SDL_Rect renderRect = 
-        createRect(texturaMario->getFrameWidth(), // w.
-        texturaMario->getFrameHeight(),  // h.
-        pos.GetX() * Game::TILE_SIDE,  // x.
-        pos.GetY() * Game::TILE_SIDE); // y.
+    SDL_Rect renderRect = createRect(texturaMario->getFrameWidth(), // w.
+                                     texturaMario->getFrameHeight(),  // h.
+                                     pos.GetX() * Game::TILE_SIDE,  // x.
+                                     pos.GetY() * Game::TILE_SIDE); // y.
 
     // 3. Frame de la animacion
 
@@ -146,28 +145,9 @@ void Player::update() {
 
 }
 
-SDL_Rect Player::hit(bool onHead) {
+void Player::hit(SDL_Rect* otherRect) {
     // Creamos los rectángulos de la cabeza y los pies de mario para las colisiones.
-    SDL_Rect headRect = 
-        createRect(texturaMario->getFrameWidth(), // w.
-        texturaMario->getFrameHeight() / 4, // h/4 para que aparezca en la cabeza.
-        pos.GetX() * Game::TILE_SIDE, // x.
-        pos.GetY() * Game::TILE_SIDE); // y.
+    SDL_Rect headRect;
+    SDL_Rect feetRect;
 
-    SDL_Rect feetRect =
-        createRect(texturaMario->getFrameWidth(), //w.
-            texturaMario->getFrameHeight() / 4, // h/4.
-            pos.GetX() * Game::TILE_SIDE, // x.
-            pos.GetY() * Game::TILE_SIDE); // y * 4 para que se ponga en los pies.
-
-    // onHead (false) -> colisiona con los pies.
-    // onHead (true) -> colisiona con la cabeza.
-    onHead = true;
-
-    SDL_Rect rect;
-
-    if (onHead) rect = headRect;
-    else rect = feetRect;
-
-    return rect;       
 }

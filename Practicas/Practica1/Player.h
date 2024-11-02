@@ -35,7 +35,7 @@ public:
 
 	void render();
 	void update();
-	SDL_Rect hit(bool onHead);
+	void hit(SDL_Rect* otherRect);
 	void handleEvent(SDL_Event);
 
 	// Getter de la posX del player.
