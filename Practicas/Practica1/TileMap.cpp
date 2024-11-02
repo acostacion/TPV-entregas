@@ -1,5 +1,6 @@
 #include "TileMap.h"
 #include "SDL_rect.h"
+#
 TileMap::TileMap(){
 	// Constructora default -> todo a nullptr.
 	texture = nullptr;
@@ -70,8 +71,28 @@ void TileMap::render() {
 	}
 }
 
-
 void TileMap::update() {
 
+}
+
+Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
+{
+	constexpr int OBSTACLE_THRESHOLD = 4; // constante
+
+	// Celda del nivel que contiene la esquina superior izquierda del rectángulo
+	int row0 = rect.y / Game::TILE_SIDE;
+	int col0 = rect.x / Game::TILE_SIDE;
+
+	// Celda del nivel que contiene la esquina inferior derecha del rectángulo
+	int row1 = (rect.y + rect.h) / Game::TILE_SIDE;
+	int col1 = (rect.x + rect.w) / Game::TILE_SIDE;
+
+	for (int row = row0; row <= row1; ++row)
+		for (int col = col0; col <= col1; ++col)
+			if (map[row][col] % texture->getNumColumns() < OBSTACLE_THRESHOLD)
+			{
+				return { true, false };
+			}
+	return { false, false };
 }
 

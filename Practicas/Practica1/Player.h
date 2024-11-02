@@ -23,6 +23,9 @@ private:
 	int anim; // indice del frame de la animacion
 	SDL_RendererFlip flip; // para que se gire horizontalmente la animacion
 
+	// Submétodos.
+	SDL_Rect createRect(int, int, int, int);
+
 public:
 	Player(Game*, std::istream&);
 
@@ -44,8 +47,7 @@ public:
 	bool getMovingDer()const { return movingDer; }
 	Point2D<float> getDir()const { return dir; }
 
-	// Submétodos.
-	SDL_Rect createRect(int, int, int, int);
+	
 	
 
 };

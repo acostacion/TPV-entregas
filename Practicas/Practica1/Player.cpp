@@ -127,14 +127,7 @@ void Player::update() {
             dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
         }
     }
-    
-   
-
-   
-
     // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
-
-
 
     if (pos.GetX() < 0) { // no se vaya por la izquierda
         pos = Point2D<float>(0, pos.GetY()); 
@@ -148,8 +141,5 @@ void Player::update() {
 }
 
 void Player::hit(SDL_Rect* otherRect) {
-    // Creamos los rectángulos de la cabeza y los pies de mario para las colisiones.
-    SDL_Rect headRect;
-    SDL_Rect feetRect;
-
+   
 }

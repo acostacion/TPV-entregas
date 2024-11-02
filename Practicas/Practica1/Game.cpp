@@ -228,8 +228,10 @@ Texture* Game::getTexture(TextureName name) const {
 	return textures[name];
 }
 
-Collision checkCollision(const SDL_Rect& rect, bool fromPlayer) {
-	
+Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
+
+	// Itera sobre los objeto del juego llamando a sus métodos hit. Si alguno devuelve que ha habido colisión, interrumpe la búsqueda y devuelve ese resultado.
+	Collision col = { false, false };
 	/*
 	// pregunta al hit de todas las entidades del juego, si se colisiona con alguna
 	// todos con el tilemap
@@ -249,7 +251,20 @@ Collision checkCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 
 		return colision;*/
-	return { true, true };
+	col = tileMap->hit(rect, fromPlayer);
+
+
+	checkEnemyCollision(rect, fromPlayer);
+	checkPlayerCollision(rect, fromPlayer);
+
+	return col;
+}
+
+bool Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
+	
+
+
+
 }
 
 

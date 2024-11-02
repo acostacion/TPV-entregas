@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <fstream>
 #include <iostream>
+#include "Collision.h"
 
 using uint = unsigned int;
 
@@ -25,9 +26,6 @@ public:
 	TileMap(std::istream&, Game*); // Constructora desde flujo de entrada y referencia al juego.
 	void render(); 
 	void update();
-	bool hit(SDL_Rect);
-
-
-
+	Collision hit(const SDL_Rect&, bool);
 };
 

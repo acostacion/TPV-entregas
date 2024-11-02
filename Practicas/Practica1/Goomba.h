@@ -18,6 +18,11 @@ private:
 	bool dead;
 	int timer;
 	int anim;
+	SDL_Rect collisionRect;
+	Collision collisionResult;
+
+	// Submétodos.
+	SDL_Rect createRect(int, int, int, int);
 
 public:
 	Goomba(Game*, std::istream&);
@@ -33,6 +38,7 @@ public:
 	float getX()const { return this->pos.GetX(); }
 	bool getMoving()const { return startMoving; }
 	Point2D<float> getDir()const { return dir; }
+
 
 };
 

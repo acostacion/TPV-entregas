@@ -71,6 +71,10 @@ private:
     void updateKoopas() const;
     void updateGoombas() const;
     void updateBlocks() const;
+    
+    // Colisiones.
+    bool checkPlayerCollision(const SDL_Rect&, bool);
+    bool checkEnemyCollision(const SDL_Rect&, bool);
 
 
 public:
