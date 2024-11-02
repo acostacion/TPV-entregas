@@ -16,6 +16,8 @@
 #include "Goomba.h"
 #include "Koopa.h"
 #include "Blocks.h"
+#include "Collision.h"
+
 
 using uint = unsigned int;
 class TileMap; 
@@ -35,12 +37,6 @@ public:
         BLOCKS,
         KOOPA,
         NUM_TEXTURES,  // Truco C++: número de texturas definidas
-    };
-
-    struct Collision {
-        bool isEnemy;
-        bool isBlock;
-        bool isPlayer;
     };
 
 private:
@@ -95,7 +91,7 @@ public:
     void render() const;
     void handleEvents();
 
-    Collision checkCollision(SDL_Rect);
+    Collision checkCollision(const SDL_Rect, bool);
 
     Texture* getTexture(TextureName) const;
     //void LoadMap();

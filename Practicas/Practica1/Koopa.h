@@ -24,7 +24,7 @@ public:
 
 	void render();
 	void update();
-	void hit();
+	Collision hit(const SDL_Rect& rect, bool fromPlayer);
 
 	// Getter de la posX del player.
 	float getX()const { return this->pos.GetX(); }
