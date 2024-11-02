@@ -17,8 +17,7 @@ private:
 	std::vector<std::vector<int>> map; // Tilemap.
 	Texture* texture; // Conjunto de patrones (textura con tiles).
 	Game* game; // Puntero a instancia de game para acceder a sus cosas.
-	std::vector<SDL_Rect> collider;
-
+	
 public:
 	static constexpr uint TILE_MAP = 32;
 
@@ -26,6 +25,6 @@ public:
 	TileMap(std::istream&, Game*); // Constructora desde flujo de entrada y referencia al juego.
 	void render(); 
 	void update();
-	Collision hit(const SDL_Rect&, bool);
+	Collision::collision hit(const SDL_Rect&, bool);
 };
 

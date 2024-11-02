@@ -1,12 +1,12 @@
 #include "Goomba.h"
 
-Goomba::Goomba(Game* game, std::istream& in) : game(game)
+Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	dir = Point2D<float>(0,0);
-    startMoving = true;
-	dead = false;
+	isGrounded = true;
+	startMoving = false;
 	timer = 3;
 	anim = 0;
     texturaGoomba = game->getTexture(Game::GOOMBA);
@@ -55,6 +55,22 @@ SDL_Rect Goomba::createRect(int w, int h, int x, int y) {
 
 
 void Goomba::update() {
+
+	if (!isGrounded) {
+		dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
+		if (dir.GetY() > MAX_FALL_SPEED) {
+			dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
+		}
+	}
+
+	// distancia del player para el start moving
+	Point2D<float> playerPos = game->getPlayerPos();
+	Point2D<float> dis = playerPos - pos;
+	if (dis.GetX() >= 10.0) {
+		startMoving = true;
+	}
+
+
 	if (timer >= 0) {
 		timer--;
 	}
@@ -67,11 +83,45 @@ void Goomba::update() {
     }
 	pos = pos + dir;
 
+	// segun la dir hay que cambiar la pos del collisionRect
+
+
 	collisionResult = game->checkCollision(collisionRect, false); // TILEMAP.
-	
+
+	hit(collisionResult.getRectInter(), collisionResult.getDamages());
+
+
+
+
 }
 
-Collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
+void Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 	// TILEMAP.
-	if (collisionResult = {true, false, })
+	if (!fromPlayer) {
+		if (rect.w >= rect.h){
+			if (rect.y < collisionRect.y) {
+				isGrounded = true;
+			}
+		}
+		else if(rect.h > rect.x) {
+			if (dir.GetX() == MOVE_SPEED) {
+				dir = Point2D<float>(-MOVE_SPEED, dir.GetY());
+			}
+			else if(dir.GetX() == -MOVE_SPEED){
+				dir = Point2D<float>(MOVE_SPEED, dir.GetY());
+			}
+		}
+		else {
+			isGrounded = true;
+		}
+	}
+	else {
+		if (rect.w >= rect.h) {
+			// elimina goomba
+			delete this;
+		}
+	}
+
+
+
 }

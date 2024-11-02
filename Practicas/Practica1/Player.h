@@ -44,6 +44,7 @@ public:
 
 	// Getter de la posX del player.
 	float getX()const { return this->pos.GetX(); }
+	Point2D<float> getPos() const { return this->pos; }
 	bool getMovingDer()const { return movingDer; }
 	Point2D<float> getDir()const { return dir; }
 

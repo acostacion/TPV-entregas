@@ -29,7 +29,6 @@ TileMap::TileMap(std::istream& entrada, Game* _game) {
 			rect.h = Game::TILE_SIDE;
 			rect.x = x;
 			rect.y = y;
-			collider.push_back(rect);
 			// Get() lee el siguiente char (",").
 			x++;
 			cAux = entrada.get();
@@ -75,8 +74,10 @@ void TileMap::update() {
 
 }
 
-Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
+Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 {
+	SDL_Rect* result = new SDL_Rect();
+
 	constexpr int OBSTACLE_THRESHOLD = 4; // constante
 
 	// Celda del nivel que contiene la esquina superior izquierda del rectángulo
@@ -91,8 +92,17 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 		for (int col = col0; col <= col1; ++col)
 			if (map[row][col] % texture->getNumColumns() < OBSTACLE_THRESHOLD)
 			{
-				return { true, false };
+				SDL_Rect rectTile;
+				rectTile.w = Game::TILE_SIDE;
+				rectTile.h = Game::TILE_SIDE;
+				rectTile.x = row * Game::TILE_SIDE;
+				rectTile.y = col * Game::TILE_SIDE;
+				SDL_IntersectRect(&rect , &rectTile , result);
+
+				return { true, false, *result };
 			}
-	return { false, false };
+
+
+	return { false, false, *result };
 }
 

@@ -73,9 +73,7 @@ private:
     void updateBlocks() const;
     
     // Colisiones.
-    bool checkPlayerCollision(const SDL_Rect&, bool);
-    bool checkEnemyCollision(const SDL_Rect&, bool);
-
+   
 
 public:
 
@@ -86,7 +84,9 @@ public:
     void render() const;
     void handleEvents();
 
-    Collision checkCollision(const SDL_Rect&, bool);
+    Collision::collision checkCollision(const SDL_Rect&, bool);
+    Collision::collision checkPlayerCollision(const SDL_Rect&, bool);
+    Collision::collision checkEnemyCollision(const SDL_Rect&, bool);
 
     Texture* getTexture(TextureName) const;
     //void LoadMap();
@@ -106,6 +106,8 @@ public:
 
     int getMapOffset() { return mapOffset; }
     void setMapOffset(int e) { mapOffset = e; }
+
+    Point2D<float> getPlayerPos() { return player->getPos(); }
 
     ~Game();
 };
