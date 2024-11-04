@@ -8,7 +8,7 @@ public:
 
 		operator bool() const { return collides; }
 	    bool getDamages() const { return damages; }
-		SDL_Rect getRectInter() const { return intersectRect; }
+		SDL_Rect getRectInter() { return intersectRect; }
 	};
 };
 

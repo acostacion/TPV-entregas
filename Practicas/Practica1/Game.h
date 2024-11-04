@@ -107,7 +107,7 @@ public:
     int getMapOffset() { return mapOffset; }
     void setMapOffset(int e) { mapOffset = e; }
 
-    Point2D<float> getPlayerPos() { return player->getPos(); }
+    //Player getPlayerPos() { return player; }
 
     ~Game();
 };

@@ -99,7 +99,7 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 				rectTile.y = col * Game::TILE_SIDE;
 				SDL_IntersectRect(&rect , &rectTile , result);
 
-				return { true, false, *result };
+				return { true, false, *result};
 			}
 
 

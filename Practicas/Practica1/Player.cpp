@@ -15,6 +15,12 @@ Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE)
 
 	texturaMario = game->getTexture(Game::MARIO);
 	texturaSMario = game->getTexture(Game::SUPERMARIO);
+
+    collision.h = texturaMario->getFrameHeight();
+    collision.w = texturaMario->getFrameWidth();
+    collision.x = pos.GetX();
+    collision.y = pos.GetY();
+
 }
 
 SDL_Rect Player::createRect(int w, int h, int x, int y) {
@@ -112,11 +118,33 @@ void Player::update() {
 
     pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
 
-    if (pos.GetY() >= Game::WIN_TILE_HEIGHT - 3) { // por ahora
-        pos = Point2D<float>(pos.GetX(), Game::WIN_TILE_HEIGHT - 3);
-        isGrounded = true;
-        dir = { dir.GetX(), 0 };
+    if (dir.GetX() > 0) { // si va a la derecha
+        collision.x = pos.GetX() + COLLISION_OFFSET;
     }
+    else { // si va a la izquierda
+        collision.x = pos.GetX() - COLLISION_OFFSET;
+    }
+
+
+    if (dir.GetY() > 0) {// si va hacia arriba
+        collision.y = pos.GetY() - COLLISION_OFFSET;
+
+    }
+    else {// si va hacia abajo
+        collision.y = pos.GetY() + COLLISION_OFFSET;
+    }
+
+
+    collisionRes = game->checkCollision(collision, true);
+    if (collisionRes.collides) {
+        hit(collisionRes.intersectRect);
+    }
+
+    //if (pos.GetY() >= Game::WIN_TILE_HEIGHT - 3) { // por ahora
+    //    pos = Point2D<float>(pos.GetX(), Game::WIN_TILE_HEIGHT - 3);
+    //    isGrounded = true;
+    //    dir = { dir.GetX(), 0 };
+    //}
 
     // patinar
     if (!moving) {
@@ -140,6 +168,16 @@ void Player::update() {
 
 }
 
-void Player::hit(SDL_Rect* otherRect) {
+Collision::collision Player::hit(const SDL_Rect otherRect) {
+    Collision::collision resultadoFinal ;
+    SDL_Rect result = createRect(0, 0, 0, 0);
    
+    SDL_IntersectRect(&collisionRes.intersectRect, &collision, &result);
+    SDL_bool haColisionado= SDL_HasIntersection(&collisionRes.intersectRect, &collision);
+    if (haColisionado) {
+
+    }
+
+
+    return resultadoFinal;
 }

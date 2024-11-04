@@ -64,7 +64,7 @@ void Goomba::update() {
 	}
 
 	// distancia del player para el start moving
-	Point2D<float> playerPos = game->getPlayerPos();
+	Point2D<float> playerPos ;
 	Point2D<float> dis = playerPos - pos;
 	if (dis.GetX() >= 10.0) {
 		startMoving = true;
