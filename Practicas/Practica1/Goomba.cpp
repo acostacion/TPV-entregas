@@ -1,6 +1,6 @@
 #include "Goomba.h"
 
-Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false)
+Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false), renderer(game->getRender())
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
@@ -38,6 +38,16 @@ void Goomba::render() {
 
 	// Se renderiza.
     texturaGoomba->renderFrame(rect, 0, anim);
+
+
+
+	if (Game::DEBUG) {
+		Point2D<float> nectPos = pos + dir * MOVE_SPEED;
+		SDL_Rect rect2 = collider;
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
+		SDL_RenderDrawRect(renderer, &rect2);
+		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+	}
 }
 
 SDL_Rect Goomba::createRect(int w, int h, int x, int y) {

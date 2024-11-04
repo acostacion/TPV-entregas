@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <algorithm>
 
-Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE)
+Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE), renderer(game->getRender())
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
@@ -16,10 +16,10 @@ Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE)
 	texturaMario = game->getTexture(Game::MARIO);
 	texturaSMario = game->getTexture(Game::SUPERMARIO);
 
-    collision.h = texturaMario->getFrameHeight();
-    collision.w = texturaMario->getFrameWidth();
-    collision.x = pos.GetX();
-    collision.y = pos.GetY();
+    collider.h = texturaMario->getFrameHeight() * 2;
+    collider.w = texturaMario->getFrameWidth() * 2;
+    collider.x = pos.GetX();
+    collider.y = pos.GetY();
 
 }
 
@@ -63,6 +63,16 @@ void Player::render() {
 
 	// Se renderiza.
 	texturaMario->renderFrame(renderRect, 0, anim, flip);
+
+    if (Game::DEBUG){
+        Point2D<float> nectPos = pos + dir * MOVE_SPEED;
+        SDL_Rect rect2 = collider;
+        SDL_SetRenderDrawColor(renderer,255,0,0,128 );
+        SDL_RenderDrawRect(renderer, &rect2);
+        SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+    }
+
+
 }
 
 // Input de teclado cambian la dir del jugador.
@@ -116,26 +126,24 @@ void Player::update() {
     }
 
     if (dir.GetX() > 0) { // si va a la derecha
-        collision.x = pos.GetX() + COLLISION_OFFSET;
+        collider.x = pos.GetX() + COLLISION_OFFSET;
     }
     else { // si va a la izquierda
-        collision.x = pos.GetX() - COLLISION_OFFSET;
+        collider.x = pos.GetX() - COLLISION_OFFSET;
     }
 
 
     if (dir.GetY() > 0) {// si va hacia arriba
-        collision.y = pos.GetY() - COLLISION_OFFSET;
+        collider.y = pos.GetY() - COLLISION_OFFSET;
 
     }
     else {// si va hacia abajo
-        collision.y = pos.GetY() + COLLISION_OFFSET;
+        collider.y = pos.GetY() + COLLISION_OFFSET;
     }
-    collides = game->checkCollision(collision, true);
+    collides = game->checkCollision(collider, true);
 
     if (collides) {
-        if () {
-
-        }
+        
         pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
 
         if (!moving) {
@@ -162,6 +170,7 @@ void Player::update() {
         
     }
 
+    collides = game->checkCollision(collider, true);
 
 }
 
@@ -169,8 +178,8 @@ Collision::collision Player::hit(const SDL_Rect otherRect) {
     Collision::collision resultadoFinal ;
     SDL_Rect result = createRect(0, 0, 0, 0);
    
-    SDL_IntersectRect(&collisionRes.intersectRect, &collision, &result);
-    SDL_bool haColisionado= SDL_HasIntersection(&collisionRes.intersectRect, &collision);
+    SDL_IntersectRect(&collisionRes.intersectRect, &collider, &result);
+    SDL_bool haColisionado= SDL_HasIntersection(&collisionRes.intersectRect, &collider);
     if (haColisionado) {
 
     }

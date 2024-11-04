@@ -78,15 +78,15 @@ private:
 public:
 
     Game();
-    void loadObjectMap(std::ifstream&);
+    //void loadObjectMap(std::ifstream&);
     void run();
     void update();
     void render() const;
     void handleEvents();
 
     Collision::collision checkCollision(const SDL_Rect&, bool);
-    Collision::collision checkPlayerCollision(const SDL_Rect&, bool);
-    Collision::collision checkEnemyCollision(const SDL_Rect&, bool);
+    //Collision::collision checkPlayerCollision(const SDL_Rect&, bool);
+    //Collision::collision checkEnemyCollision(const SDL_Rect&, bool);
 
     Texture* getTexture(TextureName) const;
     //void LoadMap();
@@ -99,13 +99,19 @@ public:
     static constexpr int WIN_WIDTH = TILE_SIDE* WIN_TILE_WIDTH;
     static constexpr int WIN_HEIGHT = TILE_SIDE * WIN_TILE_HEIGHT;
     static constexpr int FRAME_RATE = 50;
+    static constexpr bool DEBUG = true;
 
     Uint64 NOW = SDL_GetPerformanceCounter();
     Uint64 LAST = NOW;
     double deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
 
+    inline
     int getMapOffset() { return mapOffset; }
+    inline
     void setMapOffset(int e) { mapOffset = e; }
+
+    inline
+        SDL_Renderer* getRender() { return renderer; }
 
     //Player getPlayerPos() { return player; }
 

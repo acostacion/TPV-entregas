@@ -12,6 +12,8 @@ class Goomba
 {
 private:
 	Game* game;
+	SDL_Renderer* renderer;
+	SDL_Rect collider;
 	Texture* texturaGoomba;
 	Point2D<float> pos;
 	Point2D<float> dir;

@@ -11,11 +11,12 @@ class Player
 {
 private:
 	Game* game;
+	SDL_Renderer* renderer;
 	Texture* texturaMario;
 	Texture* texturaSMario;
 	Point2D<float> dir;
 	Point2D<float> pos;
-	SDL_Rect collision;
+	SDL_Rect collider;
 	Collision::collision collisionRes;
 	int life;
 	bool collides;
