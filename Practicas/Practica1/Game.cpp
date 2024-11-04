@@ -231,7 +231,7 @@ Texture* Game::getTexture(TextureName name) const {
 Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
 	Collision::collision col = tileMap->hit(rect, fromPlayer);
 
-	if (fromPlayer) { // si es el player
+	if (!fromPlayer) { // si es el player
 		for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
 			//goombas[i]->hit();
 		}

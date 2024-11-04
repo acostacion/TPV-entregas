@@ -19,7 +19,6 @@ private:
 	SDL_Rect collider;
 	Collision::collision collisionRes;
 	int life;
-	bool collides;
 	bool superMario;
 	bool isGrounded; // si esta en el suelo
 	bool movingDer; // si se esta moviendo a la derecha, se usa en el game para saber si mueve el mapoffset y que no se mueva infinitamente si esta en ese borde

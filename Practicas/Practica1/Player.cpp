@@ -122,14 +122,27 @@ void Player::update() {
     if (dir.GetY() > MAX_FALL_SPEED) 
         dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
     collider.y = pos.GetY() + dir.GetY();
-    collides = game->checkCollision(collider, true); // con el suelo
+    collisionRes = game->checkCollision(collider, true); // con el suelo
 
-    if (!collides) {
+    if (!collisionRes) {
 
         pos = pos + dir;
     }
     else {
-        Point2D<float> n{ dir.GetX() + pos.GetX() ,  pos.GetY() };
+        Point2D<float> n;
+        if (collisionRes.intersectRect.w > collisionRes.intersectRect.h){
+            if (dir.GetX() < 0) {
+                n = { pos.GetX() ,  pos.GetY() };
+            }
+            else {
+                n = { pos.GetX() ,  pos.GetY() };
+            }
+            n = { dir.GetX() + pos.GetX() ,  pos.GetY() };
+        }
+        else {
+           n= { dir.GetX() + pos.GetX(), pos.GetY()};
+        }
+       
         pos = n;
     }
 
@@ -140,52 +153,35 @@ void Player::update() {
         collider.x = pos.GetX() - dir.GetX();
     }
 
-    collides = game->checkCollision(collider, true); // hacia los lados
+    collisionRes = game->checkCollision(collider, true); // hacia los lados
+
+    //if (!collisionRes) {
+    //    
+    //    pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
+
+    //    if (!moving) {
+    //        if (std::abs(dir.GetX()) < DECELERATION) {
+    //            dir = Point2D<float>(0, dir.GetY());
+    //        }
+    //        else {
+    //            dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
+    //        }
+    //    }
+    //    // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
+
+    //    if (pos.GetX() < 0) { // no se vaya por la izquierda
+    //        pos = Point2D<float>(0, pos.GetY());
+    //    }
+    //    else if (pos.GetX() > Game::WIN_TILE_WIDTH / 2) // no pase de la mitad
+    //    {
+    //        pos = Point2D<float>(game->WIN_TILE_WIDTH / 2, pos.GetY());
+    //    }
 
 
-
-
-
-   
-
-
-
-
-
-
-
-
-
-
-    collides = game->checkCollision(collider, true);
-
-    if (collides) {
-        
-        pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
-
-        if (!moving) {
-            if (std::abs(dir.GetX()) < DECELERATION) {
-                dir = Point2D<float>(0, dir.GetY());
-            }
-            else {
-                dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
-            }
-        }
-        // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
-
-        if (pos.GetX() < 0) { // no se vaya por la izquierda
-            pos = Point2D<float>(0, pos.GetY());
-        }
-        else if (pos.GetX() > Game::WIN_TILE_WIDTH / 2) // no pase de la mitad
-        {
-            pos = Point2D<float>(game->WIN_TILE_WIDTH / 2, pos.GetY());
-        }
-
-
-    }
-    else {
-        
-    }
+    //}
+    //else {
+    //    
+    //}
 
 
 }
