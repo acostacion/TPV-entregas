@@ -88,7 +88,7 @@ void Goomba::update() {
 
 	collisionResult = game->checkCollision(collisionRect, false); // TILEMAP.
 
-	hit(collisionResult.getRectInter(), collisionResult.getDamages());
+	hit(collisionResult.intersectRect, collisionResult.damages);
 
 
 

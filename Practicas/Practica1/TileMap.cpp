@@ -76,7 +76,9 @@ void TileMap::update() {
 
 Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 {
-	SDL_Rect* result = new SDL_Rect();
+	Collision::collision colres;
+	colres.collides = false;
+	colres.damages = false;
 
 	constexpr int OBSTACLE_THRESHOLD = 4; // constante
 
@@ -97,12 +99,13 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 				rectTile.h = Game::TILE_SIDE;
 				rectTile.x = row * Game::TILE_SIDE;
 				rectTile.y = col * Game::TILE_SIDE;
-				SDL_IntersectRect(&rect , &rectTile , result);
+				
+				colres.collides = true;
 
-				return { true, false, *result};
+				return colres;
 			}
 
 
-	return { false, false, *result };
+	return colres;
 }
 

@@ -108,15 +108,12 @@ void Player::handleEvent(SDL_Event evento) {
 
 void Player::update() {
 
-    //gravedad
     if (!isGrounded) {
         dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
         if (dir.GetY() > MAX_FALL_SPEED) {
             dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
         }
     }
-
-    pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
 
     if (dir.GetX() > 0) { // si va a la derecha
         collision.x = pos.GetX() + COLLISION_OFFSET;
@@ -133,36 +130,36 @@ void Player::update() {
     else {// si va hacia abajo
         collision.y = pos.GetY() + COLLISION_OFFSET;
     }
+    collides = game->checkCollision(collision, true);
 
+    if (collides) {
+        if () {
 
-    collisionRes = game->checkCollision(collision, true);
-    if (collisionRes.collides) {
-        hit(collisionRes.intersectRect);
-    }
-
-    //if (pos.GetY() >= Game::WIN_TILE_HEIGHT - 3) { // por ahora
-    //    pos = Point2D<float>(pos.GetX(), Game::WIN_TILE_HEIGHT - 3);
-    //    isGrounded = true;
-    //    dir = { dir.GetX(), 0 };
-    //}
-
-    // patinar
-    if (!moving) {
-        if (std::abs(dir.GetX()) < DECELERATION) {
-            dir = Point2D<float>(0, dir.GetY());
         }
-        else {
-            dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
-        }
-    }
-    // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
+        pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
 
-    if (pos.GetX() < 0) { // no se vaya por la izquierda
-        pos = Point2D<float>(0, pos.GetY()); 
-    } 
-    else if (pos.GetX() > Game::WIN_TILE_WIDTH/2) // no pase de la mitad
-    {
-        pos = Point2D<float>(game->WIN_TILE_WIDTH /2, pos.GetY());
+        if (!moving) {
+            if (std::abs(dir.GetX()) < DECELERATION) {
+                dir = Point2D<float>(0, dir.GetY());
+            }
+            else {
+                dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
+            }
+        }
+        // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
+
+        if (pos.GetX() < 0) { // no se vaya por la izquierda
+            pos = Point2D<float>(0, pos.GetY());
+        }
+        else if (pos.GetX() > Game::WIN_TILE_WIDTH / 2) // no pase de la mitad
+        {
+            pos = Point2D<float>(game->WIN_TILE_WIDTH / 2, pos.GetY());
+        }
+
+
+    }
+    else {
+        
     }
 
 
