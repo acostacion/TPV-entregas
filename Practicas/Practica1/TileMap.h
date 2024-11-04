@@ -26,5 +26,6 @@ public:
 	void render(); 
 	void update();
 	Collision::collision hit(const SDL_Rect&, bool);
+	SDL_Rect createRect(int w, int h, int x, int y);
 };
 

@@ -23,7 +23,7 @@ Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE), 
 
 }
 
-SDL_Rect Player::createRect(int w, int h, int x, int y) {
+SDL_Rect Player::createRect(float w, float h, float x, float y) {
     // Se crea el rect.
     SDL_Rect rect;
 
@@ -65,8 +65,8 @@ void Player::render() {
 	texturaMario->renderFrame(renderRect, 0, anim, flip);
 
     if (Game::DEBUG){
-        Point2D<float> nectPos = pos + dir * MOVE_SPEED;
-        SDL_Rect rect2 = collider;
+        Point2D<float> nextPos = pos + dir * MOVE_SPEED;
+        SDL_Rect rect2 = createRect( texturaMario->getFrameWidth(), texturaMario->getFrameHeight(), (nextPos.GetX() * Game::TILE_SIDE) , nextPos.GetY() * Game::TILE_SIDE);
         SDL_SetRenderDrawColor(renderer,255,0,0,128 );
         SDL_RenderDrawRect(renderer, &rect2);
         SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
@@ -118,28 +118,45 @@ void Player::handleEvent(SDL_Event evento) {
 
 void Player::update() {
 
-    if (!isGrounded) {
-        dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
-        if (dir.GetY() > MAX_FALL_SPEED) {
-            dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
-        }
+    dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY); // intenta ir hacia abajo
+    if (dir.GetY() > MAX_FALL_SPEED) 
+        dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
+    collider.y = pos.GetY() + dir.GetY();
+    collides = game->checkCollision(collider, true); // con el suelo
+
+    if (!collides) {
+
+        pos = pos + dir;
+    }
+    else {
+        Point2D<float> n{ dir.GetX() + pos.GetX() ,  pos.GetY() };
+        pos = n;
     }
 
     if (dir.GetX() > 0) { // si va a la derecha
-        collider.x = pos.GetX() + COLLISION_OFFSET;
+        collider.x = pos.GetX() + dir.GetX();
     }
     else { // si va a la izquierda
-        collider.x = pos.GetX() - COLLISION_OFFSET;
+        collider.x = pos.GetX() - dir.GetX();
     }
 
+    collides = game->checkCollision(collider, true); // hacia los lados
 
-    if (dir.GetY() > 0) {// si va hacia arriba
-        collider.y = pos.GetY() - COLLISION_OFFSET;
 
-    }
-    else {// si va hacia abajo
-        collider.y = pos.GetY() + COLLISION_OFFSET;
-    }
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
     collides = game->checkCollision(collider, true);
 
     if (collides) {
@@ -170,7 +187,6 @@ void Player::update() {
         
     }
 
-    collides = game->checkCollision(collider, true);
 
 }
 

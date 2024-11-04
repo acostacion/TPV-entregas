@@ -74,11 +74,25 @@ void TileMap::update() {
 
 }
 
+SDL_Rect TileMap::createRect(int w, int h, int x, int y) {
+	// Se crea el rect.
+	SDL_Rect rect;
+
+	// Se le da dimensiones y posición.
+	rect.w = w;
+	rect.h = h;
+	rect.x = x;
+	rect.y = y;
+
+	return rect;
+}
+
 Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 {
 	Collision::collision colres;
 	colres.collides = false;
 	colres.damages = false;
+	colres.intersectRect = createRect(0,0,0,0);
 
 	constexpr int OBSTACLE_THRESHOLD = 4; // constante
 
@@ -94,16 +108,15 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 		for (int col = col0; col <= col1; ++col)
 			if (map[row][col] % texture->getNumColumns() < OBSTACLE_THRESHOLD)
 			{
-				SDL_Rect rectTile;
+				SDL_Rect rectTile, res;
 				rectTile.w = Game::TILE_SIDE;
 				rectTile.h = Game::TILE_SIDE;
 				rectTile.x = row * Game::TILE_SIDE;
 				rectTile.y = col * Game::TILE_SIDE;
-				SDL_IntersectFRect(rectTile , rect, colres.intersectRect );
 
-
-
-				colres.collides = true;
+				res = createRect(0,0,0,0);
+				colres.collides = SDL_IntersectRect(&rectTile, &rect, &res );
+				colres.intersectRect = res;
 
 				return colres;
 			}

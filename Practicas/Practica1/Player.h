@@ -28,7 +28,7 @@ private:
 	SDL_RendererFlip flip; // para que se gire horizontalmente la animacion
 
 	// Submétodos.
-	SDL_Rect createRect(int, int, int, int);
+	SDL_Rect createRect(float, float, float, float);
 
 public:
 	Player(Game*, std::istream&);
