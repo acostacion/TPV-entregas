@@ -22,7 +22,7 @@ private:
 
 public:
 	Koopa(Game*, std::istream&);
-
+	SDL_Rect createRect(float w, float h, float x, float y);
 	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
 
 	void render();

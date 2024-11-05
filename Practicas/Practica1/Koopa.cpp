@@ -1,6 +1,6 @@
 #include "Koopa.h"
 
-Koopa::Koopa(Game* game, std::istream& in) : game(game)
+Koopa::Koopa(Game* game, std::istream& in) : game(game), renderer(game->getRender())
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
@@ -10,7 +10,18 @@ Koopa::Koopa(Game* game, std::istream& in) : game(game)
 	anim = 0;
 	texturaKoopa = game->getTexture(Game::KOOPA);
 }
+SDL_Rect Koopa::createRect(float w, float h, float x, float y) {
+	// Se crea el rect.
+	SDL_Rect rect;
 
+	// Se le da dimensiones y posición.
+	rect.w = w;
+	rect.h = h;
+	rect.x = x;
+	rect.y = y;
+
+	return rect;
+}
 void Koopa::render() {
 	
 	// 1. Se crea el rect.
@@ -35,8 +46,8 @@ void Koopa::render() {
 	texturaKoopa->renderFrame(rect, 0, anim);
 
 	if (Game::DEBUG) {
-		Point2D<float> nectPos = pos + dir * MOVE_SPEED;
-		SDL_Rect rect2 = collider;
+		Point2D<float> nextPos = pos + dir * MOVE_SPEED;
+		SDL_Rect rect2 = createRect(texturaKoopa->getFrameWidth(), texturaKoopa->getFrameHeight(), (nextPos.GetX() * Game::TILE_SIDE), nextPos.GetY() * Game::TILE_SIDE);
 		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
 		SDL_RenderDrawRect(renderer, &rect2);
 		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);

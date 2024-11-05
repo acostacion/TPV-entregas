@@ -6,7 +6,7 @@ Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE), 
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	in >> life; // el n�mero de vidas
-	dir = Point2D<float>(0,0);
+	dir = Point2D<float>(0,0.1);
 	superMario = false;
     anim = 0;
     movingDer = false;
@@ -117,34 +117,43 @@ void Player::handleEvent(SDL_Event evento) {
 }
 
 void Player::update() {
+    
+    if (pos.GetX() < 0) { // no se vaya por la izquierda
+        pos = Point2D<float>(0, pos.GetY());
+    }
+    else if (pos.GetX() > Game::WIN_TILE_WIDTH / 2) // no pase de la mitad
+    {
+        pos = Point2D<float>(game->WIN_TILE_WIDTH / 2, pos.GetY());
+    }
 
-    dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY); // intenta ir hacia abajo
-    if (dir.GetY() > MAX_FALL_SPEED) 
-        dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
-    collider.y = pos.GetY() + dir.GetY();
+    //dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY); // intenta ir hacia abajo
+
+    //collider.y = pos.GetY() + dir.GetY();
     collisionRes = game->checkCollision(collider, true); // con el suelo
 
-    if (!collisionRes) {
+ 
 
-        pos = pos + dir;
+    if (!collisionRes) {
+        dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY); // intenta ir hacia abajo
+        if (dir.GetY() > MAX_FALL_SPEED) dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
+        
     }
     else {
-        Point2D<float> n;
-        if (collisionRes.intersectRect.w > collisionRes.intersectRect.h){
-            if (dir.GetX() < 0) {
-                n = { pos.GetX() ,  pos.GetY() };
+        if (collisionRes.intersectRect.w >= collisionRes.intersectRect.h){
+            if (collisionRes.intersectRect.y < collider.y){
+                dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
             }
             else {
-                n = { pos.GetX() ,  pos.GetY() };
+                dir = Point2D<float>(dir.GetX(), 0);
             }
-            n = { dir.GetX() + pos.GetX() ,  pos.GetY() };
         }
         else {
-           n= { dir.GetX() + pos.GetX(), pos.GetY()};
+            dir = Point2D<float>(0, dir.GetY());
         }
        
-        pos = n;
     }
+    pos = pos +dir;
+
 
     if (dir.GetX() > 0) { // si va a la derecha
         collider.x = pos.GetX() + dir.GetX();
@@ -155,34 +164,31 @@ void Player::update() {
 
     collisionRes = game->checkCollision(collider, true); // hacia los lados
 
-    //if (!collisionRes) {
-    //    
-    //    pos = Point2D<float>(pos.GetX() + dir.GetX(), pos.GetY() + dir.GetY());
+    if (collisionRes) {
+        if (collisionRes.intersectRect.h >= collisionRes.intersectRect.w) {
+            if (collisionRes.intersectRect.x < collider.x) {
+                dir = Point2D<float>(0, dir.GetY());
+            }
+            else {
+                dir = Point2D<float>(0, dir.GetY());
+            }
+        }
+        else {
+            dir = Point2D<float>(0, dir.GetY());
+        }
 
-    //    if (!moving) {
-    //        if (std::abs(dir.GetX()) < DECELERATION) {
-    //            dir = Point2D<float>(0, dir.GetY());
-    //        }
-    //        else {
-    //            dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
-    //        }
-    //    }
-    //    // CON ESTO SE MUEVE DE IZQUIERDA A DERECHA.
+    }
 
-    //    if (pos.GetX() < 0) { // no se vaya por la izquierda
-    //        pos = Point2D<float>(0, pos.GetY());
-    //    }
-    //    else if (pos.GetX() > Game::WIN_TILE_WIDTH / 2) // no pase de la mitad
-    //    {
-    //        pos = Point2D<float>(game->WIN_TILE_WIDTH / 2, pos.GetY());
-    //    }
+    pos = pos + dir;
 
-
-    //}
-    //else {
-    //    
-    //}
-
+    /*if (!moving) {
+        if (std::abs(dir.GetX()) < DECELERATION) {
+            dir = Point2D<float>(0, dir.GetY());
+        }
+        else {
+            dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
+        }
+    }*/
 
 }
 
