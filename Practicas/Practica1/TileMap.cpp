@@ -7,10 +7,11 @@ TileMap::TileMap(){
 	game = nullptr;
 }
 
-TileMap::TileMap(std::istream& entrada, Game* _game) {
+TileMap::TileMap(std::istream& entrada, Game* _game)  {
 	
 	// Asigna game y carga la textura BACKGROUND valiéndose del game.
 	game = _game;
+	renderer = game->getRender();
 	texture = game->getTexture(Game::BACKGROUND);
 	int x = 0, y = 0;
 	// Lee el archivo CSV.
@@ -65,6 +66,12 @@ void TileMap::render() {
 
 				// Usa renderFrame para pintar la tesela
 				texture->renderFrame(rect, fy, fx);
+
+				if (Game::DEBUG) {
+					SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
+					SDL_RenderDrawRect(renderer, &rect);
+					SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+				}
 			}
 		}
 	}

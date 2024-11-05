@@ -26,6 +26,7 @@ private:
 
 	int anim; // indice del frame de la animacion
 	int life;
+	int margenColi = 3;
 
 	bool superMario;
 	bool isGrounded; // si esta en el suelo

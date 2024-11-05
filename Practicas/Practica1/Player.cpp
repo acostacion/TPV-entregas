@@ -6,7 +6,7 @@ Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE), 
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	in >> life; // el n�mero de vidas
-	dir = Point2D<float>(0,0.1);
+	dir = Point2D<float>(0,0);
 	superMario = false;
     anim = 0;
     movingDer = false;
@@ -71,12 +71,11 @@ void Player::render() {
         SDL_RenderDrawRect(renderer, &rect2);
         SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
     }
-
-
 }
 
 // Input de teclado cambian la dir del jugador.
 void Player::handleEvent(SDL_Event evento) {
+    dir = Point2D<float>(dir.GetX(), GRAVITY);
     Point2D<float> nuevaDir = dir;
     movingDer = false;
     
@@ -117,78 +116,83 @@ void Player::handleEvent(SDL_Event evento) {
 }
 
 void Player::update() {
-    
+
+    /*
     if (pos.GetX() < 0) { // no se vaya por la izquierda
         pos = Point2D<float>(0, pos.GetY());
     }
     else if (pos.GetX() > Game::WIN_TILE_WIDTH / 2) // no pase de la mitad
     {
         pos = Point2D<float>(game->WIN_TILE_WIDTH / 2, pos.GetY());
-    }
+    }*/
 
-    //dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY); // intenta ir hacia abajo
+    //collider.x = pos.GetX() + dir.GetX();
+    collider.y = pos.GetY() + dir.GetY();
 
-    //collider.y = pos.GetY() + dir.GetY();
     collisionRes = game->checkCollision(collider, true); // con el suelo
 
- 
-
     if (!collisionRes) {
-        dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY); // intenta ir hacia abajo
-        if (dir.GetY() > MAX_FALL_SPEED) dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
-        
+        pos = Point2D<float>(collider.x, collider.y);
+        isGrounded = false;
+        dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
+        std::cout << "No he colisionado con el suelo" << "\n";
+
     }
     else {
-        if (collisionRes.intersectRect.w >= collisionRes.intersectRect.h){
-            if (collisionRes.intersectRect.y < collider.y){
-                dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
-            }
-            else {
-                dir = Point2D<float>(dir.GetX(), 0);
-            }
+        if (collisionRes.intersectRect.h > margenColi){
+            //dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
+            pos = Point2D<float>(collider.x, pos.GetY());
+            isGrounded = true;
+            std::cout << "He colisionado con el suelo" << "\n";
+
         }
         else {
-            dir = Point2D<float>(0, dir.GetY());
+            pos = Point2D<float>(collider.x, collider.y);
+            std::cout << "He colisionado con el suelo pero me caigo" << "\n";
+
         }
-       
+
     }
-    pos = pos +dir;
+    //collider.y = pos.GetY();
 
 
-    if (dir.GetX() > 0) { // si va a la derecha
-        collider.x = pos.GetX() + dir.GetX();
-    }
-    else { // si va a la izquierda
-        collider.x = pos.GetX() - dir.GetX();
-    }
+    collider.x = pos.GetX() + dir.GetX();
+    
 
     collisionRes = game->checkCollision(collider, true); // hacia los lados
 
     if (collisionRes) {
-        if (collisionRes.intersectRect.h >= collisionRes.intersectRect.w) {
-            if (collisionRes.intersectRect.x < collider.x) {
-                dir = Point2D<float>(0, dir.GetY());
-            }
-            else {
-                dir = Point2D<float>(0, dir.GetY());
-            }
+        if (collisionRes.intersectRect.w > margenColi) {
+            std::cout << "No puedo moverme" << "\n";
+            pos = Point2D<float>(pos.GetX(), pos.GetY());
+            moving = false;
         }
         else {
-            dir = Point2D<float>(0, dir.GetY());
+            std::cout << "Me muevo "<< collider.x << "\n";
+
+            pos = Point2D<float>(collider.x, collider.y);
         }
-
     }
-
+    else {
+    }
     pos = pos + dir;
 
-    /*if (!moving) {
+
+    /*
+    
+     if (!moving) {
         if (std::abs(dir.GetX()) < DECELERATION) {
             dir = Point2D<float>(0, dir.GetY());
         }
         else {
             dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
         }
-    }*/
+    }
+
+    */
+   
+
+   
 
 }
 
