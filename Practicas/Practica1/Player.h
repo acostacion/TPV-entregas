@@ -51,7 +51,7 @@ public:
 	const float DECELERATION = 0.0005f;
 	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
 	const float COLLISION_OFFSET = 0.3f; // velocidad de movimiento.
-
+	const float GROUND_LEVEL = 12.9f;
 	void render();
 	void update();
 	Collision::collision hit(const SDL_Rect otherRect);

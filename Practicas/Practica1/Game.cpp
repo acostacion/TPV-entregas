@@ -301,7 +301,7 @@ void Game::update()
 
 	player->update();
 
-	updateBlocks();
+	//updateBlocks();
 
 	updateKoopas();
 

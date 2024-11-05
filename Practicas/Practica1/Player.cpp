@@ -126,56 +126,101 @@ void Player::update() {
         pos = Point2D<float>(game->WIN_TILE_WIDTH / 2, pos.GetY());
     }*/
 
-    //collider.x = pos.GetX() + dir.GetX();
-    collider.y = pos.GetY() + dir.GetY();
-
-    collisionRes = game->checkCollision(collider, true); // con el suelo
-
-    if (!collisionRes) {
-        pos = Point2D<float>(collider.x, collider.y);
-        isGrounded = false;
-        dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
-        std::cout << "No he colisionado con el suelo" << "\n";
-
+    if (moving) {
+        pos.SetX(pos.GetX() + dir.GetX());
+        collider.x = pos.GetX();  
     }
     else {
-        if (collisionRes.intersectRect.h > margenColi){
-            //dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
-            pos = Point2D<float>(collider.x, pos.GetY());
-            isGrounded = true;
-            std::cout << "He colisionado con el suelo" << "\n";
-
-        }
-        else {
-            pos = Point2D<float>(collider.x, collider.y);
-            std::cout << "He colisionado con el suelo pero me caigo" << "\n";
-
-        }
-
+        
+        dir.SetX(dir.GetX() * (1.0f - DECELERATION));
+        if (std::abs(dir.GetX()) < 0.01f) dir.SetX(0);
     }
-    //collider.y = pos.GetY();
 
 
-    collider.x = pos.GetX() + dir.GetX();
+    if (dir.GetX() != 0) {
+        auto collisionResX = game->checkCollision(collider, true);
+        if (collisionResX.collides) {
+            dir.SetX(0);
+        }
+    }
+
+    
+    if (!isGrounded) {
+        dir.SetY(std::min(dir.GetY() + GRAVITY, MAX_FALL_SPEED));
+        pos.SetY(pos.GetY() + dir.GetY());
+        collider.y = pos.GetY();  
+    }
+
+    
+    collider.y = pos.GetY() + dir.GetY();
+    auto collisionResY = game->checkCollision(collider, false);
+    if (collisionResY.collides) {
+        if (dir.GetY() > 0) {  
+            isGrounded = true;
+            dir.SetY(0);
+            pos.SetY(GROUND_LEVEL);
+        }
+        else {  
+            dir.SetY(0);
+        }
+    }
+    else {
+        isGrounded = false;
+    }
+   
+
+
+
+    //collider.x = pos.GetX() + dir.GetX();
+    //collider.y = pos.GetY() + dir.GetY();
+
+    //collisionRes = game->checkCollision(collider, true); // con el suelo
+
+    //if (!collisionRes) {
+    //    pos = Point2D<float>(collider.x, collider.y);
+    //    isGrounded = false;
+    //    dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
+    //    std::cout << "No he colisionado con el suelo" << "\n";
+
+    //}
+    //else {
+    //    if (collisionRes.intersectRect.h > margenColi){
+    //        //dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
+    //        pos = Point2D<float>(collider.x, pos.GetY());
+    //        isGrounded = true;
+    //        std::cout << "He colisionado con el suelo" << "\n";
+
+    //    }
+    //    else {
+    //        pos = Point2D<float>(collider.x, collider.y);
+    //        std::cout << "He colisionado con el suelo pero me caigo" << "\n";
+
+    //    }
+
+    //}
     
 
-    collisionRes = game->checkCollision(collider, true); // hacia los lados
 
-    if (collisionRes) {
-        if (collisionRes.intersectRect.w > margenColi) {
-            std::cout << "No puedo moverme" << "\n";
-            pos = Point2D<float>(pos.GetX(), pos.GetY());
-            moving = false;
-        }
-        else {
-            std::cout << "Me muevo "<< collider.x << "\n";
+    //collider.x = pos.GetX() + dir.GetX();
+    //
 
-            pos = Point2D<float>(collider.x, collider.y);
-        }
-    }
-    else {
-    }
-    pos = pos + dir;
+    //collisionRes = game->checkCollision(collider, true); // hacia los lados
+
+    //if (collisionRes) {
+    //    if (collisionRes.intersectRect.w > margenColi) {
+    //        std::cout << "No puedo moverme" << "\n";
+    //        pos = Point2D<float>(pos.GetX(), pos.GetY());
+    //        moving = false;
+    //    }
+    //    else {
+    //        std::cout << "Me muevo "<< collider.x << "\n";
+
+    //        pos = Point2D<float>(collider.x, collider.y);
+    //    }
+    //}
+    //else {
+    //}
+    //pos = pos + dir;
 
 
     /*
@@ -191,9 +236,6 @@ void Player::update() {
 
     */
    
-
-   
-
 }
 
 Collision::collision Player::hit(const SDL_Rect otherRect) {
