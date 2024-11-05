@@ -33,6 +33,14 @@ void Koopa::render() {
 
 	// Se renderiza.
 	texturaKoopa->renderFrame(rect, 0, anim);
+
+	if (Game::DEBUG) {
+		Point2D<float> nectPos = pos + dir * MOVE_SPEED;
+		SDL_Rect rect2 = collider;
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
+		SDL_RenderDrawRect(renderer, &rect2);
+		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+	}
 }
 
 
@@ -44,6 +52,6 @@ void Koopa::update() {
 	pos = pos + dir;
 }
 
-//Collision Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
-//	
-//}
+Collision Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
+	
+}

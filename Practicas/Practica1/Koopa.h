@@ -11,7 +11,9 @@ class Koopa
 {
 private:
 	Game* game;
+	SDL_Renderer* renderer;
 	Texture* texturaKoopa;
+	SDL_Rect collider;
 	Point2D<float> pos;
 	Point2D<float> dir;
 	bool startMoving;
