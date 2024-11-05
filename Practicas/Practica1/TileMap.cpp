@@ -108,16 +108,13 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 		for (int col = col0; col <= col1; ++col)
 			if (map[row][col] % texture->getNumColumns() < OBSTACLE_THRESHOLD)
 			{
-				SDL_Rect rectTile, res;
-				rectTile.w = Game::TILE_SIDE;
-				rectTile.h = Game::TILE_SIDE;
+				SDL_Rect rectTile;
+				rectTile.w = texture->getFrameWidth();
+				rectTile.h = texture->getFrameHeight();
 				rectTile.x = row * Game::TILE_SIDE;
 				rectTile.y = col * Game::TILE_SIDE;
 
-				res = createRect(0,0,0,0);
-				colres.collides = SDL_IntersectRect(&rectTile, &rect, &res );
-				colres.intersectRect = res;
-
+				colres.collides = SDL_IntersectRect(&rectTile, &rect, &colres.intersectRect);
 				return colres;
 			}
 

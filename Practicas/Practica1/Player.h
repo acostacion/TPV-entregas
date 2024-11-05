@@ -10,22 +10,32 @@ class Game;
 class Player
 {
 private:
+	
 	Game* game;
 	SDL_Renderer* renderer;
 	Texture* texturaMario;
 	Texture* texturaSMario;
+	
+	
 	Point2D<float> dir;
 	Point2D<float> pos;
+	
+	
 	SDL_Rect collider;
 	Collision::collision collisionRes;
+
+	int anim; // indice del frame de la animacion
 	int life;
+
 	bool superMario;
 	bool isGrounded; // si esta en el suelo
 	bool movingDer; // si se esta moviendo a la derecha, se usa en el game para saber si mueve el mapoffset y que no se mueva infinitamente si esta en ese borde
 	bool moving; // si se mueve para la animacion
-	int anim; // indice del frame de la animacion
+	
+	
 	SDL_RendererFlip flip; // para que se gire horizontalmente la animacion
 
+	
 	// Submétodos.
 	SDL_Rect createRect(float, float, float, float);
 
