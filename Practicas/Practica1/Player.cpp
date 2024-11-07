@@ -1,17 +1,14 @@
 #include "Player.h"
 #include <algorithm>
 
-Player::Player(Game* game, std::istream& in) : game(game), flip(SDL_FLIP_NONE), renderer(game->getRender())
+Player::Player(Game* game, std::istream& in) 
+    : game(game), flip(SDL_FLIP_NONE), renderer(game->getRender()),
+    dir(0,0), superMario(false), anim(0), movingDer(false),moving(false),
+    isGrounded(false)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	in >> life; // el n�mero de vidas
-	dir = Point2D<float>(0,0);
-	superMario = false;
-    anim = 0;
-    movingDer = false;
-    moving = false;
-    isGrounded = true;
 
 	texturaMario = game->getTexture(Game::MARIO);
 	texturaSMario = game->getTexture(Game::SUPERMARIO);
@@ -40,14 +37,17 @@ void Player::render() {
 	
 	/*/if (!this->superMario) {*/
 
-    SDL_Rect renderRect = createRect(texturaMario->getFrameWidth(), // w.
-                                     texturaMario->getFrameHeight(),  // h.
-                                     pos.GetX() * Game::TILE_SIDE,  // x.
-                                     pos.GetY() * Game::TILE_SIDE); // y.
+    SDL_Rect renderRect = createRect(
+        texturaMario->getFrameWidth(), // w.                        
+        texturaMario->getFrameHeight(),  // h.                      
+        pos.GetX() * Game::TILE_SIDE,  // x.
+        pos.GetY() * Game::TILE_SIDE); // y.
 
-    // 3. Frame de la animacion
+    // Frame de la animacion
 
-    if (!isGrounded) anim = 6;
+    if (!isGrounded) {
+        anim = 6;
+    }
     else {
         if (moving) {
             if (anim == 0) anim = 2;
@@ -57,16 +57,19 @@ void Player::render() {
             else if (anim == 6) anim = 0;
         }
         else anim = 0;
-      
     }
     
-
 	// Se renderiza.
 	texturaMario->renderFrame(renderRect, 0, anim, flip);
 
     if (Game::DEBUG){
         Point2D<float> nextPos = pos + dir * MOVE_SPEED;
-        SDL_Rect rect2 = createRect( texturaMario->getFrameWidth(), texturaMario->getFrameHeight(), (nextPos.GetX() * Game::TILE_SIDE) , nextPos.GetY() * Game::TILE_SIDE);
+        SDL_Rect rect2 = createRect(
+            texturaMario->getFrameWidth(), 
+            texturaMario->getFrameHeight(), 
+            nextPos.GetX() * Game::TILE_SIDE, 
+            nextPos.GetY() * Game::TILE_SIDE);
+
         SDL_SetRenderDrawColor(renderer,255,0,0,128 );
         SDL_RenderDrawRect(renderer, &rect2);
         SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
@@ -117,56 +120,50 @@ void Player::handleEvent(SDL_Event evento) {
 
 void Player::update() {
 
-    /*
-    if (pos.GetX() < 0) { // no se vaya por la izquierda
-        pos = Point2D<float>(0, pos.GetY());
-    }
-    else if (pos.GetX() > Game::WIN_TILE_WIDTH / 2) // no pase de la mitad
-    {
-        pos = Point2D<float>(game->WIN_TILE_WIDTH / 2, pos.GetY());
-    }*/
-
+    // Colisión y movimiento en el eje X.
     if (moving) {
         pos.SetX(pos.GetX() + dir.GetX());
-        collider.x = pos.GetX();  
+        collider.x = pos.GetX();
+
+        // Comprueba si colisiona.
+        auto colX = game->checkCollision(collider, true);
+        if (colX.collides) {
+            dir.SetX(0);
+        }
     }
     else {
-        
+        // DECELERATION cuando deja de moverse.
         dir.SetX(dir.GetX() * (1.0f - DECELERATION));
         if (std::abs(dir.GetX()) < 0.01f) dir.SetX(0);
     }
 
-
-    if (dir.GetX() != 0) {
-        auto collisionResX = game->checkCollision(collider, true);
-        if (collisionResX.collides) {
-            dir.SetX(0);
-        }
-    }
-
-    
+    // Colisión y movimiento en el eje Y.
     if (!isGrounded) {
         dir.SetY(std::min(dir.GetY() + GRAVITY, MAX_FALL_SPEED));
         pos.SetY(pos.GetY() + dir.GetY());
         collider.y = pos.GetY();  
+
+        // Comprueba si colisiona.
+        auto colY = game->checkCollision(collider, false);
+        if (colY.collides) {
+            if (dir.GetY() > 0) {
+                // Cuando cae.
+                isGrounded = true;
+                dir.SetY(0);
+                pos.SetY(GROUND_LEVEL);
+            }
+            else {
+                dir.SetY(0);
+            }
+        }
+        else {
+            isGrounded = false;
+        }
     }
 
     
-    collider.y = pos.GetY() + dir.GetY();
-    auto collisionResY = game->checkCollision(collider, false);
-    if (collisionResY.collides) {
-        if (dir.GetY() > 0) {  
-            isGrounded = true;
-            dir.SetY(0);
-            pos.SetY(GROUND_LEVEL);
-        }
-        else {  
-            dir.SetY(0);
-        }
-    }
-    else {
-        isGrounded = false;
-    }
+    
+    
    
 
 

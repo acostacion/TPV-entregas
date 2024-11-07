@@ -260,31 +260,6 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 		}
 	}
 
-
-	// Itera sobre los objeto del juego llamando a sus métodos hit. Si alguno devuelve que ha habido colisión, interrumpe la búsqueda y devuelve ese resultado.
-	/*
-	// pregunta al hit de todas las entidades del juego, si se colisiona con alguna
-	// todos con el tilemap
-	// player -> goomba (si es por la der o iz -vida, por arriba muerte de goomba)
-	// player -> koopa (si es por la der o iz -vida, por arriba "muerte" de koopa)
-	// player -> seta (super mario y muerte/desaparece seta)
-	// player -> blocks -> ladrillo(no avanza si es por abajo der iz), "?" se vuelve vacio, vacio nada
-	// playerSUPER -> blocks -> ladrillo(destruye), "?" se vuelve vacio
-	// 
-	// entities chocan con entities
-
-	// Enemigo, bloque, player.
-	Collision colision = { false, false, false };
-	
-	//  --- ENEMIGOS ---.
-	//if (blocks)
-
-
-		return colision;*/
-
-
-	
-
 	return col;
 }
 
