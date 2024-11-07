@@ -85,33 +85,31 @@ void Player::handleEvent(SDL_Event evento) {
     // Escanea la tecla.
     SDL_Scancode tecla = evento.key.keysym.scancode;
 
-
     // Al pulsar la tecla...
     if (evento.type == SDL_KEYDOWN) {
         if ((tecla == SDL_SCANCODE_W || tecla == SDL_SCANCODE_SPACE || tecla == SDL_SCANCODE_UP) && isGrounded) {
-            nuevaDir = Point2D<float>(dir.GetX(), JUMP_FORCE);
-            if (dir.GetX() > 0) movingDer = true;
+            nuevaDir.SetY(-JUMP_FORCE);
+            //if (dir.GetX() > 0) movingDer = true;
             isGrounded = false; 
         }
         else if (tecla == SDL_SCANCODE_A || tecla == SDL_SCANCODE_LEFT) {
-            nuevaDir = Point2D<float>(-MOVE_SPEED, dir.GetY());
+            nuevaDir.SetX(-MOVE_SPEED);
             flip = SDL_FLIP_HORIZONTAL;
         }
         else if (tecla == SDL_SCANCODE_S || tecla == SDL_SCANCODE_DOWN) {
             // Mario nunca va abajo, pero se pone la animacion de agacharse.
         }
         else if (tecla == SDL_SCANCODE_D || tecla == SDL_SCANCODE_RIGHT) {
-            nuevaDir = Point2D<float>(MOVE_SPEED, dir.GetY());
+            nuevaDir.SetX(MOVE_SPEED);
             movingDer = true;
-            flip = SDL_FLIP_NONE;
-            
+            flip = SDL_FLIP_NONE;  
         }
         moving = true;
     }
     // Al despulsar la tecla...
     else if (evento.type == SDL_KEYUP) {
         if (tecla == SDL_SCANCODE_A || tecla == SDL_SCANCODE_LEFT || tecla == SDL_SCANCODE_D || tecla == SDL_SCANCODE_RIGHT) {
-            nuevaDir = Point2D<float>(dir.GetX() * 0.2, dir.GetY()); // Reduce speed slightly for sliding effect 
+            nuevaDir.SetX(dir.GetX() * 0.2); // Reduce speed slightly for sliding effect 
             moving = false;
         }
     }
