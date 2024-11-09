@@ -83,27 +83,26 @@ void Blocks::update() {
 	}
 }
 
-Collision::collision Blocks::hit(const SDL_Rect& rect, bool fromPlayer) {
-
-	/*// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
-	SDL_Rect blockRect = createBlockRect();
-
-	// Colisiona un rect que viene de fuera con el del bloque.
-	SDL_bool collision = SDL_HasIntersection(&blockRect, otherRect)
-
-	
-	if (tipo == Tipos::ladrillo) {
-		// Si mario choca con los ladrillos siendo M.
-		if()
-		// Si mario choca con los ladrillos siendo SM.
-	}
-	else if (tipo == Tipos::sorpresa) {
-	// Si mario choca con los sorpresa siendo M.
-		// Si mario choca con los sorpresa siendo SM.
-	}
-	else if (tipo == Tipos::vacio) {
-		// Si mario siendo M o SM choca con los vacios.
-	}*/
-	Collision::collision col;
-	return col;
-}
+//Collision Blocks::hit(const SDL_Rect& rect, bool fromPlayer) {
+//
+//	/*// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
+//	SDL_Rect blockRect = createBlockRect();
+//
+//	// Colisiona un rect que viene de fuera con el del bloque.
+//	SDL_bool collision = SDL_HasIntersection(&blockRect, otherRect)
+//
+//		/*
+//	if (tipo == Tipos::ladrillo) {
+//		// Si mario choca con los ladrillos siendo M.
+//		if()
+//		// Si mario choca con los ladrillos siendo SM.
+//	}
+//	else if (tipo == Tipos::sorpresa) {
+//		// Si mario choca con los sorpresa siendo M.
+//		// Si mario choca con los sorpresa siendo SM.
+//	}
+//	else if (tipo == Tipos::vacio) {
+//		// Si mario siendo M o SM choca con los vacios.
+//	}*/
+//	return { true, true };
+//}
