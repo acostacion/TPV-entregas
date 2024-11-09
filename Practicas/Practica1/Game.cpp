@@ -230,10 +230,8 @@ Texture* Game::getTexture(TextureName name) const {
 
 Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 {
-
 	Collision::collision colTilemap = tileMap->hit(rect, fromPlayer); // Tilemap.
 	if (colTilemap.collides) return colTilemap;
-	
 
 	/*if (!fromPlayer) { // si es el player
 		for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
@@ -264,24 +262,45 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 		}
 	}*/
 
-
+	// Goombas
 	int i = 0;
 	bool found = false;
-
-	// Goombas
 	while (i < goombas.size() && !found) {
 		Collision::collision colGoomba = goombas[i]->hit(rect, fromPlayer);
-		if(colGoomba
+		if (colGoomba.collides) {
+			found = true;
+			return colGoomba;
+		}
+		i++;
 	}
 
-	for(auto& goomba:goombas)
-
 	// Bloques.
+	i = 0;
+	found = false;
+	while (i < blocks.size() && !found) {
+		Collision::collision colBlocks = blocks[i]->hit(rect, fromPlayer);
+		if (colBlocks.collides) {
+			found = true;
+			return colBlocks;
+		}
+		i++;
+	}
 
 	// Koopas.
+	i = 0;
+	found = false;
+	while (i < koopas.size() && !found) {
+		Collision::collision colKoopas = koopas[i]->hit(rect, fromPlayer);
+		if (colKoopas.collides) {
+			found = true;
+			return colKoopas;
+		}
+		i++;
+	}
 
-	// Sin colisión.
-
+	// En caso de no haber colisión.
+	Collision::collision notCollision = { false, false };
+	return notCollision;
 }
 
 
