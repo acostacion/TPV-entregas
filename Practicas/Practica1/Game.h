@@ -51,9 +51,6 @@ private:
     // Objetos del juego
     TileMap* tileMap;
     Player* player;
-    //std::array <Goomba*, 20> goombas;
-    //std::array <Blocks*, 50> blocks;
-    //std::array <Koopa*, 3> koopas;
 
     std::vector<Goomba*> goombas;
     std::vector<Blocks*> blocks;

@@ -63,6 +63,7 @@ void Koopa::update() {
 	pos = pos + dir;
 }
 
-//Collision Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
-//	
-//}
+Collision Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
+	Collision col;
+	return col;
+}

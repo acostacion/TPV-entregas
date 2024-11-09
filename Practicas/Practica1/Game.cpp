@@ -229,9 +229,12 @@ Texture* Game::getTexture(TextureName name) const {
 }
 
 Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
-	Collision::collision col = tileMap->hit(rect, fromPlayer);
 
-	if (!fromPlayer) { // si es el player
+	Collision::collision colTilemap = tileMap->hit(rect, fromPlayer); // Tilemap.
+	if (colTilemap.collides) return colTilemap;
+	
+
+	/*if (!fromPlayer) { // si es el player
 		for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
 			//goombas[i]->hit();
 		}
@@ -258,9 +261,24 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 		for (int i = 0; i < blocks.size(); ++i) {
 			//blocks[i]->hit();
 		}
+	}*/
+
+
+	int i = 0;
+	bool found = false;
+
+	// Goombas.
+	while (i < goombas.size() && !found) {
+		Collision::collision colGoomba = goombas[i]->hit(rect, fromPlayer);
+		if(colGoomba
 	}
 
-	return col;
+	// Bloques.
+
+	// Koopas.
+
+	// Sin colisión.
+
 }
 
 

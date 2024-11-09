@@ -120,7 +120,7 @@ void Player::update() {
 
     // Colisión y movimiento en el eje X.
     if (moving) {
-        pos.SetX(pos.GetX() + dir.GetX());
+        pos.SetX(pos.GetX() + dir.GetX()); // posX = posX + dirX
         collider.x = pos.GetX();
 
         // Comprueba si colisiona.
@@ -138,7 +138,7 @@ void Player::update() {
     // Colisión y movimiento en el eje Y.
     if (!isGrounded) {
         dir.SetY(std::min(dir.GetY() + GRAVITY, MAX_FALL_SPEED));
-        pos.SetY(pos.GetY() + dir.GetY());
+        pos.SetY(pos.GetY() + dir.GetY()); // posY = posY + dirY
         collider.y = pos.GetY();  
 
         // Comprueba si colisiona.

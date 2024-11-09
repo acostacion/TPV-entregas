@@ -105,7 +105,7 @@ void Goomba::update() {
 
 }
 
-void Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
+Collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 	// TILEMAP.
 	if (!fromPlayer) {
 		if (rect.w >= rect.h){
@@ -132,6 +132,7 @@ void Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 		}
 	}
 
-
+	Collision col;
+	return col;
 
 }
