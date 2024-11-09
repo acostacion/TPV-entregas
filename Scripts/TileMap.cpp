@@ -121,8 +121,7 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 				rectTile.x = row * Game::TILE_SIDE;
 				rectTile.y = col * Game::TILE_SIDE;
 
-				colres.collides = true;
-				SDL_IntersectRect(&rectTile, &rect, &colres.intersectRect);
+				colres.collides = SDL_IntersectRect(&rectTile, &rect, &colres.intersectRect);
 				return colres;
 			}
 

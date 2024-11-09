@@ -21,11 +21,11 @@ private:
 	SDL_Rect collider;
 	Collision::collision collisionRes;
 
-	int anim, invulnerableTimer; // indice del frame de la animacion
+	int anim; // indice del frame de la animacion
 	int life;
-	int margenColi = 1;
-	float verticalVelocity;
-	bool superMario, invulnerable;
+	int margenColi = 3;
+
+	bool superMario;
 	bool isGrounded; // si esta en el suelo
 	bool movingDer; // si se esta moviendo a la derecha, se usa en el game para saber si mueve el mapoffset y que no se mueva infinitamente si esta en ese borde
 	bool moving; // si se mueve para la animacion
@@ -40,7 +40,7 @@ private:
 	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
 	const float COLLISION_OFFSET = 0.3f; // velocidad de movimiento.
 	const float GROUND_LEVEL = 12.9f;
-	const float GRAVITY = 1.0f; // gravedad.
+	const float GRAVITY = 0.1f; // gravedad.
 	
 	// Submétodos.
 	SDL_Rect createRect(float, float, float, float);

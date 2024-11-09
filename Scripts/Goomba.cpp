@@ -96,7 +96,7 @@ void Goomba::update() {
 	// segun la dir hay que cambiar la pos del collisionRect
 
 
-	//collisionResult = game->checkCollision(collisionRect, false); // TILEMAP.
+	collisionResult = game->checkCollision(collisionRect, false); // TILEMAP.
 
 	hit(collisionResult.intersectRect, collisionResult.damages);
 
