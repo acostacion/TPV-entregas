@@ -6,6 +6,7 @@
 #include "Collision.h"
 
 class Game;
+static const Point2D<float> DIR_INI{ 0, 0 };
 
 class Player{
 private:
@@ -19,18 +20,16 @@ private:
 
 	Point2D<float> dir;
 	Point2D<float> pos;
+	Point2D<float> posIni;
 	Point2D<float> posInicio;
+
 	float verticalVelocity;
+	int altura;
+
 	bool isGrounded; // si esta en el suelo
+	bool isJumping;
 	bool movingDer; // si se esta moviendo a la derecha, se usa en el game para saber si mueve el mapoffset y que no se mueva infinitamente si esta en ese borde
 	bool moving; // si se mueve para la animacion
-
-#pragma endregion
-
-#pragma region Collision
-
-	SDL_Rect collider;
-	Collision::collision collisionRes;
 
 #pragma endregion
 
@@ -71,6 +70,7 @@ private:
 	// En sdl ir para arriba es negativo e ir para abajo es positivo.
 	const float JUMP_FORCE = -1.0f; // fuerza de salto.
 	const float MAX_FALL_SPEED = 0.2f; // velocidad de caída máxima.
+	const int MAX_ALTURA = 15; // velocidad de caída máxima.
 	const float DECELERATION = 0.0005f;
 	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
 	const float COLLISION_OFFSET = 0.3f; // velocidad de movimiento.
