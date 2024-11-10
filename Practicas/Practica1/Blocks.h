@@ -9,33 +9,42 @@
 
 class Game;
 class Player;
+
 class Blocks
 {
 public: 
-	enum Tipos {
+	enum Tipos { 
 		ladrillo,
 		sorpresa,
 		vacio,
 		oculto,
 	};
 
-	enum Accion {
+	enum Accion { 
 		potenciador,
 		moneda,
 		nada,
 	};
 
 private:
-	Player* player; // referencia al player.
-	SDL_Rect collider;
+	// REFERENCES.
+	Player* player; 
 	Game* game;
-	Texture* texturaBlock;
-	Point2D<float> pos; 
+
+	// COSAS DEL BLOCK.
+	Point2D<float> pos;
+	SDL_Rect collider;
+
+	// ENUMS.
 	Tipos tipo; // ladrillo, sorpresa, vacio, oculto
 	Accion action; // potenciador, moneda, nada
+
+	// ANIMACIONES Y TEXTURAS.
+	Texture* texturaBlock;
 	int animFrame; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
 	bool anim; // si tiene que animarse, seria solo el sorpresa
-	int timer;
+	int animTimer;
+
 public:
 	Blocks(Game*, std::istream&);
 
