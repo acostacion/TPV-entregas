@@ -30,14 +30,13 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 #pragma endregion
 
 // CONSTRUCTORA.
-Game::Game() : seguir(true){
+Game::Game() : seguir(true), mapOffset(0), reset(false) {
 	// --- SDL ---.
 	createSDL();
 
 	// --- TEXTURAS ---.
 	createTextures();
 
-	mapOffset = 0;
 	Smario = false;
 
 	// --- MAPAS ---.
@@ -114,7 +113,9 @@ void Game::createEntitymap() {
 
 		switch (tipo) {
 		case 'M':
-			this->player = new Player(this, lineStream);
+			if (player == nullptr) {
+				player = new Player(this, lineStream);
+			}
 			break;
 			// uno para cada objeto
 		case 'G':
@@ -136,20 +137,47 @@ void Game::createEntitymap() {
 	entradaTXT.close();
 }
 
+void Game::deleteObj() {
+	// Eliminar los obstaculos
+	for (Goomba* g : goombas)
+		delete g;
+	goombas.clear();
+
+	for (Koopa* k : koopas)
+		delete k;
+	koopas.clear();
+
+	for (Blocks* s : blocks)
+		delete s;
+	blocks.clear();
+
+	for (Mushroom* m : mushrooms)
+		delete m;
+	mushrooms.clear();
+}
+
+void Game::resetLevel() {
+
+	player->resetPlayerPos();
+	reset = true;
+	deleteObj(); //eleminar los vectores de elemetos antes de leer otra vez
+	createEntitymap();
+	mapOffset = 0;
+}
 
 void Game::renderBlocks() const{
 	for (int i = 0; i < blocks.size(); ++i) {
-		blocks[i]->render();
+		blocks[i]->render(renderer);
 	}
 }
 void Game::renderGoombas() const{
 	for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
-		goombas[i]->render();
+		goombas[i]->render(renderer);
 	}
 }
 void Game::renderKoopas() const {
 	for (int i = 0; i < koopas.size(); ++i) {
-		koopas[i]->render();
+		koopas[i]->render(renderer);
 	}
 }
 void Game::updateKoopas() const {
@@ -174,7 +202,8 @@ Game::~Game()
 {
 	// Elimina los objetos del juego
 	//delete perro;
-
+	delete player;
+	deleteObj();
 	// Elimina las texturas.
 	for (Texture* texture : textures) 
 		delete texture;
@@ -194,8 +223,11 @@ void Game::run()
 		uint32_t inicio = SDL_GetTicks();
 
 		update();       // Actualiza el estado de los objetos del juego
-		render();       // Dibuja los objetos en la venta
-		handleEvents(); // Maneja los eventos de la SDL
+		
+		if (!reset) {
+			render();         // Dibuja los objetos en la venta
+			handleEvents();   // Maneja los eventos de la SDL
+		}
 		
 		// Tiempo que se ha tardado en ejecutar lo anterior
 		uint32_t elapsed = SDL_GetTicks() - inicio;
@@ -216,18 +248,15 @@ void Game::render() const
 
 	// Pinta los objetos del juego.
 	tileMap->render();
-	player->render();
-	renderGoombas();
-	renderKoopas();
+	player->render(renderer);
+	//renderGoombas();
+	//renderKoopas();
 	renderBlocks();
 
 	// Muestra todo lo renderizado.
 	SDL_RenderPresent(renderer);
 }
 
-Texture* Game::getTexture(TextureName name) const {
-	return textures[name];
-}
 
 Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
 
@@ -256,27 +285,14 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 		}
 	}
 	if (!result.collides) {
-		/*int i = 0;
-		while (i < mushrooms.size() && !result.collides) {
+		int i = 0;
+		/*while (i < mushrooms.size() && !result.collides) {
 			mushrooms[i]->hit(result, rect, fromPlayer);
 			if (!result.collides) ++i;
 		}*/
 	}
 	if (!result.collides) result = tileMap->hit(rect, fromPlayer);
 	return result;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	//Collision::collision colTilemap = tileMap->hit(rect, fromPlayer); // Tilemap.
@@ -328,20 +344,52 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 
 void Game::update()
 {
-	// Actualiza los objetos del juego
-	tileMap->update();
-
-	updateGoombas();
-
 	player->update();
 
-	updateBlocks();
+	if (!reset) {
+		// Actualiza los objetos del juego
+		tileMap->update();
 
-	updateKoopas();
+		updateGoombas();
 
-	// Si la posición del player supera la mitad, avanza (corregir).
-	if (player->getX() > WIN_TILE_WIDTH/2 - 1 && player->getMovingDer()) {
-		mapOffset += sumMapOffset;
+
+		updateBlocks();
+
+		updateKoopas();
+
+		// Si la posición del player supera la mitad, avanza (corregir).
+		/*if (player->GetX() > WIN_TILE_WIDTH/2 - 0.2 && player->getMovingDer() ) {
+			mapOffset += sumMapOffset;
+		}*/
+
+
+		//eliminar los enemigos desaparecidos
+		for (int i = 0; i < goombas.size(); ++i) {
+			if (!goomba[i]->isAliveGoomba()) {
+				goomba[i] = goomba.back();
+				goomba.pop_back();
+			}
+		}
+		for (int i = 0; i < koopas.size(); ++i) {
+			if (!koopa[i]->isAliveKoopa()) {
+				koopa[i] = koopa.back();
+				koopa.pop_back();
+			}
+		}
+
+		//eliminar los bloques destruidos por supermario
+		for (int i = 0; i < blocks.size(); ++i) {
+			if (blocks[i]->isDestroyed()) {
+				blocks[i] = blocks.back();
+				blocks.pop_back();
+			}
+		}
+		for (int i = 0; i < mushrooms.size(); ++i) {
+			if (mushrooms[i]->hasBeenEaten()) {
+				mushrooms[i] = mushrooms.back();
+				mushrooms.pop_back();
+			}
+		}
 	}
 }
 
@@ -360,4 +408,11 @@ void Game::handleEvents()
 }
 
 
+void Game::resetLevel() {
 
+	player->resetPlayerPos();
+	reset = true;
+	deleteObj(); //eleminar los vectores de elemetos antes de leer otra vez
+	createEntitymap();
+	mapOffset = 0;
+}

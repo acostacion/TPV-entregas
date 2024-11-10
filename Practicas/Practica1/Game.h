@@ -25,6 +25,7 @@ class Player;
 class Goomba;
 class Koopa;
 class Blocks;
+class Mushroom;
 
 class Game {
 public:
@@ -48,15 +49,17 @@ private:
     int mapOffset; // Lleva la coordenada x del extremo izquierdo de la vista.
     const int sumMapOffset = 12;
 
-    bool Smario = false;;
-
+    bool Smario = false;
+    bool seguir;
+    bool reset;
     // Objetos del juego
     TileMap* tileMap;
-    Player* player;
+    Player* player = nullptr;
 
     std::vector<Goomba*> goombas;
     std::vector<Blocks*> blocks;
     std::vector<Koopa*> koopas;
+    std::vector<Mushroom*> mushrooms;
 
     // --- MÉTODOS AUXILIARES ---.
     // Constructora.
@@ -70,7 +73,10 @@ private:
     void updateKoopas() const;
     void updateGoombas() const;
     void updateBlocks() const;
-    
+
+    void comparePlayerPos();
+    void deleteObj();
+
     // Colisiones.
    
     void ChangeMario() {
@@ -86,6 +92,8 @@ public:
     void update();
     void render() const;
     void handleEvents();
+    void endGame();
+    void resetLevel();
 
     Collision::collision checkCollision(const SDL_Rect&, bool);
     //Collision::collision checkPlayerCollision(const SDL_Rect&, bool);
@@ -108,17 +116,43 @@ public:
     Uint64 LAST = NOW;
     double deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
 
-    inline
-    int getMapOffset() { return mapOffset; }
-    inline
-    void setMapOffset(int e) { mapOffset = e; }
-    inline
-        bool getSMario() { return Smario; }
+    
+    int getMapOffset() const;
+    int getPlayerDirectionY() const;
+    void addMushroom(Mushroom* n);
 
-    inline
-        SDL_Renderer* getRender() { return renderer; }
+
+    void setMapOffset(int e) { mapOffset = e; }
+   
+    bool getSMario() { return Smario; }
+
+    SDL_Renderer* getRender() { return renderer; }
 
     //Player getPlayerPos() { return player; }
 
     ~Game();
 };
+
+
+inline Texture*
+Game::getTexture(TextureName name) const
+{
+    return textures[name];
+}
+inline int
+Game::getMapOffset() const {
+    return mapOffset;
+}
+
+inline int
+Game::getPlayerDirectionY() const {
+    return player->getPlayerDir().GetY();
+}
+inline void
+Game::addMushroom(Mushroom* n) {
+    mushrooms.push_back(n);
+}
+inline void
+Game::endGame() {
+    seguir = false;
+}

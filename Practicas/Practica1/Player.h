@@ -29,14 +29,11 @@ private:
 	bool isGrounded; // si esta en el suelo
 	bool isJumping;
 	bool movingDer; // si se esta moviendo a la derecha, se usa en el game para saber si mueve el mapoffset y que no se mueva infinitamente si esta en ese borde
-	bool moving; // si se mueve para la animacion
 
 #pragma endregion
 
 #pragma region Animation
-
 	int anim; // indice del frame de la animacion
-	SDL_RendererFlip flip; // para que se gire horizontalmente la animacion
 
 #pragma endregion
 
@@ -44,7 +41,7 @@ private:
 
 	int invulnerableTimer;
 	int life;
-	int margenColi = 1;
+	int margenColi = 9;
 	bool superMario = false;
 	bool invulnerable;
 
@@ -58,7 +55,7 @@ private:
 	SDL_Rect getCollider(bool forRender) const;
 	SDL_Rect getNextCollider(int x, int y) const;
 	void animation();
-	void change();
+	void changeMario();
 	void jump();
 	void decreaseLife();
 	

@@ -37,7 +37,7 @@ public:
 	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
 	const float MAX_FALL_SPEED = 0.2f;
 
-	void render();
+	void render(SDL_Renderer* renderer);
 	void update();
 	Collision::collision hit(const SDL_Rect&, bool);
 

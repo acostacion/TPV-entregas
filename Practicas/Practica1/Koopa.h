@@ -25,7 +25,7 @@ public:
 	SDL_Rect createRect(float w, float h, float x, float y);
 	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
 
-	void render();
+	void render(SDL_Renderer* renderer);
 	void update();
 	Collision::collision hit(const SDL_Rect&, bool);
 
