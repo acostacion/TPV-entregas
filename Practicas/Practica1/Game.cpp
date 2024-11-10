@@ -365,30 +365,30 @@ void Game::update()
 
 		//eliminar los enemigos desaparecidos
 		for (int i = 0; i < goombas.size(); ++i) {
-			if (!goomba[i]->isAliveGoomba()) {
-				goomba[i] = goomba.back();
-				goomba.pop_back();
+			if (!goombas[i]->getDead()) {
+				goombas[i] = goombas.back();
+				goombas.pop_back();
 			}
 		}
 		for (int i = 0; i < koopas.size(); ++i) {
-			if (!koopa[i]->isAliveKoopa()) {
-				koopa[i] = koopa.back();
-				koopa.pop_back();
+			if (!koopas[i]->getDead()) {
+				koopas[i] = koopas.back();
+				koopas.pop_back();
 			}
 		}
 
 		//eliminar los bloques destruidos por supermario
 		for (int i = 0; i < blocks.size(); ++i) {
-			if (blocks[i]->isDestroyed()) {
+			if (blocks[i]->getDestroied()) {
 				blocks[i] = blocks.back();
 				blocks.pop_back();
 			}
 		}
 		for (int i = 0; i < mushrooms.size(); ++i) {
-			if (mushrooms[i]->hasBeenEaten()) {
+			/*if (mushrooms[i]->hasBeenEaten()) {
 				mushrooms[i] = mushrooms.back();
 				mushrooms.pop_back();
-			}
+			}*/
 		}
 	}
 }

@@ -44,6 +44,7 @@ public:
 	// Getter de la posX del Goomba.
 	float getX()const { return this->pos.GetX(); }
 	bool getFrozen()const { return frozen; }
+	bool getDead()const { return dead; }
 	Point2D<float> getDir()const { return dir; }
 
 

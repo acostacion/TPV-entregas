@@ -96,18 +96,18 @@ Collision::collision Blocks::hit(const SDL_Rect& rect, bool fromPlayer){
 		SDL_bool collision = SDL_HasIntersection(&blockRect, &rect);
 
 		// Si colisiona el collider del bloque con otro...
-		if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
+		//if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
 
 		// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
 		if (tipo == Tipos::ladrillo) {
 			if (fromPlayer) {
 				if (game->getSMario()) { // MARIO PEQUEÑO.
 					// ladrillo no se puede romper.
-					colBlock = { true, false, blockRect };
+					//colBlock = { true, false, blockRect };
 				}
 				else { // MARIO GRANDE.
 					// ladrillo se puede romper.
-					colBlock = { true, true, blockRect };
+					//colBlock = { true, true, blockRect };
 				}
 			}
 		}

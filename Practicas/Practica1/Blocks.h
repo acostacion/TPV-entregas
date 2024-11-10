@@ -34,6 +34,7 @@ private:
 	// COSAS DEL BLOCK.
 	Point2D<float> pos;
 	SDL_Rect collider;
+	bool destroied = false;
 
 	// ENUMS.
 	Tipos tipo; // ladrillo, sorpresa, vacio, oculto
@@ -48,12 +49,14 @@ private:
 public:
 	Blocks(Game*, std::istream&);
 
-	void render();
+	void render(SDL_Renderer* renderer);
 	void update();
 	Collision::collision hit(const SDL_Rect&, bool);
 
 	// Submétodos.
 	SDL_Rect createBlockRect();
+
+	bool getDestroied() const { return destroied; }
 
 };
 
