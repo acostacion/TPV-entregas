@@ -50,7 +50,6 @@ private:
     const int sumMapOffset = 12;
 
     bool Smario = false;
-    bool seguir;
     bool reset;
     // Objetos del juego
     TileMap* tileMap;
@@ -144,10 +143,7 @@ Game::getMapOffset() const {
     return mapOffset;
 }
 
-inline int
-Game::getPlayerDirectionY() const {
-    return player->getPlayerDir().GetY();
-}
+
 inline void
 Game::addMushroom(Mushroom* n) {
     mushrooms.push_back(n);

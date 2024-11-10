@@ -28,8 +28,7 @@ private:
 
 	bool isGrounded; // si esta en el suelo
 	bool isJumping;
-	bool movingDer; // si se esta moviendo a la derecha, se usa en el game para saber si mueve el mapoffset y que no se mueva infinitamente si esta en ese borde
-
+	
 #pragma endregion
 
 #pragma region Animation
@@ -51,10 +50,7 @@ private:
 #pragma region Methods
 
 	SDL_Rect createRect(float, float, float, float);
-	void resetPos();
 	SDL_Rect getCollider(bool forRender) const;
-	SDL_Rect getNextCollider(int x, int y) const;
-	void animation();
 	void changeMario();
 	void jump();
 	void decreaseLife();
@@ -87,9 +83,6 @@ public:
 
 	// Getters
 	float getX()const { return this->pos.GetX(); }
-	Point2D<float> getPos() const { return this->pos; }
-	bool getMovingDer()const { return movingDer; }
-	Point2D<float> getDir()const { return dir; }
 	bool isSuperMario()const; // obtener si es superMario o no.
 
 	//metodos que devuelven la posicion y direccion para detectar colisiones
@@ -97,11 +90,10 @@ public:
 	Point2D<float> getPlayerDir();
 
 	//metodo auxiliare que devuelve si es un supermario
-	bool esSuperMario() const;
 
 	int getPlayerLife() const;
 
-	void resetPlayerPos();
+	void resetPos();
 
 };
 

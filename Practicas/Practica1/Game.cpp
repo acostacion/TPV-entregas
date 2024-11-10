@@ -158,7 +158,7 @@ void Game::deleteObj() {
 
 void Game::resetLevel() {
 
-	player->resetPlayerPos();
+	player->resetPos();
 	reset = true;
 	deleteObj(); //eleminar los vectores de elemetos antes de leer otra vez
 	createEntitymap();
@@ -238,7 +238,9 @@ void Game::run()
 	}
 }
 
-
+int Game::getPlayerDirectionY() const {
+	return this->player->getPlayerDir().GetY();
+}
 
 // RENDER.
 void Game::render() const
@@ -401,18 +403,27 @@ void Game::handleEvents()
 	while (SDL_PollEvent(&evento)) {
 		if (evento.type == SDL_QUIT)
 			seguir = false;
-		else if (evento.type == SDL_KEYDOWN || evento.type == SDL_KEYUP) {
-			player->handleEvent(evento);
+		else if (evento.type == SDL_KEYDOWN) {
+
+			switch (evento.key.keysym.sym) {
+				//movimineto del player
+			case SDLK_LEFT:
+			case SDLK_RIGHT:
+			case SDLK_SPACE:
+				player->handleEvent(evento);
+				break;
+			}
+		}
+		else if (evento.type == SDL_KEYUP) {
+			switch (evento.key.keysym.sym) {
+			case SDLK_LEFT:
+			case SDLK_RIGHT:
+			case SDLK_SPACE:
+				player->handleEvent(evento);
+				break;
+			}
 		}
 	}
 }
 
 
-void Game::resetLevel() {
-
-	player->resetPlayerPos();
-	reset = true;
-	deleteObj(); //eleminar los vectores de elemetos antes de leer otra vez
-	createEntitymap();
-	mapOffset = 0;
-}

@@ -9,7 +9,7 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 	action = Accion::nada;
 	tipo = Tipos::ladrillo;
 	animFrame = 0;
-	timer = 3;
+	animTimer = 3;
 	// Lee el tipo del txt.
 	char c;
 	in >> c;
@@ -40,10 +40,10 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 	}
 }
 
-void Blocks::render() {
+void Blocks::render(SDL_Renderer* renderer) {
 
 	// si es el sorpresa
-	if (timer == 0) {
+	if (animTimer == 0) {
 		if (anim) {
 			if (animFrame == 0) animFrame = 1;
 			else if (animFrame == 1) animFrame = 2;
@@ -74,11 +74,11 @@ SDL_Rect Blocks::createBlockRect() {
 
 
 void Blocks::update() {
-	if (timer >= 0) {
-		timer--;
+	if (animTimer >= 0) {
+		animTimer--;
 	}
 	else {
-		timer = 3;
+		animTimer = 3;
 	}
 }
 

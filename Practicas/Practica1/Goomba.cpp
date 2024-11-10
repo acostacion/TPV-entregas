@@ -1,6 +1,6 @@
 #include "Goomba.h"
 
-Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false), renderer(game->getRender())
+Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
@@ -16,7 +16,7 @@ Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false), renderer
 		pos.GetY() * Game::TILE_SIDE);
 }
 
-void Goomba::render() {
+void Goomba::render(SDL_Renderer* renderer) {
 	
 	// 1. Se crea el rect.
 	SDL_Rect rect = createRect(texturaGoomba->getFrameWidth() * 2,

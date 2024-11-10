@@ -22,6 +22,7 @@ private:
 	
 public:
 	static constexpr uint TILE_MAP = 32;
+	const int OBSTACLE_THRESHOLD = 4; // constante
 
 	TileMap(); // Constructora default.
 	TileMap(std::istream&, Game*); // Constructora desde flujo de entrada y referencia al juego.

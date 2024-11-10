@@ -1,6 +1,6 @@
 #include "Koopa.h"
 
-Koopa::Koopa(Game* game, std::istream& in) : game(game), renderer(game->getRender())
+Koopa::Koopa(Game* game, std::istream& in) : game(game)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
@@ -22,7 +22,7 @@ SDL_Rect Koopa::createRect(float w, float h, float x, float y) {
 
 	return rect;
 }
-void Koopa::render() {
+void Koopa::render(SDL_Renderer* renderer) {
 	
 	// 1. Se crea el rect.
 	SDL_Rect rect;

@@ -24,8 +24,8 @@ SDL_Rect Player::createRect(float w, float h, float x, float y) {
     SDL_Rect rect;
 
     // Se le da dimensiones y posición.
-    rect.w = w - 8;
-    rect.h = h;
+    rect.w = w * 2 - 8;
+    rect.h = h * 2;
     rect.x = x;
     rect.y = y;
 
@@ -75,7 +75,15 @@ void Player::decreaseLife() {
         }
     }
 }
-
+void Player::jump() {
+    if (isJumping && altura < MAX_ALTURA) { //cuando se ha pulsado space
+        altura++;
+        isGrounded = false;
+    }
+    else if (!isGrounded) { //si ha llegado a la altura maxima y no esta en el suelo
+        dir.SetY(1);
+    }
+}
 void Player::render(SDL_Renderer* renderer) {
 	
     SDL_Rect rect = getCollider(true);
@@ -160,7 +168,7 @@ void Player::update() {
     Point2D<float> nextPos = pos + dir * MOVE_SPEED;
 
     if (nextPos.GetX() * Game::TILE_SIDE >= game->getMapOffset()) { //si mario no pasa del borde izq
-        SDL_Rect nextCollider = getNextCollider(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
+        SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE, pos.GetX() * Game::TILE_SIDE, pos.GetY() * Game::TILE_SIDE);
         Collision::collision result = game->checkCollision(nextCollider, true);
 
         if (result.damages) {
