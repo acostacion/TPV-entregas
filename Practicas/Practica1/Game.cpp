@@ -232,51 +232,56 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 
 	Collision::collision colTilemap = tileMap->hit(rect, fromPlayer); // Tilemap.
 	if (colTilemap.collides) return colTilemap;
-	
-
-	/*if (!fromPlayer) { // si es el player
-		for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
-			//goombas[i]->hit();
-		}
-
-		for (int i = 0; i < koopas.size(); ++i) {
-			//koopas[i]->hit();
-		}
-
-		for (int i = 0; i < blocks.size(); ++i) {
-			//blocks[i]->hit();
-		}
-
-	}
-	else { // si es enemigo
-		//player->hit();
-		for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
-			//goombas[i]->hit();
-		}
-
-		for (int i = 0; i < koopas.size(); ++i) {
-			//koopas[i]->hit();
-		}
-
-		for (int i = 0; i < blocks.size(); ++i) {
-			//blocks[i]->hit();
-		}
-	}*/
-
-
-	int i = 0;
-	bool found = false;
 
 	// Goombas.
-	
+	int i = 0;
+	bool found = false;
+	while (i < goombas.size() && !found) 
+	{
+		Collision::collision colGoomba = goombas[i]->hit(rect, fromPlayer);
+		if (colGoomba.collides) {
+			found = true;
+			return colGoomba;
+		}
+		i++;
+	}
 
 	// Bloques.
+	i = 0;
+	found = false;
+	while (i < blocks.size() && !found)
+	{
+		Collision::collision colBlock = blocks[i]->hit(rect, fromPlayer);
+		if (colBlock.collides) {
+			found = true;
+			return colBlock;
+		}
+		i++;
+	}
 
 	// Koopas.
+	i = 0;
+	found = false;
+	while (i < koopas.size() && !found)
+	{
+		Collision::collision colKoopas = koopas[i]->hit(rect, fromPlayer);
+		if (colKoopas.collides) {
+			found = true;
+			return colKoopas;
+		}
+		i++;
+	}
 
 	// Sin colisión.
-
+	Collision::collision notCollision = { false, false };
+	return notCollision;
+	
 }
+
+
+	
+
+
 
 
 

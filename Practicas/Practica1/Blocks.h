@@ -37,7 +37,7 @@ public:
 
 	void render();
 	void update();
-	Collision hit(const SDL_Rect&, bool);
+	Collision::collision hit(const SDL_Rect&, bool);
 
 	// Submétodos.
 	SDL_Rect createBlockRect();
