@@ -107,25 +107,16 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 	int col0 = rect.x / Game::TILE_SIDE;
 
 	// Celda del nivel que contiene la esquina inferior derecha del rectángulo
-	int row1 = (rect.y + rect.h) / Game::TILE_SIDE;
-	int col1 = (rect.x + rect.w) / Game::TILE_SIDE;
+	int row1 = (rect.y + rect.h - 1) / Game::TILE_SIDE;
+	int col1 = (rect.x + rect.w - 1) / Game::TILE_SIDE;
 
 	for (int row = row0; row <= row1; ++row)
-		for (int col = col0; col <= col1; ++col)
-			if (map[row][col] % texture->getNumColumns() < OBSTACLE_THRESHOLD)
-			{
-				SDL_Rect rectTile;
-				rectTile.w = texture->getFrameWidth();
-				rectTile.h = texture->getFrameHeight();
-				rectTile.x = row * Game::TILE_SIDE;
-				rectTile.y = col * Game::TILE_SIDE;
+		for (int col = col0; col <= col1; ++col) {
+			int indice = map[row][col];
 
+			if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD)
 				colres.collides = true;
-				SDL_IntersectRect(&rectTile, &rect, &colres.intersectRect);
-				return colres;
-			}
-
-
+		}
 	return colres;
 }
 
