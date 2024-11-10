@@ -273,19 +273,9 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 	}
 
 	// Sin colisión.
-	Collision::collision notCollision = { false, false };
-	return notCollision;
+	return { false, false, SDL_Rect{0,0,0,0} };
 	
 }
-
-
-	
-
-
-
-
-
-
 
 void Game::update()
 {

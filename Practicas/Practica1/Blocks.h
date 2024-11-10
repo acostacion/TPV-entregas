@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Vector2D.h"
 #include "Collision.h"
+#include "Player.h"
 
 class Game;
 class Blocks
@@ -32,6 +33,7 @@ private:
 	int animFrame; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
 	bool anim; // si tiene que animarse, seria solo el sorpresa
 	int timer;
+	Player* player; // referencia al player.
 public:
 	Blocks(Game*, std::istream&);
 

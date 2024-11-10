@@ -58,5 +58,6 @@ public:
 	Point2D<float> getPos() const { return this->pos; }
 	bool getMovingDer()const { return movingDer; }
 	Point2D<float> getDir()const { return dir; }
+	bool isSuperMario()const { return this->superMario; } // obtener si es superMario o no.
 };
 

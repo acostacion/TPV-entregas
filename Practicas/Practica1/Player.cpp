@@ -120,8 +120,9 @@ void Player::handleEvent(SDL_Event evento) {
 }
 
 void Player::update() {
-    //
-    //collider.y = pos.GetY() + dir.GetY();
+    
+    /*
+    ////collider.y = pos.GetY() + dir.GetY();
    
     //Collision::collision collisionRes2 = game->checkCollision(collider, true);
 
@@ -182,19 +183,18 @@ void Player::update() {
 
 
     //collider.x = pos.GetX();
-    //collider.y = pos.GetY();
+    //collider.y = pos.GetY();*/
 
-    if (!isGrounded) {
-        dir.SetY(dir.GetY() + GRAVITY); // GRAVITY es un valor positivo que representa la gravedad
-    }
+    //if (!isGrounded) {
+    //    dir.SetY(dir.GetY() + GRAVITY); // GRAVITY es un valor positivo que representa la gravedad
+    //}
 
     // Colisión y movimiento en el eje Y.
     //if (!isGrounded) {
     
     collider.y = pos.GetY() + dir.GetY();
+    auto colY = game->checkCollision(collider, false); // Comprueba si colisiona.
 
-    // Comprueba si colisiona.
-    auto colY = game->checkCollision(collider, false);
     if (colY.collides) {
         if (dir.GetY() > 0 ) { // baja
             // Cuando cae.
@@ -202,7 +202,6 @@ void Player::update() {
             collider.y += colY.intersectRect.y - collider.h/32;
             dir.SetY(0);
             std::cout << "Collides" << "\n";
-
             std::cout << "Pos X: " << pos.GetX() << ", Pos Y: " << pos.GetY() << std::endl;
             std::cout << "Dir X: " << dir.GetX() << ", Dir Y: " << dir.GetY() << std::endl;
             std::cout << "Collider X: " << collider.x << ", Collider Y: " << collider.y << std::endl;
