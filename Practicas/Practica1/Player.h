@@ -17,6 +17,7 @@ private:
 	
 	Point2D<float> dir;
 	Point2D<float> pos;
+	Point2D<float> posInicio;
 	
 	SDL_Rect collider;
 	Collision::collision collisionRes;
@@ -25,7 +26,7 @@ private:
 	int life;
 	int margenColi = 1;
 	float verticalVelocity;
-	bool superMario, invulnerable;
+	bool superMario = false, invulnerable;
 	bool isGrounded; // si esta en el suelo
 	bool movingDer; // si se esta moviendo a la derecha, se usa en el game para saber si mueve el mapoffset y que no se mueva infinitamente si esta en ese borde
 	bool moving; // si se mueve para la animacion
@@ -44,7 +45,7 @@ private:
 	
 	// Submétodos.
 	SDL_Rect createRect(float, float, float, float);
-
+	void resetPos();
 public:
 	Player(Game*, std::istream&);
 

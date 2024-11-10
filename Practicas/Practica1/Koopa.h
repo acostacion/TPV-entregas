@@ -16,7 +16,7 @@ private:
 	SDL_Rect collider;
 	Point2D<float> pos;
 	Point2D<float> dir;
-	bool startMoving;
+	bool frozen;
 	bool dead;
 	int anim;
 
@@ -31,7 +31,7 @@ public:
 
 	// Getter de la posX del player.
 	float getX()const { return this->pos.GetX(); }
-	bool getMoving()const { return startMoving; }
+	bool getFrozen()const { return frozen; }
 	Point2D<float> getDir()const { return dir; }
 
 };

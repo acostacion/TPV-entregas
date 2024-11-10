@@ -5,7 +5,7 @@ Koopa::Koopa(Game* game, std::istream& in) : game(game), renderer(game->getRende
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	dir = Point2D<float>(0,0);
-    startMoving = true;
+    frozen = true;
 	dead = false;
 	anim = 0;
 	texturaKoopa = game->getTexture(Game::KOOPA);
@@ -57,7 +57,7 @@ void Koopa::render() {
 
 void Koopa::update() {
 
-    if (startMoving) {
+    if (!frozen) {
 		dir = Point2D<float>(-MOVE_SPEED, 0);
     }
 	pos = pos + dir;

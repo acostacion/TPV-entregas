@@ -10,7 +10,6 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 	tipo = Tipos::ladrillo;
 	animFrame = 0;
 	timer = 3;
-
 	// Lee el tipo del txt.
 	char c;
 	in >> c;
@@ -84,42 +83,46 @@ void Blocks::update() {
 }
 
 Collision::collision Blocks::hit(const SDL_Rect& rect, bool fromPlayer){
-
 	// collides, damages, intersectrect.
-	Collision::collision colBlock = { false, false, SDL_Rect{0,0,0,0} }; // Colisión del bloque.
+	Collision::collision colBlock;
+	if (!(collider.x == rect.x && collider.y == rect.y && collider.w == rect.w && collider.h == rect.h))
+	{
+		
 
-	// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
-	SDL_Rect blockRect = createBlockRect();
+		// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
+		SDL_Rect blockRect = createBlockRect();
 
-	 //Colisiona un rect que viene de fuera con el del bloque.
-	SDL_bool collision = SDL_HasIntersection(&blockRect, &rect);
+		//Colisiona un rect que viene de fuera con el del bloque.
+		SDL_bool collision = SDL_HasIntersection(&blockRect, &rect);
 
-	// Si colisiona el collider del bloque con otro...
-	if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
+		// Si colisiona el collider del bloque con otro...
+		if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
 
-	// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
-	if (tipo == Tipos::ladrillo) {
-		if (fromPlayer) {
-			if (!player->isSuperMario()) { // MARIO PEQUEÑO.
-				// ladrillo no se puede romper.
-				colBlock = { true, false, blockRect };
+		// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
+		if (tipo == Tipos::ladrillo) {
+			if (fromPlayer) {
+				if (game->getSMario()) { // MARIO PEQUEÑO.
+					// ladrillo no se puede romper.
+					colBlock = { true, false, blockRect };
+				}
+				else { // MARIO GRANDE.
+					// ladrillo se puede romper.
+					colBlock = { true, true, blockRect };
+				}
 			}
-			else { // MARIO GRANDE.
-				// ladrillo se puede romper.
-				colBlock = { true, true, blockRect };
+		}
+		else if (tipo == Tipos::sorpresa) {
+			if (fromPlayer) { // Si mario siendo M o SM choca con los sorpresa.
+				// O sale la seta o salen monedas, etc.
 			}
 		}
-	}
-	else if (tipo == Tipos::sorpresa) {
-		if (fromPlayer) { // Si mario siendo M o SM choca con los sorpresa.
-			// O sale la seta o salen monedas, etc.
+		else if (tipo == Tipos::vacio) {
+			if (fromPlayer) { // Si mario siendo M o SM choca con los vacios.
+				// Aparece el bloque vacío (se le cambia la textura y se muestra lo que era).
+			}
 		}
-	}
-	else if (tipo == Tipos::vacio) {
-		if (fromPlayer) { // Si mario siendo M o SM choca con los vacios.
-			// Aparece el bloque vacío (se le cambia la textura y se muestra lo que era).
-		}
-	}
 
+	}
 	return colBlock;
+
 }

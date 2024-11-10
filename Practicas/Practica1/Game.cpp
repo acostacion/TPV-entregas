@@ -38,6 +38,7 @@ Game::Game() : seguir(true){
 	createTextures();
 
 	mapOffset = 0;
+	Smario = false;
 
 	// --- MAPAS ---.
 	createTilemap();
@@ -230,51 +231,99 @@ Texture* Game::getTexture(TextureName name) const {
 
 Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
 
-	Collision::collision colTilemap = tileMap->hit(rect, fromPlayer); // Tilemap.
-	if (colTilemap.collides) return colTilemap;
+	Collision::collision result;// por defecto los booleanos estan falsos todos
 
-	// Goombas.
-	int i = 0;
-	bool found = false;
-	while (i < goombas.size() && !found) 
-	{
-		Collision::collision colGoomba = goombas[i]->hit(rect, fromPlayer);
-		if (colGoomba.collides) {
-			found = true;
-			return colGoomba;
+	//colision con los bloques
+	if (!result.collides) {
+		int i = 0;
+		while (i < blocks.size() && !result.collides) {
+			result = blocks[i]->hit( rect, fromPlayer);
+			if (!result.collides) ++i;
 		}
-		i++;
 	}
-
-	// Bloques.
-	i = 0;
-	found = false;
-	while (i < blocks.size() && !found)
-	{
-		Collision::collision colBlock = blocks[i]->hit(rect, fromPlayer);
-		if (colBlock.collides) {
-			found = true;
-			return colBlock;
+	if (!result.collides) {
+		int i = 0;
+		while (i < goombas.size() && !result.collides) {
+			if (!goombas[i]->getFrozen()) result = goombas[i]->hit(rect, fromPlayer);
+			if (!result.collides) ++i;
 		}
-		i++;
 	}
-
-	// Koopas.
-	i = 0;
-	found = false;
-	while (i < koopas.size() && !found)
-	{
-		Collision::collision colKoopas = koopas[i]->hit(rect, fromPlayer);
-		if (colKoopas.collides) {
-			found = true;
-			return colKoopas;
+	if (!result.collides) {
+		int i = 0;
+		while (i < koopas.size() && !result.collides) {
+			if (!koopas[i]->getFrozen()) result = koopas[i]->hit(rect, fromPlayer);
+			if (!result.collides) ++i;
 		}
-		i++;
 	}
+	if (!result.collides) {
+		/*int i = 0;
+		while (i < mushrooms.size() && !result.collides) {
+			mushrooms[i]->hit(result, rect, fromPlayer);
+			if (!result.collides) ++i;
+		}*/
+	}
+	if (!result.collides) result = tileMap->hit(rect, fromPlayer);
+	return result;
 
-	// Sin colisión.
-	return { false, false, SDL_Rect{0,0,0,0} };
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//Collision::collision colTilemap = tileMap->hit(rect, fromPlayer); // Tilemap.
+	//if (colTilemap.collides) return colTilemap;
+
+	//// Goombas.
+	//int i = 0;
+	//bool found = false;
+	//while (i < goombas.size() && !found) 
+	//{
+	//	Collision::collision colGoomba = goombas[i]->hit(rect, fromPlayer);
+	//	if (colGoomba.collides) {
+	//		found = true;
+	//		return colGoomba;
+	//	}
+	//	i++;
+	//}
+
+	//// Bloques.
+	//i = 0;
+	//found = false;
+	//while (i < blocks.size() && !found)
+	//{
+	//	Collision::collision colBlock = blocks[i]->hit(rect, fromPlayer);
+	//	if (colBlock.collides) {
+	//		found = true;
+	//		return colBlock;
+	//	}
+	//	i++;
+	//}
+
+	//// Koopas.
+	//i = 0;
+	//found = false;
+	//while (i < koopas.size() && !found)
+	//{
+	//	Collision::collision colKoopas = koopas[i]->hit(rect, fromPlayer);
+	//	if (colKoopas.collides) {
+	//		found = true;
+	//		return colKoopas;
+	//	}
+	//	i++;
+	//}
+
+	//// Sin colisión.
+	//return { false, false, SDL_Rect{0,0,0,0} };
+	//
 }
 
 void Game::update()

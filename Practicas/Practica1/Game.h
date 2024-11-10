@@ -48,6 +48,8 @@ private:
     int mapOffset; // Lleva la coordenada x del extremo izquierdo de la vista.
     const int sumMapOffset = 12;
 
+    bool Smario = false;;
+
     // Objetos del juego
     TileMap* tileMap;
     Player* player;
@@ -71,6 +73,10 @@ private:
     
     // Colisiones.
    
+    void ChangeMario() {
+        if (Smario) Smario = false;
+        else Smario = true;
+    }
 
 public:
 
@@ -106,6 +112,8 @@ public:
     int getMapOffset() { return mapOffset; }
     inline
     void setMapOffset(int e) { mapOffset = e; }
+    inline
+        bool getSMario() { return Smario; }
 
     inline
         SDL_Renderer* getRender() { return renderer; }

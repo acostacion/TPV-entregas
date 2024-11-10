@@ -97,8 +97,7 @@ SDL_Rect TileMap::createRect(int w, int h, int x, int y) {
 Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 {
 	Collision::collision colres;
-	colres.collides = false;
-	colres.damages = false;
+
 	colres.intersectRect = createRect(0,0,0,0);
 
 	constexpr int OBSTACLE_THRESHOLD = 4; // constante

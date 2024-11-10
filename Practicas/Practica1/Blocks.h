@@ -8,6 +8,7 @@
 #include "Player.h"
 
 class Game;
+class Player;
 class Blocks
 {
 public: 
@@ -25,6 +26,8 @@ public:
 	};
 
 private:
+	Player* player; // referencia al player.
+	SDL_Rect collider;
 	Game* game;
 	Texture* texturaBlock;
 	Point2D<float> pos; 
@@ -33,7 +36,6 @@ private:
 	int animFrame; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
 	bool anim; // si tiene que animarse, seria solo el sorpresa
 	int timer;
-	Player* player; // referencia al player.
 public:
 	Blocks(Game*, std::istream&);
 

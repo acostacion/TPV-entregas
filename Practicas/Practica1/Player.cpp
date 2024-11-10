@@ -7,7 +7,7 @@ Player::Player(Game* game, std::istream& in)
     isGrounded(true)
 {
 	in >> pos; // lee pos.
-	pos = pos - Point2D<float>(0, 1); // coloca a pos.
+	pos = pos - Point2D<float>(0, 1.5); // coloca a pos.
 	in >> life; // el n�mero de vidas
 
 	texturaMario = game->getTexture(Game::MARIO);
@@ -19,6 +19,11 @@ Player::Player(Game* game, std::istream& in)
     collider.y = pos.GetY();
     invulnerable = false;
     verticalVelocity = 0;
+    posInicio = pos;
+}
+
+void Player::resetPos() { //REINICIAR LA POSICION DEL JUGADOR
+    pos = posInicio;
 }
 
 SDL_Rect Player::createRect(float w, float h, float x, float y) {

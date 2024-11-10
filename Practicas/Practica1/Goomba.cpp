@@ -6,7 +6,7 @@ Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false), renderer
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	dir = Point2D<float>(0,0);
 	isGrounded = true;
-	startMoving = false;
+	frozen = false;
 	timer = 3;
 	anim = 0;
     texturaGoomba = game->getTexture(Game::GOOMBA);
@@ -77,7 +77,7 @@ void Goomba::update() {
 	Point2D<float> playerPos ;
 	Point2D<float> dis = playerPos - pos;
 	if (dis.GetX() >= 10.0) {
-		startMoving = true;
+		frozen = true;
 	}
 
 
@@ -88,7 +88,7 @@ void Goomba::update() {
 		timer = 3;
 	}
 
-    if (startMoving) {
+    if (frozen) {
 		dir = Point2D<float>(-MOVE_SPEED, 0);
     }
 	pos = pos + dir;

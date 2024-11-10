@@ -19,7 +19,7 @@ private:
 	Point2D<float> dir;
 
 	bool isGrounded;
-	bool startMoving;
+	bool frozen;
 	bool dead;
 
 	int timer;
@@ -43,7 +43,7 @@ public:
 
 	// Getter de la posX del Goomba.
 	float getX()const { return this->pos.GetX(); }
-	bool getMoving()const { return startMoving; }
+	bool getFrozen()const { return frozen; }
 	Point2D<float> getDir()const { return dir; }
 
 
