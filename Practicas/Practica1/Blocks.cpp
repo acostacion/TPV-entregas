@@ -41,23 +41,6 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 		break;
 	}
 }
-
-void Blocks::render(SDL_Renderer* renderer) {
-
-	// si es el sorpresa
-	if (animTimer == 0) {
-		if (anim) {
-			if (animFrame == 0) animFrame = 1;
-			else if (animFrame == 1) animFrame = 2;
-			else if (animFrame == 2) animFrame = 3;
-			else if (animFrame == 3) animFrame = 0;
-		}
-	}
-
-	// Se renderiza.
-	texturaBlock->renderFrame(createBlockRect(), 0, animFrame);
-}
-
 // Submétodos.
 SDL_Rect Blocks::createBlockRect() {
 
@@ -73,6 +56,31 @@ SDL_Rect Blocks::createBlockRect() {
 
 	return rect;
 }
+void Blocks::render(SDL_Renderer* renderer) {
+
+	// si es el sorpresa
+	if (animTimer == 0) {
+		if (anim) {
+			if (animFrame == 0) animFrame = 1;
+			else if (animFrame == 1) animFrame = 2;
+			else if (animFrame == 2) animFrame = 3;
+			else if (animFrame == 3) animFrame = 0;
+		}
+	}
+	SDL_Rect rect = createBlockRect();
+	// Se renderiza.
+	texturaBlock->renderFrame(rect, 0, animFrame);
+
+	if (Game::DEBUG) {
+		SDL_Rect rect2 = createBlockRect();
+
+		SDL_SetRenderDrawColor(renderer, 255, 255, 0, 128);
+		SDL_RenderDrawRect(renderer, &rect2);
+		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+	}
+}
+
+
 
 
 void Blocks::update() {

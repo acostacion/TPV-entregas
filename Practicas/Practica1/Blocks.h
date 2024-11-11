@@ -51,6 +51,7 @@ public:
 
 	void render(SDL_Renderer* renderer);
 	void update();
+
 	Collision::collision hit(const SDL_Rect&, bool);
 
 	// Submétodos.

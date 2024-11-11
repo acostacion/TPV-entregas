@@ -21,13 +21,10 @@ private:
 	bool isGrounded;
 	bool dead;
 
-	int timer;
-	int anim;
-	SDL_Rect collisionRect;
 	SDL_Rect getRect(bool) const;
 	SDL_Rect createRect(float, float);
 public:
-	Mushroom(Game *); // No tengo claro q ha de ir en la constructora, se leería con std??
+	Mushroom(Game *, float, float); // No tengo claro q ha de ir en la constructora, se leería con std??
 	void render(SDL_Renderer* renderer);
 	void update();
 	Collision::collision hit(const SDL_Rect&, bool);

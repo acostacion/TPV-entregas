@@ -96,9 +96,7 @@ public:
     void resetLevel();
 
     Collision::collision checkCollision(const SDL_Rect&, bool);
-    //Collision::collision checkPlayerCollision(const SDL_Rect&, bool);
-    //Collision::collision checkEnemyCollision(const SDL_Rect&, bool);
-
+    
     Texture* getTexture(TextureName) const;
     //void LoadMap();
 

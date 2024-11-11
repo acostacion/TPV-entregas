@@ -1,8 +1,12 @@
 ﻿#include "Mushroom.h"
 
 
-Mushroom::Mushroom(Game* _game) {
+Mushroom::Mushroom(Game* _game, float x, float y) {
 	game = _game;
+	pos = Point2D<float>(x, y);
+	dir = Point2D<float>(1, 0);
+	isGrounded = false;
+	dead = false;
 	texturaMushroom = game->getTexture(Game::MUSHROOM);
 }
 
@@ -45,9 +49,9 @@ void Mushroom::render(SDL_Renderer* renderer) {
 	rect.h = texturaMushroom->getFrameHeight() * 2;
 	rect.x = pos.GetX() * Game::TILE_SIDE;
 	rect.y = pos.GetY() * Game::TILE_SIDE;
+	texturaMushroom->renderFrame(rect, 0, 1);
 
 	if (Game::DEBUG) {
-		texturaMushroom->renderFrame(rect, 0, anim);
 		Point2D<float> nextPos = pos + dir * MOVE_SPEED;
 		SDL_Rect rect2 = createRect(
 			nextPos.GetX() * Game::TILE_SIDE,
@@ -60,9 +64,19 @@ void Mushroom::render(SDL_Renderer* renderer) {
 }
 
 void Mushroom::update() {
-
+	pos = pos + dir * MOVE_SPEED;
 }
 
-Collision::collision Mushroom::hit(const SDL_Rect&, bool) {
+Collision::collision Mushroom::hit(const SDL_Rect& other, bool fromPlayer) {
+	Collision::collision res;
+	res.fromMushroom = true;
 
+	if (fromPlayer) { // se elimina y cambia el player
+		dead = true;
+	}
+	else {// se invierte
+		dir.SetX(-dir.GetX());
+	}
+
+	return res;
 }
