@@ -23,11 +23,11 @@ SDL_Rect Player::createRect(float x, float y) {
     SDL_Rect rect;
 
     if (!superMario) { // MARIO.
-        rect.w = texturaMario->getFrameWidth();
+        rect.w = texturaMario->getFrameWidth() - 8;
         rect.h = texturaMario->getFrameHeight();
     }
     else { // SUPER MARIO.
-        rect.w = texturaSMario->getFrameWidth();
+        rect.w = texturaSMario->getFrameWidth() - 8;
         rect.h = texturaSMario->getFrameHeight();
     }
     rect.x = x + 8;
@@ -54,6 +54,7 @@ SDL_Rect Player::getRect(bool forRender) const {
     }
     return rect;
 }
+
 
 void Player::resetPos() { //REINICIAR LA POSICION DEL JUGADOR
     pos = posInicio;
@@ -116,7 +117,6 @@ void Player::animateMario() {
         else if (anim == 3) anim = 4;
         else if (anim == 4) anim = 0;
         else if (anim == 6) anim = 0;
-
     }
     else anim = 0;
 }
@@ -180,13 +180,12 @@ void Player::update() {
                 pos = nextPos;
                 isGrounded = false;
             }
-            else if (result.fromMushroom && !superMario) {
-                superMario = true;
-                changeMario();
+            else if (result.fromMushroom) {
+                if(!superMario) changeMario();
             }
-            else if (result.fromEnemy && superMario) {
-                superMario = false;
-                changeMario();
+            else if (result.fromEnemy) {
+                if (superMario) changeMario();
+                else decreaseLife();
             }
             else {
                 // Si hay colisión, verificar el margen en función de la dirección
@@ -205,227 +204,11 @@ void Player::update() {
 
     }
 
-    /*
-    ////collider.y = pos.GetY() + dir.GetY();
-   
-    //Collision::collision collisionRes2 = game->checkCollision(collider, true);
-
-    //if (collisionRes2) {
-    //    if (verticalVelocity > 0) {
-    //        // Colisión desde abajo, estamos cayendo hacia el suelo
-    //        collider.y = collisionRes2.intersectRect.y - collider.h;
-    //        isGrounded = true;
-    //        verticalVelocity = 0; // Detener el movimiento vertical
-    //    }
-    //    else if (verticalVelocity < 0) {
-    //        // Colisión desde arriba (ej., saltar contra el techo)
-    //        collider.y = collisionRes2.intersectRect.y + collisionRes2.intersectRect.h;
-    //        verticalVelocity = 0; // Detener el movimiento hacia arriba
-    //    }
-    //    pos = Point2D<float>(collider.x, collider.y);
-
-    //}else {
-    // // Si no hay colisión, sigue en el aire
-    //    isGrounded = false;
-    //}
-
-    //if (dir.GetX() > 0) {
-    //    collider.x = pos.GetX() + dir.GetX();
-
-
-    //    // Comprobar colisiones horizontales con el mapa
-    //    collisionRes2 = game->checkCollision(collider, true);
-
-    //    if (collisionRes2.collides) {
-    //        // Colisión a la derecha (pared u obstáculo)
-    //        collider.x = collisionRes2.intersectRect.x - collider.w;
-    //    }
-    //    else {
-    //        collider.x += MOVE_SPEED;
-
-    //    }
-    //    pos = Point2D<float>(collider.x, collider.y);
-
-    //}
-    //else if (dir.GetX() <  0) {
-    //    collider.x = pos.GetX() + dir.GetX();
-
-    //    // Comprobar colisiones horizontales con el mapa
-    //    collisionRes2 = game->checkCollision(collider, true);
-
-    //    if (collisionRes2.collides) {
-    //        // Colisión a la izquierda (pared u obstáculo)
-    //        collider.x = collisionRes2.intersectRect.x + collisionRes2.intersectRect.w;
-    //    }
-    //    else {
-    //        collider.x -= MOVE_SPEED;
-
-    //    }
-    //    pos = Point2D<float>(collider.x, collider.y);
-
-    //}
-
-
-    //collider.x = pos.GetX();
-    //collider.y = pos.GetY();
-
-    //if (!isGrounded) {
-    //    dir.SetY(dir.GetY() + GRAVITY); // GRAVITY es un valor positivo que representa la gravedad
-    //}
-
-    // Colisión y movimiento en el eje Y.
-    //if (!isGrounded) {
-    
-    //collider.y = pos.GetY() + dir.GetY();
-    //auto colY = game->checkCollision(collider, false); // Comprueba si colisiona.
-
-    //if (colY.collides) {
-    //    if (dir.GetY() > 0 ) { // baja
-    //        // Cuando cae.
-    //        isGrounded = true;
-    //        collider.y += colY.intersectRect.y - collider.h/32;
-    //        dir.SetY(0);
-    //        std::cout << "Collides" << "\n";
-    //        std::cout << "Pos X: " << pos.GetX() << ", Pos Y: " << pos.GetY() << std::endl;
-    //        std::cout << "Dir X: " << dir.GetX() << ", Dir Y: " << dir.GetY() << std::endl;
-    //        std::cout << "Collider X: " << collider.x << ", Collider Y: " << collider.y << std::endl;
-    //    }
-    //    else {
-
-    //    }
-    //}
-   
-    ////}
-    //
-    //
-    //// Colisión y movimiento en el eje X.
-    //if (moving) {
-    //    pos.SetX(pos.GetX() + dir.GetX()); // posX = posX + dirX
-    //    collider.x = pos.GetX();
-
-    //    // Comprueba si colisiona.
-    //    auto colX = game->checkCollision(collider, true);
-    //    if (colX.collides) {
-    //        dir.SetX(0);
-    //    }
-    //}
-    //else {
-    //    // DECELERATION cuando deja de moverse.
-    //    dir.SetX(dir.GetX() * (1.0f - DECELERATION));
-    //    if (std::abs(dir.GetX()) < 0.1f) dir.SetX(0);
-    //}
-    //if (dir.GetX() > 0) movingDer = true;
-
-    //if (pos.GetX() < 0) { // no se vaya por la izquierda
-    //    pos.SetX(0);
-    //}
-    //else if (pos.GetX() > Game::WIN_TILE_WIDTH / 2) // no pase de la mitad
-    //{
-    //    pos.SetX(game->WIN_TILE_WIDTH / 2);
-    //}
-    //pos.SetX(pos.GetX() + dir.GetX());
-    //pos.SetY(pos.GetY() + dir.GetY());
-    //if (pos.GetX() < 0) { // no se vaya por la izquierda
-    //    pos.SetX(0);
-    //}
-    //else if (pos.GetX() > Game::WIN_TILE_WIDTH / 2) // no pase de la mitad
-    //{
-    //    pos.SetX(game->WIN_TILE_WIDTH / 2);
-    //}
-    //collider.x = pos.GetX();
-    //collider.y = pos.GetY();
-   
-    //
-    //
-   
-
-
-
-    //collider.x = pos.GetX() + dir.GetX();
-    //collider.y = pos.GetY() + dir.GetY();
-
-    //collisionRes = game->checkCollision(collider, true); // con el suelo
-
-    //if (!collisionRes) {
-    //    pos = Point2D<float>(collider.x, collider.y);
-    //    isGrounded = false;
-    //    dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
-    //    std::cout << "No he colisionado con el suelo" << "\n";
-
-    //}
-    //else {
-    //    if (collisionRes.intersectRect.h > margenColi){
-    //        //dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
-    //        pos = Point2D<float>(collider.x, pos.GetY());
-    //        isGrounded = true;
-    //        std::cout << "He colisionado con el suelo" << "\n";
-
-    //    }
-    //    else {
-    //        pos = Point2D<float>(collider.x, collider.y);
-    //        std::cout << "He colisionado con el suelo pero me caigo" << "\n";
-
-    //    }
-
-    //}
-    
-
-
-    //collider.x = pos.GetX() + dir.GetX();
-    //
-
-    //collisionRes = game->checkCollision(collider, true); // hacia los lados
-
-    //if (collisionRes) {
-    //    if (collisionRes.intersectRect.w > margenColi) {
-    //        std::cout << "No puedo moverme" << "\n";
-    //        pos = Point2D<float>(pos.GetX(), pos.GetY());
-    //        moving = false;
-    //    }
-    //    else {
-    //        std::cout << "Me muevo "<< collider.x << "\n";
-
-    //        pos = Point2D<float>(collider.x, collider.y);
-    //    }
-    //}
-    //else {
-    //}
-    //pos = pos + dir;
-
-
-    
-    
-     if (!moving) {
-        if (std::abs(dir.GetX()) < DECELERATION) {
-            dir = Point2D<float>(0, dir.GetY());
-        }
-        else {
-            dir = Point2D<float>(dir.GetX() * 0.8, dir.GetY());
-        }
-    }
-
-    */
    
 }
 
 Collision::collision Player::hit(const SDL_Rect otherRect) {
     Collision::collision resultadoFinal;
-    //SDL_Rect result = createRect(0, 0, 0, 0);
    
-    //SDL_IntersectRect(&collisionRes.intersectRect, &collider, &result);
-    //SDL_bool haColisionado= SDL_HasIntersection(&collisionRes.intersectRect, &collider);
-    //if (haColisionado) {
-
-    //}
-
-    //if (!invulnerable) {
-    //    if (superMario) { superMario = false; invulnerable = true; invulnerableTimer = SDL_GetTicks(); }
-
-    //    else {
-    //        life--; if (life <= 0) { // Fin del juego 
-    //        } 
-    //    } 
-    //} else if (SDL_GetTicks() - invulnerableTimer > 2000) { invulnerable = false; }
-    //        
     return resultadoFinal;
 }

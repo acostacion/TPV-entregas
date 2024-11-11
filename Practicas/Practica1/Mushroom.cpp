@@ -34,7 +34,7 @@ SDL_Rect Mushroom::createRect(float x, float y) {
 	rect.w = texturaMushroom->getFrameWidth();
 	rect.h = texturaMushroom->getFrameHeight();
 	
-	rect.x = x + 8;
+	rect.x = x;
 	rect.y = y;
 
 	return rect;

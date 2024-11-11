@@ -117,51 +117,63 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 
 	Collision::collision colBlock;
 	SDL_Rect rect = createBlockRect();
-
-	if (SDL_IntersectRect(&other, &rect, &colBlock.intersectRect)) { // si hay interseccion
+	bool res = SDL_IntersectRect(&other, &rect, &colBlock.intersectRect);
+	if (res) { // si hay interseccion
 		/*if (!(collider.x == rect.x && collider.y == rect.y && collider.w == rect.w && collider.h == rect.h))
 		{*/
-		if(fromPlayer){
-			// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
+		if (fromPlayer && other.y > rect.y) {
+			if (other.y <= rect.y + rect.h) {
+				// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
 
-			//Colisiona un rect que viene de fuera con el del bloque.
-			
+				//Colisiona un rect que viene de fuera con el del bloque.
 
-			// Si colisiona el collider del bloque con otro...
-			//if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
 
-			// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
-			if (tipo == Tipos::ladrillo) {
-				
-				if (game->getSMario()) { // MARIO Grande.
-					// ladrillo se puede romper
+				// Si colisiona el collider del bloque con otro...
+				//if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
+
+				// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
+				if (tipo == Tipos::ladrillo) {
+
+					if (game->getSMario()) { // MARIO Grande.
+						// ladrillo se puede romper
+						tipo = Tipos::vacio;
+						//colBlock = { true, false, blockRect };
+					}
+
+				}
+				else if (tipo == Tipos::sorpresa) {
+					// Si mario siendo M o SM choca con los sorpresa.
+					// O sale la seta o salen monedas, etc.
+					if (action == Accion::moneda) {
+
+					}
+					else if (action == Accion::potenciador) {
+						game->addMushroom(new Mushroom(game, pos.GetX(), pos.GetY() - Game::TILE_SIDE));
+					}
+
 					tipo = Tipos::vacio;
-					//colBlock = { true, false, blockRect };
+					changeSprite();
 				}
-				
-			}
-			else if (tipo == Tipos::sorpresa) {
-				// Si mario siendo M o SM choca con los sorpresa.
-				// O sale la seta o salen monedas, etc.
-				if (action == Accion::moneda) {
+				else if (tipo == Tipos::oculto) {
+					// Si mario siendo M o SM choca con los vacios.
+					// Aparece el bloque vacío (se le cambia la textura y se muestra lo que era).
+					if (action == Accion::moneda) {
+
+					}
+					else if (action == Accion::potenciador) {
+						game->addMushroom(new Mushroom(game, pos.GetX(), pos.GetY() - Game::TILE_SIDE));
+					}
+					tipo = Tipos::ladrillo;
+					changeSprite();
+				}
+				else if (tipo == Tipos::vacio) {
 
 				}
-				else if (action == Accion::potenciador) {
-					game->addMushroom(new Mushroom(game, pos.GetX(), pos.GetY() - Game::TILE_SIDE));
-				}
-
-				tipo = Tipos::vacio;
-				changeSprite();
 			}
-			else if (tipo == Tipos::vacio) {
-				// Si mario siendo M o SM choca con los vacios.
-				// Aparece el bloque vacío (se le cambia la textura y se muestra lo que era).
-				
-			}
-
 		}
-       		colBlock.collides = true;
+		colBlock.collides = true;
 
+		
 	}
 	return colBlock;
 
