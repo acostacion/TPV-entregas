@@ -107,30 +107,30 @@ void Goomba::update() {
 
 Collision::collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 	// TILEMAP.
-	if (!fromPlayer) {
-		if (rect.w >= rect.h){
-			if (rect.y < collisionRect.y) {
-				isGrounded = true;
-			}
-		}
-		else if(rect.h > rect.x) {
-			if (dir.GetX() == MOVE_SPEED) {
-				dir = Point2D<float>(-MOVE_SPEED, dir.GetY());
-			}
-			else if(dir.GetX() == -MOVE_SPEED){
-				dir = Point2D<float>(MOVE_SPEED, dir.GetY());
-			}
-		}
-		else {
-			isGrounded = true;
-		}
-	}
-	else {
-		if (rect.w >= rect.h) {
-			// elimina goomba
-			delete this;
-		}
-	}
+	//if (!fromPlayer) {
+	//	if (rect.w >= rect.h){
+	//		if (rect.y < collisionRect.y) {
+	//			isGrounded = true;
+	//		}
+	//	}
+	//	else if(rect.h > rect.x) {
+	//		if (dir.GetX() == MOVE_SPEED) {
+	//			dir = Point2D<float>(-MOVE_SPEED, dir.GetY());
+	//		}
+	//		else if(dir.GetX() == -MOVE_SPEED){
+	//			dir = Point2D<float>(MOVE_SPEED, dir.GetY());
+	//		}
+	//	}
+	//	else {
+	//		isGrounded = true;
+	//	}
+	//}
+	//else {
+	//	if (rect.w >= rect.h) {
+	//		// elimina goomba
+	//		delete this;
+	//	}
+	//}
 
 	Collision::collision col;
 	return col;

@@ -195,6 +195,27 @@ void Game::updateBlocks() const {
 		blocks[i]->update();
 	}
 }
+
+void Game::ActMapOffset() {
+	/*if (player->getPlayerPos().GetX() * TILE_SIDE >= mapOffset + (WIN_WIDTH / 2)) {
+		mapOffset += sumMapOffset;
+		sumMapOffset += (WIN_WIDTH / 2 - sumMapOffset) * 0.7;
+	}
+	else sumMapOffset = 1;*/
+
+	/*if (player->getPlayerPos().GetX() > mapOffset + WIN_TILE_WIDTH / 2 - 0.2)
+		mapOffset += sumMapOffset;*/
+		// Scroll horizontal
+
+	int posP = player->getPlayerPos().GetX() * TILE_SIDE;
+	int mitadPantalla = (WIN_WIDTH / 2) + mapOffset;
+	if (posP > mitadPantalla) {
+		// Si el jugador está a la derecha del centro, desplazamos el mapa a la izquierda
+		mapOffset += posP - mitadPantalla;
+	}
+
+
+}
 #pragma endregion
 
 // DESTRUCTORA.
@@ -359,10 +380,7 @@ void Game::update()
 
 		updateKoopas();
 
-		// Si la posición del player supera la mitad, avanza (corregir).
-		/*if (player->GetX() > WIN_TILE_WIDTH/2 - 0.2 && player->getMovingDer() ) {
-			mapOffset += sumMapOffset;
-		}*/
+		ActMapOffset();
 
 
 		//eliminar los enemigos desaparecidos

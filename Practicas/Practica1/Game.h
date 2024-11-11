@@ -47,7 +47,7 @@ private:
     std::array<Texture*, NUM_TEXTURES> textures; // Array con todas las texturas del juego
     bool seguir; // Interruptor para terminar el juego
     int mapOffset; // Lleva la coordenada x del extremo izquierdo de la vista.
-    const int sumMapOffset = 12;
+    int sumMapOffset = 1;
 
     bool Smario = false;
     bool reset;
@@ -73,7 +73,7 @@ private:
     void updateGoombas() const;
     void updateBlocks() const;
 
-    void comparePlayerPos();
+    void ActMapOffset();
     void deleteObj();
 
     // Colisiones.
