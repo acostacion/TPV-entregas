@@ -17,6 +17,7 @@
 #include "Koopa.h"
 #include "Blocks.h"
 #include "Collision.h"
+#include "Mushroom.h"
 
 
 using uint = unsigned int;

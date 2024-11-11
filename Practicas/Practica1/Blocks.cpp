@@ -81,8 +81,6 @@ void Blocks::render(SDL_Renderer* renderer) {
 }
 
 
-
-
 void Blocks::update() {
 	if (animTimer >= 0) {
 		animTimer--;
@@ -92,29 +90,29 @@ void Blocks::update() {
 	}
 }
 
-Collision::collision Blocks::hit(const SDL_Rect& rect, bool fromPlayer){
+Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 	// collides, damages, intersectrect.
 
 	// hay que poner el mushroom si hay en el game
 
-
 	Collision::collision colBlock;
-	if (!(collider.x == rect.x && collider.y == rect.y && collider.w == rect.w && collider.h == rect.h))
-	{
-		
+	SDL_Rect rect = createBlockRect();
 
-		// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
-		SDL_Rect blockRect = createBlockRect();
+	if (SDL_IntersectRect(&other, &rect, &colBlock.intersectRect)) { // si hay interseccion
+		/*if (!(collider.x == rect.x && collider.y == rect.y && collider.w == rect.w && collider.h == rect.h))
+		{*/
+		if(fromPlayer){
+			// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
 
-		//Colisiona un rect que viene de fuera con el del bloque.
-		SDL_bool collision = SDL_HasIntersection(&blockRect, &rect);
+			//Colisiona un rect que viene de fuera con el del bloque.
+			
 
-		// Si colisiona el collider del bloque con otro...
-		//if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
+			// Si colisiona el collider del bloque con otro...
+			//if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
 
-		// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
-		if (tipo == Tipos::ladrillo) {
-			if (fromPlayer) {
+			// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
+			if (tipo == Tipos::ladrillo) {
+				
 				if (game->getSMario()) { // MARIO PEQUEÑO.
 					// ladrillo no se puede romper.
 					//colBlock = { true, false, blockRect };
@@ -123,18 +121,21 @@ Collision::collision Blocks::hit(const SDL_Rect& rect, bool fromPlayer){
 					// ladrillo se puede romper.
 					//colBlock = { true, true, blockRect };
 				}
+				
 			}
-		}
-		else if (tipo == Tipos::sorpresa) {
-			if (fromPlayer) { // Si mario siendo M o SM choca con los sorpresa.
+			else if (tipo == Tipos::sorpresa) {
+				// Si mario siendo M o SM choca con los sorpresa.
 				// O sale la seta o salen monedas, etc.
+				
 			}
-		}
-		else if (tipo == Tipos::vacio) {
-			if (fromPlayer) { // Si mario siendo M o SM choca con los vacios.
+			else if (tipo == Tipos::vacio) {
+				// Si mario siendo M o SM choca con los vacios.
 				// Aparece el bloque vacío (se le cambia la textura y se muestra lo que era).
+				
 			}
+
 		}
+		colBlock.collides = true;
 
 	}
 	return colBlock;

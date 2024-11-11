@@ -198,15 +198,6 @@ void Game::updateBlocks() const {
 }
 
 void Game::ActMapOffset() {
-	/*if (player->getPlayerPos().GetX() * TILE_SIDE >= mapOffset + (WIN_WIDTH / 2)) {
-		mapOffset += sumMapOffset;
-		sumMapOffset += (WIN_WIDTH / 2 - sumMapOffset) * 0.7;
-	}
-	else sumMapOffset = 1;*/
-
-	/*if (player->getPlayerPos().GetX() > mapOffset + WIN_TILE_WIDTH / 2 - 0.2)
-		mapOffset += sumMapOffset;*/
-		// Scroll horizontal
 
 	int posP = player->getPlayerPos().GetX() * TILE_SIDE;
 	int mitadPantalla = (WIN_WIDTH / 2) + mapOffset;
@@ -273,8 +264,8 @@ void Game::render() const
 	// Pinta los objetos del juego.
 	tileMap->render();
 	player->render(renderer);
-	//renderGoombas();
-	//renderKoopas();
+	renderGoombas();
+	renderKoopas();
 	renderBlocks();
 
 	// Muestra todo lo renderizado.

@@ -69,14 +69,18 @@ void Mushroom::update() {
 
 Collision::collision Mushroom::hit(const SDL_Rect& other, bool fromPlayer) {
 	Collision::collision res;
-	res.fromMushroom = true;
-
-	if (fromPlayer) { // se elimina y cambia el player
-		dead = true;
+	SDL_Rect rect = getRect(false);
+	if(SDL_IntersectRect(&other, &rect, &res.intersectRect)) {
+		res.fromMushroom = true;
+		res.collides = true;
+		if (fromPlayer) { // se elimina y cambia el player
+			dead = true;
+		}
+		else {// se invierte
+			dir.SetX(-dir.GetX());
+		}
 	}
-	else {// se invierte
-		dir.SetX(-dir.GetX());
-	}
+	
 
 	return res;
 }

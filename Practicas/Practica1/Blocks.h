@@ -6,10 +6,11 @@
 #include "Vector2D.h"
 #include "Collision.h"
 #include "Player.h"
+#include "Mushroom.h"
 
 class Game;
 class Player;
-
+class Mushrrom;
 class Blocks
 {
 public: 
