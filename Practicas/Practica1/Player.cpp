@@ -124,7 +124,7 @@ void Player::render(SDL_Renderer* renderer) {
     if (Game::DEBUG){
         Point2D<float> nextPos = pos + dir * MOVE_SPEED;
         SDL_Rect rect2 = createRect(
-            nextPos.GetX() * Game::TILE_SIDE, 
+            nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
             nextPos.GetY() * Game::TILE_SIDE);
 
         SDL_SetRenderDrawColor(renderer,255,0,0,128 );
@@ -172,7 +172,7 @@ void Player::update() {
     Point2D<float> nextPos = pos + dir * MOVE_SPEED;
 
     if (nextPos.GetX() * Game::TILE_SIDE >= game->getMapOffset()) { //si mario no pasa del borde izq
-        SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
+        SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(), nextPos.GetY() * Game::TILE_SIDE);
         Collision::collision result = game->checkCollision(nextCollider, true);
 
         if (result.damages) {

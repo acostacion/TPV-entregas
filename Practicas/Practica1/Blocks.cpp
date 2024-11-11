@@ -126,7 +126,13 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 			else if (tipo == Tipos::sorpresa) {
 				// Si mario siendo M o SM choca con los sorpresa.
 				// O sale la seta o salen monedas, etc.
-				
+				if (action == Accion::moneda) {
+
+				}
+				else if (action == Accion::potenciador) {
+					Mushroom n = Mushroom(game, pos.GetX(), pos.GetY()-Game::TILE_SIDE);
+					game->addMushroom(&n);
+				}
 			}
 			else if (tipo == Tipos::vacio) {
 				// Si mario siendo M o SM choca con los vacios.
