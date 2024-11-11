@@ -49,8 +49,8 @@ private:
 	
 #pragma region Methods
 
-	SDL_Rect createRect(float, float, float, float);
-	SDL_Rect getCollider(bool forRender) const;
+	SDL_Rect createRect(float, float);
+	SDL_Rect getRect(bool forRender) const;
 	void changeMario();
 	void jump();
 	void decreaseLife();

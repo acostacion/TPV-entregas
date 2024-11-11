@@ -19,20 +19,26 @@ Player::Player(Game* game, std::istream& in)
 }
 
 
-SDL_Rect Player::createRect(float w, float h, float x, float y) {
+SDL_Rect Player::createRect(float x, float y) {
     // Se crea el rect.
     SDL_Rect rect;
 
     // Se le da dimensiones y posición.
-    rect.w = w * 2 - 8;
-    rect.h = h * 2;
-    rect.x = x;
+    if (!superMario) {
+        rect.w = texturaMario->getFrameWidth();
+        rect.h = texturaMario->getFrameHeight();
+    }
+    else {
+        rect.w = texturaSMario->getFrameWidth();
+        rect.h = texturaSMario->getFrameHeight();
+    }
+    rect.x = x +8;
     rect.y = y;
 
     return rect;
 }
 
-SDL_Rect Player::getCollider(bool forRender) const {
+SDL_Rect Player::getRect(bool forRender) const {
     SDL_Rect rect;
 
     rect.x = pos.GetX() * Game::TILE_SIDE;
@@ -41,12 +47,12 @@ SDL_Rect Player::getCollider(bool forRender) const {
         rect.x = (pos.GetX() * Game::TILE_SIDE) - game->getMapOffset();
     }
     if (!superMario) {
-        rect.w = texturaMario->getFrameWidth() * 2;
-        rect.h = texturaMario->getFrameHeight() * 2;
+        rect.w = texturaMario->getFrameWidth();
+        rect.h = texturaMario->getFrameHeight();
     }
     else {
-        rect.w = texturaSMario->getFrameWidth() * 2;
-        rect.h = texturaSMario->getFrameHeight() * 2;
+        rect.w = texturaSMario->getFrameWidth();
+        rect.h = texturaSMario->getFrameHeight();
     }
     return rect;
 }
@@ -86,7 +92,7 @@ void Player::jump() {
 }
 void Player::render(SDL_Renderer* renderer) {
 	
-    SDL_Rect rect = getCollider(true);
+    SDL_Rect rect = getRect(true);
 
     // Frame de la animacion
 
@@ -118,8 +124,6 @@ void Player::render(SDL_Renderer* renderer) {
     if (Game::DEBUG){
         Point2D<float> nextPos = pos + dir * MOVE_SPEED;
         SDL_Rect rect2 = createRect(
-            texturaMario->getFrameWidth(), 
-            texturaMario->getFrameHeight(), 
             nextPos.GetX() * Game::TILE_SIDE, 
             nextPos.GetY() * Game::TILE_SIDE);
 
@@ -168,7 +172,7 @@ void Player::update() {
     Point2D<float> nextPos = pos + dir * MOVE_SPEED;
 
     if (nextPos.GetX() * Game::TILE_SIDE >= game->getMapOffset()) { //si mario no pasa del borde izq
-        SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE, pos.GetX() * Game::TILE_SIDE, pos.GetY() * Game::TILE_SIDE);
+        SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
         Collision::collision result = game->checkCollision(nextCollider, true);
 
         if (result.damages) {

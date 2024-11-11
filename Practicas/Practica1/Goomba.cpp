@@ -107,7 +107,7 @@ void Goomba::update() {
 
 Collision::collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 	// collides, damages, intersectrect.
-	Collision::collision colGoomba;
+	/*Collision::collision colGoomba;
 
 	//Colisiona un rect que viene de fuera con el del goomba.
 	SDL_bool collision = SDL_HasIntersection(&collisionRect, &rect);
@@ -143,7 +143,7 @@ Collision::collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 		else { // Colisión con OTRO SITIO.
 			colGoomba.damages = true; //  SI DAÑA JUGADOR.
 		}
-	}
+	}*/
 
 	Collision::collision col;
 	return col;

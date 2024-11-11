@@ -68,7 +68,7 @@ void TileMap::render() {
 				texture->renderFrame(rect, fy, fx);
 
 				if (Game::DEBUG) {
-					SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
+					SDL_SetRenderDrawColor(renderer, 0, 255, 0, 128);
 					SDL_RenderDrawRect(renderer, &rect);
 					SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
 				}
