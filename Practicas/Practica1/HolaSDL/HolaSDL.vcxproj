@@ -76,6 +76,7 @@
     <ClCompile Include="..\Player.cpp" />
     <ClCompile Include="..\Texture.cpp" />
     <ClCompile Include="..\TileMap.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Blocks.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="..\Texture.h" />
     <ClInclude Include="..\TileMap.h" />
     <ClInclude Include="..\Vector2D.h" />
+    <ClInclude Include="Mushroom.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

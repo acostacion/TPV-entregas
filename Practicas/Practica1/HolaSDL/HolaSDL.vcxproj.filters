@@ -39,6 +39,9 @@
     <ClCompile Include="..\Koopa.cpp">
       <Filter>Archivos de encabezado\Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Archivos de encabezado\Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\checkML.h">
@@ -69,6 +72,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="..\Collision.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
