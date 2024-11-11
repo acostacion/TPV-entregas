@@ -106,8 +106,18 @@ void Goomba::update() {
 }
 
 Collision::collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
-	// TILEMAP.
-	if (!fromPlayer) {
+	// collides, damages, intersectrect.
+	Collision::collision colGoomba;
+
+	//Colisiona un rect que viene de fuera con el del goomba.
+	SDL_bool collision = SDL_HasIntersection(&collisionRect, &rect);
+
+	if (collision) colGoomba.collides = true;
+
+	if (!fromPlayer) { // NOT JUGADOR.
+
+		colGoomba.damages = false;
+
 		if (rect.w >= rect.h){
 			if (rect.y < collisionRect.y) {
 				isGrounded = true;
@@ -125,10 +135,13 @@ Collision::collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 			isGrounded = true;
 		}
 	}
-	else {
-		if (rect.w >= rect.h) {
-			// elimina goomba
-			delete this;
+	else { // JUGADOR.
+		if (rect.w >= rect.h) { // Colisión de ARRIBA.
+			colGoomba.damages = false; // NO DAÑA JUGADOR.
+			delete this; // delete goomba.
+		}
+		else { // Colisión con OTRO SITIO.
+			colGoomba.damages = true; //  SI DAÑA JUGADOR.
 		}
 	}
 
