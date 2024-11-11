@@ -95,6 +95,8 @@ public:
 
 	void resetPos();
 
+	void animateMario();
+	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*) const;
 };
 
 
@@ -116,5 +118,7 @@ inline int
 Player::getPlayerLife() const {
 	return life;
 }
+
+
 
 

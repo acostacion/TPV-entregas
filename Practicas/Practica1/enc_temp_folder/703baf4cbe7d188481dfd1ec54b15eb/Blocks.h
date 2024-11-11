@@ -35,7 +35,7 @@ private:
 	// COSAS DEL BLOCK.
 	Point2D<float> pos;
 	SDL_Rect collider;
-	bool destroyed = false;
+	bool destroied = false;
 
 	// ENUMS.
 	Tipos tipo; // ladrillo, sorpresa, vacio, oculto
@@ -59,7 +59,7 @@ public:
 	// Submétodos.
 	SDL_Rect createBlockRect();
 
-	bool getDestroyed() const { return destroyed; }
+	bool getDestroied() const { return destroied; }
 
 };
 

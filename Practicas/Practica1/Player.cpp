@@ -5,8 +5,8 @@ Player::Player(Game* game, std::istream& in)
     : game(game), superMario(false), altura(0), isGrounded(false), isJumping(false), dir(DIR_INI)
 {
 	in >> pos; // lee pos.
-	pos = pos - Point2D<float>(0, 1.5); // coloca a pos.
-	in >> life; // el n�mero de vidas
+	pos = pos - Point2D<float>(0, 1.5); // ajusta pos.
+	in >> life; // vidas.
 
 	texturaMario = game->getTexture(Game::MARIO);
 	texturaSMario = game->getTexture(Game::SUPERMARIO);
@@ -18,21 +18,19 @@ Player::Player(Game* game, std::istream& in)
     posInicio = pos;
 }
 
-
 SDL_Rect Player::createRect(float x, float y) {
     // Se crea el rect.
     SDL_Rect rect;
 
-    // Se le da dimensiones y posición.
-    if (!superMario) {
+    if (!superMario) { // MARIO.
         rect.w = texturaMario->getFrameWidth();
         rect.h = texturaMario->getFrameHeight();
     }
-    else {
+    else { // SUPER MARIO.
         rect.w = texturaSMario->getFrameWidth();
         rect.h = texturaSMario->getFrameHeight();
     }
-    rect.x = x +8;
+    rect.x = x + 8;
     rect.y = y;
 
     return rect;
@@ -61,14 +59,7 @@ void Player::resetPos() { //REINICIAR LA POSICION DEL JUGADOR
     pos = posInicio;
 }
 
-void Player::changeMario() {
-    if (superMario) {
-        superMario = false;
-    }
-    else {
-        superMario = true;;
-    }
-}
+void Player::changeMario() { superMario = !superMario; }
 
 void Player::decreaseLife() {
     if (life > 0) {
@@ -94,32 +85,10 @@ void Player::render(SDL_Renderer* renderer) {
 	
     SDL_Rect rect = getRect(true);
 
-    // Frame de la animacion
-
-    if (dir == DIR_INI) { //cuando se queda quieto
-        anim = 0;
-    }
-    else if (!isGrounded) {//salto
-        anim = 6;
-    }
-    else if (dir.GetX() != 0 && isGrounded) 
-    {
-        if (anim == 0) anim = 2;
-        else if (anim == 2) anim = 3;
-        else if (anim == 3) anim = 4;
-        else if (anim == 4) anim = 0;
-        else if (anim == 6) anim = 0;
-      
-    } else anim = 0;
-
+    animateMario();
     
 	// Se renderiza.
-    if (!superMario) {
-        texturaMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
-    else {
-        texturaSMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
+    renderMarioAnimation(rect, renderer);   
 
     if (Game::DEBUG){
         Point2D<float> nextPos = pos + dir * MOVE_SPEED;
@@ -130,6 +99,34 @@ void Player::render(SDL_Renderer* renderer) {
         SDL_SetRenderDrawColor(renderer,255,0,0,128 );
         SDL_RenderDrawRect(renderer, &rect2);
         SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+    }
+}
+
+void Player::animateMario() {
+    if (dir == DIR_INI) { //cuando se queda quieto
+        anim = 0;
+    }
+    else if (!isGrounded) {//salto
+        anim = 6;
+    }
+    else if (dir.GetX() != 0 && isGrounded)
+    {
+        if (anim == 0) anim = 2;
+        else if (anim == 2) anim = 3;
+        else if (anim == 3) anim = 4;
+        else if (anim == 4) anim = 0;
+        else if (anim == 6) anim = 0;
+
+    }
+    else anim = 0;
+}
+
+void Player::renderMarioAnimation(const SDL_Rect& rect, SDL_Renderer* renderer) const  {
+    if (!superMario) {
+        texturaMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    }
+    else {
+        texturaSMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
 }
 
@@ -270,7 +267,7 @@ void Player::update() {
 
 
     //collider.x = pos.GetX();
-    //collider.y = pos.GetY();*/
+    //collider.y = pos.GetY();
 
     //if (!isGrounded) {
     //    dir.SetY(dir.GetY() + GRAVITY); // GRAVITY es un valor positivo que representa la gravedad
@@ -396,7 +393,7 @@ void Player::update() {
     //pos = pos + dir;
 
 
-    /*
+    
     
      if (!moving) {
         if (std::abs(dir.GetX()) < DECELERATION) {

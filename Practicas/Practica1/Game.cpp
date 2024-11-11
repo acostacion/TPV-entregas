@@ -404,7 +404,7 @@ void Game::update()
 
 		//eliminar los bloques destruidos por supermario
 		for (int i = 0; i < blocks.size(); ++i) {
-			if (blocks[i]->getDestroied()) {
+			if (blocks[i]->getDestroyed()) {
 				blocks[i] = blocks.back();
 				blocks.pop_back();
 			}

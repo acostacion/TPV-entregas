@@ -4,14 +4,12 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
-
 	texturaBlock = game->getTexture(Game::BLOCKS); // obtiene la textura.
 	anim = false; 
 	action = Accion::nada;
 	tipo = Tipos::ladrillo;
 	animFrame = 0;
 	animTimer = 3;
-
 	// Lee el tipo del txt.
 	char c;
 	in >> c;
@@ -27,32 +25,28 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 		in >> c;
 		anim = true;
 
-		if (c == 'C') {
-			action = Accion::moneda; // Caso "coin".
-		}
-		else {
-			action = Accion::potenciador; // Caso "potentiator".//creo q mushroom
-		}
+		if ( c == 'C') action = Accion::moneda; // Caso "coin".
+		else action = Accion::potenciador; // Caso "potentiator".
+		//creo q mushroom
+
 		animFrame = 0;
 		break;
 
-	case 'H': // Si es un bloque oculto...
+		// Si es un bloque oculto...
+	case 'H':
 		tipo = Tipos::oculto;
-		if (c == 'C') {
-			action = Accion::moneda;
-		}
-		else {
-			action = Accion::potenciador;
-		}
+		if (c == 'C') action = Accion::moneda;
+		else action = Accion::potenciador;
 		animFrame = 6;
 		break;
 	}
 }
-
+// Submétodos.
 SDL_Rect Blocks::createBlockRect() {
 
 	// 1. Se crea el rect.
 	SDL_Rect rect;
+
 
 	// 2. Se le da dimensiones y posici�n.
 	rect.w = texturaBlock->getFrameWidth() * 2;
@@ -62,7 +56,6 @@ SDL_Rect Blocks::createBlockRect() {
 
 	return rect;
 }
-
 void Blocks::render(SDL_Renderer* renderer) {
 
 	// si es el sorpresa
