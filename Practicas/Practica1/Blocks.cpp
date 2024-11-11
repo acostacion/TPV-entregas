@@ -37,7 +37,7 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 		tipo = Tipos::oculto;
 		if (c == 'C') action = Accion::moneda;
 		else action = Accion::potenciador;
-		animFrame = 5;
+		animFrame = 6;
 		break;
 	}
 }
@@ -67,6 +67,7 @@ void Blocks::render(SDL_Renderer* renderer) {
 			else if (animFrame == 3) animFrame = 0;
 		}
 	}
+	
 	SDL_Rect rect = createBlockRect();
 	// Se renderiza.
 	texturaBlock->renderFrame(rect, 0, animFrame);
@@ -80,6 +81,18 @@ void Blocks::render(SDL_Renderer* renderer) {
 	}
 }
 
+void Blocks::changeSprite(){
+   	if (tipo == Tipos::ladrillo) {
+		animFrame = 5;
+	}
+	else if (tipo == Tipos::vacio) {
+		animFrame = 4;
+	}
+	else if (tipo == Tipos::oculto) {
+		animFrame = 6;
+	}
+	anim = false;
+}
 
 void Blocks::update() {
 	if (animTimer >= 0) {
@@ -113,13 +126,10 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 			// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
 			if (tipo == Tipos::ladrillo) {
 				
-				if (game->getSMario()) { // MARIO PEQUEÑO.
-					// ladrillo no se puede romper.
+				if (game->getSMario()) { // MARIO Grande.
+					// ladrillo se puede romper
+					tipo = Tipos::vacio;
 					//colBlock = { true, false, blockRect };
-				}
-				else { // MARIO GRANDE.
-					// ladrillo se puede romper.
-					//colBlock = { true, true, blockRect };
 				}
 				
 			}
@@ -133,6 +143,9 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 					Mushroom n = Mushroom(game, pos.GetX(), pos.GetY()-Game::TILE_SIDE);
 					game->addMushroom(&n);
 				}
+
+				tipo = Tipos::vacio;
+				changeSprite();
 			}
 			else if (tipo == Tipos::vacio) {
 				// Si mario siendo M o SM choca con los vacios.
@@ -141,7 +154,7 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 			}
 
 		}
-		colBlock.collides = true;
+       		colBlock.collides = true;
 
 	}
 	return colBlock;

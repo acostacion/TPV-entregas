@@ -176,6 +176,18 @@ void Game::renderGoombas() const{
 		goombas[i]->render(renderer);
 	}
 }
+void Game::renderMushroom() const {
+	for (int i = 0; i < mushrooms.size(); ++i) { // no he contado cuantos hay en total
+		mushrooms[i]->render(renderer);
+	}
+}
+
+void Game::updateMushroom() const {
+	for (int i = 0; i < mushrooms.size(); ++i) { // no he contado cuantos hay en total
+		mushrooms[i]->update();
+	}
+}
+
 void Game::renderKoopas() const {
 	for (int i = 0; i < koopas.size(); ++i) {
 		koopas[i]->render(renderer);
@@ -267,6 +279,7 @@ void Game::render() const
 	renderGoombas();
 	renderKoopas();
 	renderBlocks();
+	renderMushroom();
 
 	// Muestra todo lo renderizado.
 	SDL_RenderPresent(renderer);

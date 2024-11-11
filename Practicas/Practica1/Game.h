@@ -18,6 +18,7 @@
 #include "Blocks.h"
 #include "Collision.h"
 #include "Mushroom.h"
+#include "CheckML.h"
 
 
 using uint = unsigned int;
@@ -71,10 +72,11 @@ private:
     void renderBlocks() const;
     void renderGoombas() const;
     void renderKoopas() const;
+    void renderMushroom() const;
     void updateKoopas() const;
     void updateGoombas() const;
     void updateBlocks() const;
-
+    void updateMushroom() const;
     void ActMapOffset();
     void deleteObj();
 

@@ -46,6 +46,7 @@ private:
 	int animFrame; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
 	bool anim; // si tiene que animarse, seria solo el sorpresa
 	int animTimer;
+	void changeSprite();
 
 public:
 	Blocks(Game*, std::istream&);
