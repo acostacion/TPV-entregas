@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 
+#include "CheckML.h"
 #include "Game.h"
 #include "Vector2D.h"
 #include "Collision.h"
@@ -35,6 +36,8 @@ public:
 	// Getter de la posX del mushroom.
 	float getX()const { return this->pos.GetX(); }
 	Point2D<float> getDir()const { return dir; }
+
+	bool isAlive()const { return !dead; }
 
 };
 

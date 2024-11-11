@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 
+#include "CheckML.h"
 #include "Game.h"
 #include "Vector2D.h"
 #include "Collision.h"
@@ -43,9 +44,8 @@ public:
 	// Getter de la posX del Goomba.
 	float getX()const { return this->pos.GetX(); }
 	bool getFrozen()const { return frozen; }
-	bool getDead()const { return dead; }
 	Point2D<float> getDir()const { return dir; }
 
-
+	bool isAlive()const { return !dead; }
 };
 

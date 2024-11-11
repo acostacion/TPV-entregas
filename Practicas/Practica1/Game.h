@@ -9,6 +9,7 @@
 #include <SDL.h>
 
 // Nuestras clases.
+#include "CheckML.h"
 #include <vector>
 #include "Texture.h"
 #include "Player.h"
@@ -17,8 +18,7 @@
 #include "Koopa.h"
 #include "Blocks.h"
 #include "Collision.h"
-#include "Mushroom.h"
-#include "CheckML.h"
+
 
 
 using uint = unsigned int;
@@ -69,14 +69,11 @@ private:
     void createTextures();
     void createTilemap();
     void createEntitymap();
-    void renderBlocks() const;
-    void renderGoombas() const;
-    void renderKoopas() const;
-    void renderMushroom() const;
-    void updateKoopas() const;
-    void updateGoombas() const;
-    void updateBlocks() const;
-    void updateMushroom() const;
+
+    void renderEntities()const;
+    void updateEntities()const;
+    void deleteEntities();
+
     void ActMapOffset();
     void deleteObj();
 
@@ -90,21 +87,26 @@ private:
 public:
 
     Game();
-    //void loadObjectMap(std::ifstream&);
+    ~Game();
+
     void run();
     void update();
     void render() const;
     void handleEvents();
-    void endGame();
     void resetLevel();
-
+    void endGame();
     Collision::collision checkCollision(const SDL_Rect&, bool);
     
     Texture* getTexture(TextureName) const;
-    //void LoadMap();
+    int getMapOffset() const;
+    int getPlayerDirectionY() const;
+    void addMushroom(Mushroom* n);
+    void setMapOffset(int e) { mapOffset = e; }
+    bool getSMario() { return Smario; }
+    SDL_Renderer* getRender() { return renderer; }
+  
 
     // Constante globales
-
     static constexpr int TILE_SIDE = 32;
     static constexpr int WIN_TILE_WIDTH = 18;
     static constexpr int WIN_TILE_HEIGHT = 16;
@@ -116,22 +118,7 @@ public:
     Uint64 NOW = SDL_GetPerformanceCounter();
     Uint64 LAST = NOW;
     double deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
-
-    
-    int getMapOffset() const;
-    int getPlayerDirectionY() const;
-    void addMushroom(Mushroom* n);
-
-
-    void setMapOffset(int e) { mapOffset = e; }
-   
-    bool getSMario() { return Smario; }
-
-    SDL_Renderer* getRender() { return renderer; }
-
-    //Player getPlayerPos() { return player; }
-
-    ~Game();
+  
 };
 
 

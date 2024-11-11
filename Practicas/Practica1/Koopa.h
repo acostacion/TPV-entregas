@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 
+#include "CheckML.h"
 #include "Game.h"
 #include "Vector2D.h"
 #include "Collision.h"
@@ -30,9 +31,10 @@ public:
 
 	// Getter de la posX del player.
 	float getX()const { return this->pos.GetX(); }
-	bool getDead()const { return dead; }
 	bool getFrozen()const { return frozen; }
 	Point2D<float> getDir()const { return dir; }
+
+	bool isAlive()const { return !dead; }
 
 };
 

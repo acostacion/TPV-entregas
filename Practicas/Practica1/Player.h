@@ -1,6 +1,8 @@
 #pragma once
 #include <fstream>
 #include <iostream>
+
+#include "CheckML.h"
 #include "Game.h"
 #include "Vector2D.h"
 #include "Collision.h"
@@ -97,6 +99,8 @@ public:
 
 	void animateMario();
 	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*) const;
+
+	bool isAlive()const { return life > 0; } // Está vivo si life >0.
 };
 
 

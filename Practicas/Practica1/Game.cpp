@@ -166,48 +166,86 @@ void Game::resetLevel() {
 	mapOffset = 0;
 }
 
-void Game::renderBlocks() const{
+void Game::renderEntities()const {
+	// BLOCKS.
 	for (int i = 0; i < blocks.size(); ++i) {
 		blocks[i]->render(renderer);
 	}
-}
-void Game::renderGoombas() const{
+
+	// GOOMBAS.
 	for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
 		goombas[i]->render(renderer);
 	}
-}
-void Game::renderMushroom() const {
+
+	// MUSHROOMS.
 	for (int i = 0; i < mushrooms.size(); ++i) { // no he contado cuantos hay en total
 		mushrooms[i]->render(renderer);
 	}
-}
 
-void Game::updateMushroom() const {
-	for (int i = 0; i < mushrooms.size(); ++i) { // no he contado cuantos hay en total
-		mushrooms[i]->update();
-	}
-}
-
-void Game::renderKoopas() const {
+	// KOOPAS.
 	for (int i = 0; i < koopas.size(); ++i) {
 		koopas[i]->render(renderer);
 	}
 }
-void Game::updateKoopas() const {
+void Game::updateEntities()const {
+	// MUSHROOMS.
+	for (int i = 0; i < mushrooms.size(); ++i) { // no he contado cuantos hay en total
+		mushrooms[i]->update();
+	}
+
+	// KOOPAS.
 	for (int i = 0; i < koopas.size(); ++i) {
 		koopas[i]->update();
 	}
-}
-void Game::updateGoombas() const {
+
+	// GOOMBAS.
 	for (int i = 0; i < goombas.size(); ++i) {
 		goombas[i]->update();
 	}
-}
-void Game::updateBlocks() const {
+
+	// BLOCKS.
 	for (int i = 0; i < blocks.size(); ++i) {
 		blocks[i]->update();
 	}
 }
+void Game::deleteEntities() {
+	// ELIMINAR GOOMBAS.
+	for (int i = 0; i < goombas.size(); ++i) {
+		if (!goombas[i]->isAlive()) {
+			delete goombas[i];
+			goombas[i] = goombas.back();
+			goombas.pop_back();
+		}
+	}
+
+	// ELIMINAR KOOPAS
+	for (int i = 0; i < koopas.size(); ++i) {
+		if (!koopas[i]->isAlive()) {
+			delete koopas[i];
+			koopas[i] = koopas.back();
+			koopas.pop_back();
+		}
+	}
+
+	// ELIMINAR BLOQUES
+	for (int i = 0; i < blocks.size(); ++i) {
+		if (blocks[i]->getDestroyed()) {
+			delete blocks[i];
+			blocks[i] = blocks.back();
+			blocks.pop_back();
+		}
+	}
+
+	// ELIMINAR SETAS.
+	for (int i = 0; i < mushrooms.size(); ++i) {
+		if (!mushrooms[i]->isAlive()) {
+			delete mushrooms[i];
+			mushrooms[i] = mushrooms.back();
+			mushrooms.pop_back();
+		}
+	}
+}
+
 
 void Game::ActMapOffset() {
 
@@ -276,10 +314,7 @@ void Game::render() const
 	// Pinta los objetos del juego.
 	tileMap->render();
 	player->render(renderer);
-	renderGoombas();
-	renderKoopas();
-	renderBlocks();
-	renderMushroom();
+	renderEntities();
 
 	// Muestra todo lo renderizado.
 	SDL_RenderPresent(renderer);
@@ -378,46 +413,22 @@ void Game::update()
 		// Actualiza los objetos del juego
 		tileMap->update();
 
-		updateGoombas();
-
-		updateBlocks();
-
-		updateKoopas();
-
-		updateMushroom();
+		updateEntities();
 
 		ActMapOffset();
 
-
-		//eliminar los enemigos desaparecidos
-		for (int i = 0; i < goombas.size(); ++i) {
-			if (!goombas[i]->getDead()) {
-				goombas[i] = goombas.back();
-				goombas.pop_back();
-			}
-		}
-		for (int i = 0; i < koopas.size(); ++i) {
-			if (!koopas[i]->getDead()) {
-				koopas[i] = koopas.back();
-				koopas.pop_back();
-			}
+		// ELIMINAR PLAYER.
+		if (!player->isAlive()) {
+			delete player;
+			endGame();
 		}
 
-		//eliminar los bloques destruidos por supermario
-		for (int i = 0; i < blocks.size(); ++i) {
-			if (blocks[i]->getDestroyed()) {
-				blocks[i] = blocks.back();
-				blocks.pop_back();
-			}
-		}
-		for (int i = 0; i < mushrooms.size(); ++i) {
-			/*if (mushrooms[i]->hasBeenEaten()) {
-				mushrooms[i] = mushrooms.back();
-				mushrooms.pop_back();
-			}*/
-		}
+		deleteEntities();
+
+		
 	}
 }
+
 
 void Game::handleEvents()
 {

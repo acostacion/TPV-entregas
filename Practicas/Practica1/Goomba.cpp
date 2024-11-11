@@ -5,6 +5,7 @@ Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false)
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	dir = Point2D<float>(0,0);
+
 	isGrounded = true;
 	frozen = false;
 	timer = 3;
@@ -66,6 +67,7 @@ SDL_Rect Goomba::createRect(int w, int h, int x, int y) {
 
 void Goomba::update() {
 
+	// Gravedad.
 	if (!isGrounded) {
 		dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
 		if (dir.GetY() > MAX_FALL_SPEED) {
