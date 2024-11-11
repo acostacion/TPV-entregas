@@ -45,7 +45,7 @@ void Mushroom::render(SDL_Renderer* renderer) {
 	SDL_Rect rect;
 
 	// 2. Se le da dimensiones y posici�n.
-	rect.w = texturaMushroom->getFrameWidth() * 2;
+  	rect.w = texturaMushroom->getFrameWidth() * 2;
 	rect.h = texturaMushroom->getFrameHeight() * 2;
 	rect.x = pos.GetX() * Game::TILE_SIDE;
 	rect.y = pos.GetY() * Game::TILE_SIDE;

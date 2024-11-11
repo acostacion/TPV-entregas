@@ -147,8 +147,7 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 
 				}
 				else if (action == Accion::potenciador) {
-					Mushroom n = Mushroom(game, pos.GetX(), pos.GetY()-Game::TILE_SIDE);
-					game->addMushroom(&n);
+					game->addMushroom(new Mushroom(game, pos.GetX(), pos.GetY() - Game::TILE_SIDE));
 				}
 
 				tipo = Tipos::vacio;

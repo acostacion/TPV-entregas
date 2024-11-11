@@ -314,10 +314,10 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 	}
 	if (!result.collides) {
 		int i = 0;
-		/*while (i < mushrooms.size() && !result.collides) {
-			mushrooms[i]->hit(result, rect, fromPlayer);
+		while (i < mushrooms.size() && !result.collides) {
+			result = mushrooms[i]->hit(rect, fromPlayer);
 			if (!result.collides) ++i;
-		}*/
+		}
 	}
 	if (!result.collides) result = tileMap->hit(rect, fromPlayer);
 	return result;
@@ -380,10 +380,11 @@ void Game::update()
 
 		updateGoombas();
 
-
 		updateBlocks();
 
 		updateKoopas();
+
+		updateMushroom();
 
 		ActMapOffset();
 
