@@ -37,6 +37,7 @@ public:
         GOOMBA,
         BLOCKS,
         KOOPA,
+        MUSHROOM,
         NUM_TEXTURES,  // Truco C++: número de texturas definidas
     };
 

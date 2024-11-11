@@ -14,7 +14,6 @@ class Mushroom
 
 private:
 	Game* game;
-	SDL_Rect collider;
 	Texture* texturaMushroom;
 	Point2D<float> pos;
 	Point2D<float> dir;
@@ -25,11 +24,16 @@ private:
 	int timer;
 	int anim;
 	SDL_Rect collisionRect;
+	SDL_Rect getRect(bool) const;
+	SDL_Rect createRect(float, float);
 public:
-	Mushroom(); // No tengo claro q ha de ir en la constructora, se leería con std??
+	Mushroom(Game *); // No tengo claro q ha de ir en la constructora, se leería con std??
 	void render(SDL_Renderer* renderer);
 	void update();
 	Collision::collision hit(const SDL_Rect&, bool);
+
+	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
+
 
 	// Getter de la posX del mushroom.
 	float getX()const { return this->pos.GetX(); }

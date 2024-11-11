@@ -27,6 +27,8 @@ Blocks::Blocks(Game* game, std::istream& in) : game(game)
 
 		if ( c == 'C') action = Accion::moneda; // Caso "coin".
 		else action = Accion::potenciador; // Caso "potentiator".
+		//creo q mushroom
+
 		animFrame = 0;
 		break;
 
@@ -84,6 +86,10 @@ void Blocks::update() {
 
 Collision::collision Blocks::hit(const SDL_Rect& rect, bool fromPlayer){
 	// collides, damages, intersectrect.
+
+	// hay que poner el mushroom si hay en el game
+
+
 	Collision::collision colBlock;
 	if (!(collider.x == rect.x && collider.y == rect.y && collider.w == rect.w && collider.h == rect.h))
 	{

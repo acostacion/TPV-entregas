@@ -39,7 +39,7 @@
     <ClCompile Include="..\Koopa.cpp">
       <Filter>Archivos de encabezado\Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Mushroom.cpp">
+    <ClCompile Include="..\Mushroom.cpp">
       <Filter>Archivos de encabezado\Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,7 +74,7 @@
     <ClInclude Include="..\Collision.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Mushroom.h">
+    <ClInclude Include="..\Mushroom.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
