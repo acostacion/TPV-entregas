@@ -118,10 +118,6 @@ void Blocks::update() {
 }
 
 Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
-	// collides, damages, intersectrect.
-
-	// hay que poner el mushroom si hay en el game
-
 	Collision::collision colBlock;
 	if (!(colision.x == other.x && colision.y == other.y && colision.w == other.w && colision.h == other.h))
 	{

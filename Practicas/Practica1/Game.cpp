@@ -350,12 +350,12 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 
 	Collision::collision result;// por defecto los booleanos estan falsos todos
 	// Verificar colisión con bloques
-	if (!result.collides) {
+	//if (!result.collides) {
 		for (auto& block : blocks) {
 			result = block->hit(rect, fromPlayer);
 			if (result.collides) break;
 		}
-	}
+	
 
 	// Verificar colisión con goombas
 	if (!result.collides) {
