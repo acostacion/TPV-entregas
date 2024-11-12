@@ -173,22 +173,14 @@ void Player::handleEvent(SDL_Event evento) {
 }
 
 void Player::update() {
+    //// Calcular la próxima posición
+    Point2D<float> nextPosition = pos + dir * MOVE_SPEED;
+    //// Verificar que Mario no exceda el borde izquierdo del mapa
+    if (nextPosition.GetX() * Game::TILE_SIDE < game->getMapOffset()) return;
 
-
-    // Calcular la próxima posición
-    Point2D<float> nextPos = pos + dir * MOVE_SPEED;
-
-    // Verificar que Mario no exceda el borde izquierdo del mapa
-    if (nextPos.GetX() * Game::TILE_SIDE < game->getMapOffset()) return;
-
-    // Crear el rectángulo de colisión para la próxima posición
-    SDL_Rect nextCollider = createRect(
-        nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
-        nextPos.GetY() * Game::TILE_SIDE
-    );
-
-    // Verificar colisión en la nueva posición
+    SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, nextPosition.GetY() * Game::TILE_SIDE);
     Collision::collision result = game->checkCollision(nextCollider, true);
+
 
     // Si hay daño en la colisión, reducir la vida
     if (result.damages) {
@@ -198,7 +190,7 @@ void Player::update() {
 
     // Sin colisión: actualizar posición y estado de "en el suelo"
     if (!result.collides) {
-        pos = nextPos;
+        pos = nextPosition;
         isGrounded = false;
         jump();
         return;
@@ -216,7 +208,7 @@ void Player::update() {
     // Colisión con otro obstáculo: verificar el margen de colisión
     else if (result.intersectRect.h <= margenColi && result.intersectRect.y > nextCollider.y) {
         // Si hay margen suficiente en la dirección Y, actualizar posición y estado de "en el suelo"
-        pos = nextPos;
+        pos = nextPosition;
         isGrounded = true;
     }
     // Colisión sin margen: detener el movimiento
@@ -226,6 +218,16 @@ void Player::update() {
 
     // Intentar realizar salto
     jump();
+
+    
+    //
+
+    //// Crear el rectángulo de colisión para la próxima posición
+    
+
+    //// Verificar colisión en la nueva posición
+    //Collision::collision result = game->checkCollision(nextCollider, true);
+
 }
 
 

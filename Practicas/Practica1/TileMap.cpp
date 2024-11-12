@@ -1,11 +1,6 @@
 #include "TileMap.h"
 #include "SDL_rect.h"
-#
-TileMap::TileMap(){
-	// Constructora default -> todo a nullptr.
-	texture = nullptr;
-	game = nullptr;
-}
+
 
 TileMap::TileMap(std::istream& entrada, Game* _game)
 	:game(_game), renderer(game->getRender()), texture(_game->getTexture(Game::BACKGROUND))  {
