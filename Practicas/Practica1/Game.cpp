@@ -1,6 +1,8 @@
+#include "CheckML.h"
+#include "Game.h"
+
 #include <string>
 #include <sstream>
-#include "Game.h"
 
 
 using namespace std;
@@ -287,6 +289,7 @@ Game::~Game()
 	// Elimina los objetos del juego
 	//delete perro;
 	delete player;
+	delete tileMap;
 	deleteObj();
 	// Elimina las texturas.
 	for (Texture* texture : textures) 

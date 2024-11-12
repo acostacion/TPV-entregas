@@ -1,5 +1,4 @@
 #pragma once
-#include "CheckML.h"
 
 // Biblioteca estándar de C++.
 #include <array>

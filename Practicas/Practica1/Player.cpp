@@ -2,11 +2,11 @@
 #include <algorithm>
 
 Player::Player(Game* game, std::istream& in) 
-    : game(game), superMario(true), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
+    : game(game), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
 {
     try {
         in >> pos; // lee pos.
-        pos = pos - Point2D<float>(0, 7); // ajusta pos.
+        pos = pos - Point2D<float>(0, 1); // ajusta pos.
         in >> life; // vidas.
 
         texturaMario = game->getTexture(Game::MARIO);
@@ -182,6 +182,7 @@ void Player::update() {
         game->resetLevel();
         return;
     }
+
     SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, nextPosition.GetY() * Game::TILE_SIDE);
     Collision::collision result = game->checkCollision(nextCollider, true);
 
@@ -222,7 +223,6 @@ void Player::update() {
 
     // Intenta realizar salto
     jump();
-
 }
 
 

@@ -151,7 +151,7 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 						}
 						else if (action == Accion::potenciador) {
 
-							game->addMushroom(new Mushroom(game, { pos.GetX() / Game::TILE_SIDE, pos.GetY() / Game::TILE_SIDE - 1 }));
+							game->addMushroom(new Mushroom(game, { pos.GetX() , pos.GetY()  - Game::TILE_SIDE }));
 						}
 
 						tipo = Tipos::vacio;
@@ -164,7 +164,7 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 
 						}
 						else if (action == Accion::potenciador) {
-							game->addMushroom(new Mushroom(game, { pos.GetX() / Game::TILE_SIDE, pos.GetY() / Game::TILE_SIDE - 1 }));
+							game->addMushroom(new Mushroom(game, { pos.GetX(), pos.GetY() - Game::TILE_SIDE }));
 						}
 						tipo = Tipos::vacio;
 						changeSprite();

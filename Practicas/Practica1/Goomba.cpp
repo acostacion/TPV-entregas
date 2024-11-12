@@ -42,12 +42,8 @@ void Goomba::render(SDL_Renderer* renderer) {
 		else anim = 0;
 	}
 	
-	
-
 	// Se renderiza.
     texturaGoomba->renderFrame(rect, 0, anim);
-
-
 
 	if (Game::DEBUG) {
 		Point2D<float> nextPos = pos + dir * MOVE_SPEED;
@@ -108,7 +104,6 @@ void Goomba::update() {
 		}
 
     }
-
 }
 
 Collision::collision Goomba::hit(const SDL_Rect& other, bool fromPlayer) {
