@@ -25,6 +25,9 @@ private:
 	const float GRAVITY = 0.2;
 	const int MARGENY = 5;
 	const int MARGENX = 5;
+	const float MOVE_SPEED_X = 0.1;
+	const float MOVE_SPEED_Y = 0.175;
+	const float FALL_OFFSET = 0.06;
 	
 	SDL_Rect getRect(bool) const;
 	SDL_Rect createRect(float, float);

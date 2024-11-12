@@ -321,40 +321,52 @@ void Game::render() const
 }
 
 
+
 Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 	Collision::collision result;// por defecto los booleanos estan falsos todos
+	// Verificar colisión con bloques
+	if (!result.collides) {
+		for (auto& block : blocks) {
+			result = block->hit(rect, fromPlayer);
+			if (result.collides) break;
+		}
+	}
 
-	//colision con los bloques
+	// Verificar colisión con goombas
 	if (!result.collides) {
-		int i = 0;
-		while (i < blocks.size() && !result.collides) {
-			result = blocks[i]->hit( rect, fromPlayer);
-			if (!result.collides) ++i;
+		for (auto& goomba : goombas) {
+			if (!goomba->getFrozen()) {
+				result = goomba->hit(rect, fromPlayer);
+				if (result.collides) break;
+			}
 		}
 	}
+
+	// Verificar colisión con koopas
 	if (!result.collides) {
-		int i = 0;
-		while (i < goombas.size() && !result.collides) {
-			if (!goombas[i]->getFrozen()) result = goombas[i]->hit(rect, fromPlayer);
-			if (!result.collides) ++i;
+		for (auto& koopa : koopas) {
+			if (!koopa->getFrozen()) {
+				result = koopa->hit(rect, fromPlayer);
+				if (result.collides) break;
+			}
 		}
 	}
+
+	// Verificar colisión con hongos
 	if (!result.collides) {
-		int i = 0;
-		while (i < koopas.size() && !result.collides) {
-			if (!koopas[i]->getFrozen()) result = koopas[i]->hit(rect, fromPlayer);
-			if (!result.collides) ++i;
+		for (auto& mushroom : mushrooms) {
+			result = mushroom->hit(rect, fromPlayer);
+			if (result.collides) break;
 		}
 	}
+
+	// Verificar colisión con el fondo
 	if (!result.collides) {
-		int i = 0;
-		while (i < mushrooms.size() && !result.collides) {
-			result = mushrooms[i]->hit(rect, fromPlayer);
-			if (!result.collides) ++i;
-		}
+		result = tileMap->hit(rect, fromPlayer);
 	}
-	if (!result.collides) result = tileMap->hit(rect, fromPlayer);
+	
+
 	return result;
 
 }

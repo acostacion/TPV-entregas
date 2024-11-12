@@ -59,13 +59,9 @@ void Mushroom::render(SDL_Renderer* renderer) {
 }
 
 void Mushroom::update() {
-	// Calcular la próxima posición basada en la dirección y velocidad de movimiento
-	Point2D<float> nextPos = pos + dir * MOVE_SPEED;
-
-	// Crear un rectángulo para la nueva posición (para verificar colisiones)
+	// Calcular la próxima posicion basada en la direccion y velocidad de movimiento
+	Point2D<float> nextPos = pos + Vector2D<float>(dir.GetX() * (MOVE_SPEED_X - FALL_OFFSET), MOVE_SPEED_Y);
 	SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
-
-	// Verificar colisión en la posición calculada
 	Collision::collision result = game->checkCollision(nextCollider, false);
 
 	// Si no hay colisión, actualizar la posición y salir
@@ -74,23 +70,23 @@ void Mushroom::update() {
 		return;
 	}
 
-	// Recalcular la posición con la dirección ajustada en cada componente
-	nextPos = pos + Vector2D<float>(dir.GetX() * MOVE_SPEED, dir.GetY() * MOVE_SPEED);
+	// En caso de colisión, recalcular posición sin el desplazamiento de caída
+	nextPos = pos + Vector2D<float>(dir.GetX() * MOVE_SPEED_X, dir.GetY() * MOVE_SPEED_Y);
 	nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
 	result = game->checkCollision(nextCollider, false);
 
-	// Si no hay colisión en la nueva posición, actualizar la posición y salir
+	// Si la nueva posición no genera colisión, actualizar la posición y salir
 	if (!result.collides) {
 		pos = nextPos;
 		return;
 	}
 
-	// Si hay colisión pero dentro de los márgenes permitidos, actualizar la posición
+	// Si la colisión está dentro de los márgenes permitidos, actualizar la posición
 	if (result.intersectRect.h <= MARGENY && result.intersectRect.w <= MARGENX) {
 		pos = nextPos;
 	}
 	else {
-		// De lo contrario, invertir la dirección en el eje X
+		// Si no, invertir la dirección en el eje X
 		dir.SetX(-dir.GetX());
 	}
 }

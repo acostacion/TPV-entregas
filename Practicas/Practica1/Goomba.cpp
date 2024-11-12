@@ -98,7 +98,7 @@ void Goomba::update() {
 			if (!result.collides) pos = nextPos;// Sin colisión en X, actualizar posición
 			else if (result.intersectRect.h <= MARGIN_Y && result.intersectRect.w <= MARGIN_X) pos = nextPos;// Si la colisión está dentro de los márgenes, actualizar posición
 			else{
-				/ Si la colisión excede los márgenes, invertir la dirección
+				// Si la colisión excede los márgenes, invertir la dirección
 				dir.SetX(-dir.GetX());
 			}
 		}
@@ -124,9 +124,9 @@ Collision::collision Goomba::hit(const SDL_Rect& other, bool fromPlayer) {
 	if(fromPlayer) {
 		colGoomba.collides = SDL_IntersectRect(&col, &other, &colGoomba.intersectRect);
 		if (colGoomba.collides) {
-			if (colGoomba.intersectRect.w > col.w / 4 && game->getPlayerDirectionY() == 1)
+			if (colGoomba.intersectRect.w > col.w || other.y < col.y)
 				dead = true;
-			else if (colGoomba.intersectRect.h > col.h / 2 && !colGoomba.fromSuperMario) colGoomba.damages = true;
+			else if (colGoomba.intersectRect.h > col.h && !colGoomba.fromSuperMario) colGoomba.damages = true;
 			else colGoomba.fromEnemy = true;
 		}
 	}
