@@ -43,12 +43,14 @@ Blocks::Blocks(Game* _game, std::istream& in) : game(_game)
 		animFrame = 6;
 		break;
 	}
-	
+
 	texturaBlock = _game->getTexture(Game::BLOCKS); // obtiene la textura.
 
-	
-	
-}
+	colision.x = pos.GetX() * Game::TILE_SIDE;
+	colision.y = pos.GetY() * Game::TILE_SIDE;
+	colision.w = texturaBlock->getFrameWidth() * 2;
+	colision.h = texturaBlock->getFrameHeight() * 2;
+};
 
 void Blocks::readBlocks(char c, std::istream& in) {
 	
@@ -121,65 +123,66 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 	// hay que poner el mushroom si hay en el game
 
 	Collision::collision colBlock;
-	SDL_Rect rect = createBlockRect();
-	bool res = SDL_IntersectRect(&other, &rect, &colBlock.intersectRect);
-	if (res) { // si hay interseccion
-		/*if (!(collider.x == rect.x && collider.y == rect.y && collider.w == rect.w && collider.h == rect.h))
-		{*/
-		if (fromPlayer && other.y > rect.y) {
-			if (other.y <= rect.y + rect.h) {
-				// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
+	if (!(colision.x == other.x && colision.y == other.y && colision.w == other.w && colision.h == other.h))
+	{
+		colBlock.collides = SDL_IntersectRect(&other, &colision, &colBlock.intersectRect);
+		if (colBlock.collides) { // si hay interseccion
+			/*if (!(collider.x == rect.x && collider.y == rect.y && collider.w == rect.w && collider.h == rect.h))
+			{*/
+			if (fromPlayer && other.y > colision.y) {
+				if (other.y <= colision.y + colision.h) {
+					// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
 
-				//Colisiona un rect que viene de fuera con el del bloque.
+					//Colisiona un rect que viene de fuera con el del bloque.
 
 
-				// Si colisiona el collider del bloque con otro...
-				//if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
+					// Si colisiona el collider del bloque con otro...
+					//if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
 
-				// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
-				if (tipo == Tipos::ladrillo) {
+					// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
+					if (tipo == Tipos::ladrillo) {
 
-					if (game->getSMario()) { // MARIO Grande.
-						// ladrillo se puede romper
+						if (game->getSMario()) { // MARIO Grande.
+							// ladrillo se puede romper
+							tipo = Tipos::vacio;
+							//colBlock = { true, false, blockRect };
+						}
+
+					}
+					else if (tipo == Tipos::sorpresa) {
+						// Si mario siendo M o SM choca con los sorpresa.
+						// O sale la seta o salen monedas, etc.
+						if (action == Accion::moneda) {
+
+						}
+						else if (action == Accion::potenciador) {
+
+							game->addMushroom(new Mushroom(game, { pos.GetX() / Game::TILE_SIDE, pos.GetY() / Game::TILE_SIDE - 1 }));
+						}
+
 						tipo = Tipos::vacio;
-						//colBlock = { true, false, blockRect };
+						changeSprite();
 					}
+					else if (tipo == Tipos::oculto) {
+						// Si mario siendo M o SM choca con los vacios.
+						// Aparece el bloque vacío (se le cambia la textura y se muestra lo que era).
+						if (action == Accion::moneda) {
 
-				}
-				else if (tipo == Tipos::sorpresa) {
-					// Si mario siendo M o SM choca con los sorpresa.
-					// O sale la seta o salen monedas, etc.
-					if (action == Accion::moneda) {
-
+						}
+						else if (action == Accion::potenciador) {
+							game->addMushroom(new Mushroom(game, { pos.GetX() / Game::TILE_SIDE, pos.GetY() / Game::TILE_SIDE - 1 }));
+						}
+						tipo = Tipos::ladrillo;
+						changeSprite();
 					}
-					else if (action == Accion::potenciador) {
-
-						game->addMushroom(new Mushroom(game, { pos.GetX() / Game::TILE_SIDE, pos.GetY() / Game::TILE_SIDE - 1 }));
-					}
-
-					tipo = Tipos::vacio;
-					changeSprite();
-				}
-				else if (tipo == Tipos::oculto) {
-					// Si mario siendo M o SM choca con los vacios.
-					// Aparece el bloque vacío (se le cambia la textura y se muestra lo que era).
-					if (action == Accion::moneda) {
+					else if (tipo == Tipos::vacio) {
 
 					}
-					else if (action == Accion::potenciador) {
-						game->addMushroom(new Mushroom(game, { pos.GetX() / Game::TILE_SIDE, pos.GetY() / Game::TILE_SIDE - 1 }));
-					}
-					tipo = Tipos::ladrillo;
-					changeSprite();
-				}
-				else if (tipo == Tipos::vacio) {
-
 				}
 			}
-		}
-		colBlock.collides = true;
+			colBlock.collides = true;
 
-		
+		}
 	}
 	return colBlock;
 

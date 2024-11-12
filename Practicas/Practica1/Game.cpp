@@ -31,7 +31,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 #pragma endregion
 
 // CONSTRUCTORA.
-Game::Game() : gameContinue(true), mapOffset(0), reset(false) {
+Game::Game() : gameContinue(true), mapOffset(0), reset(false), wonGame(false) {
 	try {
 		// --- SDL ---.
 		createSDL();
@@ -410,7 +410,11 @@ void Game::update()
 		// ELIMINAR PLAYER.
 		if (player->isDead()) {
 			delete player;
-			End();
+			end();
+		}
+		if (player->getPlayerPos().GetX() == WIN_WIDTH * TILE_SIDE * 20) {
+			wonGame = true;
+			end();
 		}
 		deleteEntities();
 	}

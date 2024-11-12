@@ -49,6 +49,7 @@ private:
     SDL_Renderer* renderer = nullptr; // Renderizador de la SDL (para dibujar)
     std::array<Texture*, NUM_TEXTURES> textures; // Array con todas las texturas del juego
     bool gameContinue; // Interruptor para terminar el juego
+    bool wonGame; // Ganar
     int mapOffset; // Lleva la coordenada x del extremo izquierdo de la vista.
     int sumMapOffset = 1;
 
@@ -94,7 +95,10 @@ public:
     void render() const;
     void handleEvents();
     void resetLevel();
-    void End();
+    void end();
+    bool won() const {
+        return wonGame;
+    };
     Collision::collision checkCollision(const SDL_Rect&, bool);
     
     Texture* getTexture(TextureName) const;
@@ -138,6 +142,7 @@ Game::addMushroom(Mushroom* n) {
     mushrooms.push_back(n);
 }
 inline void
-Game::End() {
+Game::end() {
     gameContinue = false;
 }
+
