@@ -2,19 +2,30 @@
 
 Blocks::Blocks(Game* game, std::istream& in) : game(game)
 {
-	in >> pos; // lee pos.
-	pos = pos - Point2D<float>(0, 1); // coloca a pos.
+	try {
+		in >> pos; // lee pos.
+		pos = pos - Point2D<float>(0, 1); // coloca a pos.
 
-	texturaBlock = game->getTexture(Game::BLOCKS); // obtiene la textura.
-	anim = false; 
-	action = Accion::nada;
-	tipo = Tipos::ladrillo;
-	animFrame = 0;
-	animTimer = 3;
+		texturaBlock = game->getTexture(Game::BLOCKS); // obtiene la textura.
+		anim = false;
+		action = Accion::nada;
+		tipo = Tipos::ladrillo;
+		animFrame = 0;
+		animTimer = 3;
 
-	// Lee el tipo del txt.
-	char c;
-	in >> c;
+		// Lee el tipo del txt.
+		char c;
+		in >> c;
+		readBlocks(c, in);
+	}
+	catch (...) {
+		std::cout << "Error creando Blocks.";
+	}
+	
+	
+}
+
+void Blocks::readBlocks(char c, std::istream& in) {
 	switch (c) {
 	case 'B': // Si es un bloque ladrillo... 
 		tipo = Tipos::ladrillo;

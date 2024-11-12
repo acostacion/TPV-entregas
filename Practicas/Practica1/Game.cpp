@@ -32,110 +32,134 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 
 // CONSTRUCTORA.
 Game::Game() : seguir(true), mapOffset(0), reset(false) {
-	// --- SDL ---.
-	createSDL();
+	try {
+		// --- SDL ---.
+		createSDL();
 
-	// --- TEXTURAS ---.
-	createTextures();
+		// --- TEXTURAS ---.
+		createTextures();
 
-	Smario = false;
+		Smario = false;
 
-	// --- MAPAS ---.
-	createTilemap();
-	createEntitymap();
-
-	//perro = new Dog(this, -textures[BACKGROUND]->getFrameWidth(), 390);
+		// --- MAPAS ---.
+		createTilemap();
+		createEntitymap();
+	}
+	catch(...){
+		std::cout << "Error creando Game.";
+	}
 }
 
 #pragma region Submétodos Constructora
 void Game::createTextures() {
-	for (int i = 0; i < NUM_TEXTURES; ++i) {
-		// Crea las texturas...
-		textures[i] = new Texture(renderer,
-			(textureRoot + textureSpec[i].name).c_str(), // Dirección.
-			textureSpec[i].numRows, // Filas.
-			textureSpec[i].numColumns); // Columnas
+	try {
+		for (int i = 0; i < NUM_TEXTURES; ++i) {
+			// Crea las texturas...
+			textures[i] = new Texture(renderer,
+				(textureRoot + textureSpec[i].name).c_str(), // Dirección.
+				textureSpec[i].numRows, // Filas.
+				textureSpec[i].numColumns); // Columnas
+		}
 	}
+	catch (...) {
+		std::cout << "Error creando las texturas.";
+	}
+	
 }
 
 void Game::createSDL() {
-	// Inicializa SDL.
-	SDL_Init(SDL_INIT_EVERYTHING);
+	try {
+		// Inicializa SDL.
+		SDL_Init(SDL_INIT_EVERYTHING);
 
-	// Crea la ventana con...
-	window = SDL_CreateWindow("Super Mario Bros 1", // Nombre.
-		SDL_WINDOWPOS_CENTERED, // Posición en X.
-		SDL_WINDOWPOS_CENTERED, // Posición en Y.
-		WIN_WIDTH, // Anchura.
-		WIN_HEIGHT, // Altura.
-		SDL_WINDOW_SHOWN); // Permitiendo su visibilidad.
+		// Crea la ventana con...
+		window = SDL_CreateWindow("Super Mario Bros 1", // Nombre.
+			SDL_WINDOWPOS_CENTERED, // Posición en X.
+			SDL_WINDOWPOS_CENTERED, // Posición en Y.
+			WIN_WIDTH, // Anchura.
+			WIN_HEIGHT, // Altura.
+			SDL_WINDOW_SHOWN); // Permitiendo su visibilidad.
 
-	// Crea el render con...
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+		// Crea el render con...
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-	// Pone el color del fondo.
-	SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+		// Pone el color del fondo.
+		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
 
-	// Por si falla la carga de la ventana y el render.
-	if (window == nullptr || renderer == nullptr)
-		throw "Error cargando SDL"s;
+		// Por si falla la carga de la ventana y el render.
+		if (window == nullptr || renderer == nullptr)
+			throw "Error cargando ventana o render"s;
+	}
+	catch (...) {
+		std::cout << "Error creando SDL.";
+	}
+	
 }
 
 void Game::createTilemap() {
-	std::ifstream entradaCSV(textureRoot + "maps/world1.csv");
-	if (!entradaCSV.is_open()) {
-		std::cout << "No se ha podido leer el archivo world1";
+	try {
+		std::ifstream entradaCSV(textureRoot + "maps/world1.csv");
+		if (!entradaCSV.is_open()) {
+			throw "No se ha podido leer el archivo world1"s;
+		}
+
+		tileMap = new TileMap(entradaCSV, this);
+		entradaCSV.close();
 	}
-
-	tileMap = new TileMap(entradaCSV, this);
-
-	entradaCSV.close();
+	catch (...) {
+		std::cout << "Error creando el tilemap.";
+	}
+	
 }
 
 void Game::createEntitymap() {
 
-	std::ifstream entradaTXT(textureRoot + "maps/world1.txt");
+	try {
+		std::ifstream entradaTXT(textureRoot + "maps/world1.txt");
 
-	if (!entradaTXT.is_open()) {
-		std::cout << "No se ha podido leer el archivo world1";
-	}
-
-	// Leemos el mapa línea a línea para evitar acarreo de errores y permitir extensiones del formato
-	std::string line;
-	getline(entradaTXT, line);
-
-
-	while (entradaTXT) {
-		// Usamos un stringstream para leer la línea como si fuera un flujo
-		stringstream lineStream(line);
-
-		char tipo;
-		lineStream >> tipo;
-
-		switch (tipo) {
-		case 'M':
-			if (player == nullptr) {
-				player = new Player(this, lineStream);
-			}
-			break;
-			// uno para cada objeto
-		case 'G':
-			this->goombas.push_back(new Goomba(this, lineStream));
-
-			break;
-		case 'B':
-			this->blocks.push_back(new Blocks(this, lineStream));
-			
-			break;
-		case 'K':
-			this->koopas.push_back( new Koopa(this, lineStream));
-			break;
+		if (!entradaTXT.is_open()) {
+			std::cout << "No se ha podido leer el archivo world1";
 		}
 
-		getline(entradaTXT, line);
+		// Leemos el mapa línea a línea para evitar acarreo de errores y permitir extensiones del formato
+		std::string line;
+		std::getline(entradaTXT, line);
 
+
+		while (entradaTXT) {
+			// Usamos un stringstream para leer la línea como si fuera un flujo
+			stringstream lineStream(line);
+
+			char tipo;
+			lineStream >> tipo;
+
+			switch (tipo) {
+			case 'M':
+				if (player == nullptr) {
+					player = new Player(this, lineStream);
+				}
+				break;
+				// uno para cada objeto
+			case 'G':
+				this->goombas.push_back(new Goomba(this, lineStream));
+
+				break;
+			case 'B':
+				this->blocks.push_back(new Blocks(this, lineStream));
+
+				break;
+			case 'K':
+				this->koopas.push_back(new Koopa(this, lineStream));
+				break;
+			}
+
+			std::getline(entradaTXT, line);
+			entradaTXT.close();
+		}
 	}
-	entradaTXT.close();
+	catch (...) {
+		std::cout << "Error creando el entitymap.";
+	}
 }
 
 void Game::deleteObj() {

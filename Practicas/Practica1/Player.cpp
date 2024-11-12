@@ -4,18 +4,24 @@
 Player::Player(Game* game, std::istream& in) 
     : game(game), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI)
 {
-	in >> pos; // lee pos.
-	pos = pos - Point2D<float>(0, 1.5); // ajusta pos.
-	in >> life; // vidas.
+    try {
+        in >> pos; // lee pos.
+        pos = pos - Point2D<float>(0, 1.5); // ajusta pos.
+        in >> life; // vidas.
 
-	texturaMario = game->getTexture(Game::MARIO);
-	texturaSMario = game->getTexture(Game::SUPERMARIO);
+        texturaMario = game->getTexture(Game::MARIO);
+        texturaSMario = game->getTexture(Game::SUPERMARIO);
 
-    invulnerable = false;
-    verticalVelocity = 0;
+        invulnerable = false;
+        verticalVelocity = 0;
 
 
-    posInicio = pos;
+        posInicio = pos;
+    }
+    catch (...) {
+        std::cout << "Error creando Player.";
+    }
+	
 }
 
 SDL_Rect Player::createRect(float x, float y) {
