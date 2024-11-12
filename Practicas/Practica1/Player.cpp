@@ -166,45 +166,57 @@ void Player::handleEvent(SDL_Event evento) {
 
 void Player::update() {
 
+    // Calcular la próxima posición
     Point2D<float> nextPos = pos + dir * MOVE_SPEED;
 
-    if (nextPos.GetX() * Game::TILE_SIDE >= game->getMapOffset()) { //si mario no pasa del borde izq
-        SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(), nextPos.GetY() * Game::TILE_SIDE);
-        Collision::collision result = game->checkCollision(nextCollider, true);
+    // Verificar que Mario no exceda el borde izquierdo del mapa
+    if (nextPos.GetX() * Game::TILE_SIDE < game->getMapOffset()) return;
 
-        if (result.damages) {
-            decreaseLife();
-        }
-        else {
-            if (!result.collides) {
-                pos = nextPos;
-                isGrounded = false;
-            }
-            else if (result.fromMushroom) {
-                if(!superMario) changeMario();
-            }
-            else if (result.fromEnemy) {
-                if (superMario) changeMario();
-                else decreaseLife();
-            }
-            else {
-                // Si hay colisión, verificar el margen en función de la dirección
-                if (result.intersectRect.h <= margenColi && result.intersectRect.y > nextCollider.y) {
-                    // Si hay suficiente margen en la dirección Y, actualiza la posición
-                    pos = nextPos;
-                    isGrounded = true;
-                }
-                else {
-                    // Detener movimiento si hay colisión y no se puede mover
-                    dir = DIR_INI;
-                }
-            }
-            jump();
-        }
+    // Crear el rectángulo de colisión para la próxima posición
+    SDL_Rect nextCollider = createRect(
+        nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
+        nextPos.GetY() * Game::TILE_SIDE
+    );
 
+    // Verificar colisión en la nueva posición
+    Collision::collision result = game->checkCollision(nextCollider, true);
+
+    // Si hay daño en la colisión, reducir la vida
+    if (result.damages) {
+        decreaseLife();
+        return;
     }
 
-   
+    // Sin colisión: actualizar posición y estado de "en el suelo"
+    if (!result.collides) {
+        pos = nextPos;
+        isGrounded = false;
+        jump();
+        return;
+    }
+
+    // Colisión con un hongo: cambiar a Super Mario si no lo es
+    if (result.fromMushroom) {
+        if (!superMario) changeMario();
+    }
+    // Colisión con un enemigo: revertir Super Mario o reducir vida
+    else if (result.fromEnemy) {
+        if (superMario) changeMario();
+        else decreaseLife();
+    }
+    // Colisión con otro obstáculo: verificar el margen de colisión
+    else if (result.intersectRect.h <= margenColi && result.intersectRect.y > nextCollider.y) {
+        // Si hay margen suficiente en la dirección Y, actualizar posición y estado de "en el suelo"
+        pos = nextPos;
+        isGrounded = true;
+    }
+    // Colisión sin margen: detener el movimiento
+    else {
+        dir = DIR_INI;
+    }
+
+    // Intentar realizar salto
+    jump();
 }
 
 Collision::collision Player::hit(const SDL_Rect otherRect) {
