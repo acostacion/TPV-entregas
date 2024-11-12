@@ -20,13 +20,13 @@ const string textureRoot = "../assets/";
 // Texturas del juego.
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	// {Mapa, cols, fils}
-	TextureSpec{"imgs/background.png", 9, 7}, 
-	TextureSpec{"imgs/mario.png", 12, 1}, 
-	TextureSpec{"imgs/supermario.png", 22, 1},
-	TextureSpec{"imgs/goomba.png", 3, 1},
-	TextureSpec{"imgs/blocks.png", 6, 1},
-	TextureSpec{"imgs/koopa.png", 4, 1},
-	TextureSpec{"imgs/mushroom.png", 1, 1},
+	TextureSpec{"images/background.png", 9, 7}, 
+	TextureSpec{"images/mario.png", 12, 1}, 
+	TextureSpec{"images/supermario.png", 22, 1},
+	TextureSpec{"images/goomba.png", 3, 1},
+	TextureSpec{"images/blocks.png", 6, 1},
+	TextureSpec{"images/koopa.png", 4, 1},
+	TextureSpec{"images/mushroom.png", 1, 1},
 };
 #pragma endregion
 
