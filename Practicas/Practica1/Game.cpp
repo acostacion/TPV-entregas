@@ -154,8 +154,9 @@ void Game::createEntitymap() {
 			}
 
 			std::getline(entradaTXT, line);
-			entradaTXT.close();
-		}
+	}
+		entradaTXT.close();
+
 	}
 	catch (...) {
 		std::cout << "Error creando el entitymap.";

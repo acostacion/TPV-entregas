@@ -1,31 +1,16 @@
 #include "Blocks.h"
 
-Blocks::Blocks(Game* game, std::istream& in) : game(game)
+Blocks::Blocks(Game* _game, std::istream& in) : game(_game)
 {
-	try {
-		in >> pos; // lee pos.
-		pos = pos - Point2D<float>(0, 1); // coloca a pos.
-
-		texturaBlock = game->getTexture(Game::BLOCKS); // obtiene la textura.
-		anim = false;
-		action = Accion::nada;
-		tipo = Tipos::ladrillo;
-		animFrame = 0;
-		animTimer = 3;
-
-		// Lee el tipo del txt.
-		char c;
-		in >> c;
-		readBlocks(c, in);
-	}
-	catch (...) {
-		std::cout << "Error creando Blocks.";
-	}
-	
-	
-}
-
-void Blocks::readBlocks(char c, std::istream& in) {
+	in >> pos; // lee pos.
+	pos = pos - Point2D<float>(0, 1); // coloca a pos.
+	anim = false;
+	action = Accion::nada;
+	tipo = Tipos::ladrillo;
+	animFrame = 0;
+	animTimer = 3;
+	char c;
+	in >> c;
 	switch (c) {
 	case 'B': // Si es un bloque ladrillo... 
 		tipo = Tipos::ladrillo;
@@ -58,6 +43,15 @@ void Blocks::readBlocks(char c, std::istream& in) {
 		animFrame = 6;
 		break;
 	}
+	
+	texturaBlock = _game->getTexture(Game::BLOCKS); // obtiene la textura.
+
+	
+	
+}
+
+void Blocks::readBlocks(char c, std::istream& in) {
+	
 }
 
 SDL_Rect Blocks::createBlockRect() {

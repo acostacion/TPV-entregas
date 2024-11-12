@@ -30,12 +30,10 @@ public:
 
 private:
 	// REFERENCES.
-	Player* player; 
 	Game* game;
 
 	// COSAS DEL BLOCK.
 	Point2D<float> pos;
-	SDL_Rect collider;
 	bool destroyed = false;
 
 	// ENUMS.

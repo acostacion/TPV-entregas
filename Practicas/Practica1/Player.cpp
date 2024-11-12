@@ -33,10 +33,10 @@ SDL_Rect Player::createRect(float x, float y) {
         rect.h = texturaMario->getFrameHeight();
     }
     else { // SUPER MARIO.
-        rect.w = texturaSMario->getFrameWidth() - 8;
+        rect.w = texturaSMario->getFrameWidth();
         rect.h = texturaSMario->getFrameHeight();
     }
-    rect.x = x + 8;
+    rect.x = x;
     rect.y = y;
 
     return rect;
