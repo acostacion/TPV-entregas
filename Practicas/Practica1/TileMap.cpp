@@ -8,7 +8,7 @@ TileMap::TileMap(){
 }
 
 TileMap::TileMap(std::istream& entrada, Game* _game)
-	:game(_game), renderer(game->getRender()), texture(game->getTexture(Game::BACKGROUND))  {
+	:game(_game), renderer(game->getRender()), texture(_game->getTexture(Game::BACKGROUND))  {
 	int x = 0, y = 0;
 
 	try {
