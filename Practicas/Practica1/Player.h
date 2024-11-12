@@ -26,7 +26,7 @@ private:
 	Point2D<float> posInicio;
 
 	float verticalVelocity;
-	int altura;
+	int height;
 
 	bool isGrounded; // si esta en el suelo
 	bool isJumping;
@@ -63,14 +63,10 @@ private:
 
 	//CONSTANTES.
 	// En sdl ir para arriba es negativo e ir para abajo es positivo.
-	const float JUMP_FORCE = -1.0f; // fuerza de salto.
-	const float MAX_FALL_SPEED = 0.2f; // velocidad de caída máxima.
-	const int MAX_ALTURA = 15; // velocidad de caída máxima.
-	const float DECELERATION = 0.0005f;
+	
+	const int MAX_HEIGHT = 15; // velocidad de caída máxima.
 	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
 	const float COLLISION_OFFSET = 0.3f; // velocidad de movimiento.
-	const float GROUND_LEVEL = 12.9f;
-	const float GRAVITY = 1.0f; // gravedad.
 
 #pragma endregion
 

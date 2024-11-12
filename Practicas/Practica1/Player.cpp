@@ -2,7 +2,7 @@
 #include <algorithm>
 
 Player::Player(Game* game, std::istream& in) 
-    : game(game), superMario(false), altura(0), isGrounded(false), isJumping(false), dir(DIR_INI)
+    : game(game), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1.5); // ajusta pos.
@@ -74,11 +74,13 @@ void Player::decreaseLife() {
     }
 }
 void Player::jump() {
-    if (isJumping && altura < MAX_ALTURA) { //cuando se ha pulsado space
-        altura++;
+    if (isJumping && height < MAX_HEIGHT) {
+        // Aumentar altura si está saltando y no ha alcanzado la altura máxima
+        height++;
         isGrounded = false;
     }
-    else if (!isGrounded) { //si ha llegado a la altura maxima y no esta en el suelo
+    else if (!isGrounded) {
+        // Si alcanzó la altura máxima y aún no ha tocado el suelo, empieza a caer
         dir.SetY(1);
     }
 }
@@ -140,7 +142,7 @@ void Player::handleEvent(SDL_Event evento) {
         if ((tecla == SDL_SCANCODE_W || tecla == SDL_SCANCODE_SPACE || tecla == SDL_SCANCODE_UP) && isGrounded && !isJumping) {
             dir.SetY(-1);
             isJumping = true;
-            altura = 0;
+            height = 0;
         }
         else if (tecla == SDL_SCANCODE_A || tecla == SDL_SCANCODE_LEFT) {
             dir.SetX(-1);
@@ -165,6 +167,7 @@ void Player::handleEvent(SDL_Event evento) {
 }
 
 void Player::update() {
+
 
     // Calcular la próxima posición
     Point2D<float> nextPos = pos + dir * MOVE_SPEED;
@@ -218,6 +221,8 @@ void Player::update() {
     // Intentar realizar salto
     jump();
 }
+
+
 
 Collision::collision Player::hit(const SDL_Rect otherRect) {
     Collision::collision resultadoFinal;
