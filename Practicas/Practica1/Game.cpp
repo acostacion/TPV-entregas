@@ -336,7 +336,7 @@ void Game::render() const
 	SDL_RenderClear(renderer);
 
 	// Pinta los objetos del juego.
-	tileMap->render();
+	tileMap->render(renderer);
 	player->render(renderer);
 	renderEntities();
 

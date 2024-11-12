@@ -3,7 +3,7 @@
 
 
 TileMap::TileMap(std::istream& entrada, Game* _game)
-	:game(_game), renderer(game->getRender()), texture(_game->getTexture(Game::BACKGROUND))  {
+	:game(_game), texture(_game->getTexture(Game::BACKGROUND))  {
 	int x = 0, y = 0;
 
 	try {
@@ -34,10 +34,9 @@ TileMap::TileMap(std::istream& entrada, Game* _game)
 	catch (...) {
 		std::cout << "Error creando TileMap.";
 	}
-	
 }
 
-void TileMap::render() {
+void TileMap::render(SDL_Renderer* renderer) {
 
 	// Primera columna de la matriz del mapa visible en la ventana
 	int x0 = game->getMapOffset() / TILE_MAP;
@@ -52,7 +51,7 @@ void TileMap::render() {
 	// Pintamos los WINDOW_WIDTH + 1 (aunque se salga) x WINDOW_HEIGHT recuadros del mapa
 	for (int i = 0; i < Game::WIN_TILE_WIDTH + 1; ++i) {
 		for (int j = 0; j < Game::WIN_TILE_HEIGHT; ++j) {
-			// ?ndice en el conjunto de patrones de la matriz de ?ndices
+			// indice en el conjunto de patrones de la matriz de ?ndices
 			int indice = map[j][i + x0];
 			if (indice != - 1) {
 				// Separa n?mero de fila y de columna
@@ -79,18 +78,6 @@ void TileMap::update() {
 
 }
 
-SDL_Rect TileMap::createRect(int w, int h, int x, int y) {
-	// Se crea el rect.
-	SDL_Rect rect;
-
-	// Se le da dimensiones y posición.
-	rect.w = w;
-	rect.h = h;
-	rect.x = x;
-	rect.y = y;
-
-	return rect;
-}
 
 Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 {

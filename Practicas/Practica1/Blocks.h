@@ -35,7 +35,7 @@ private:
 	// COSAS DEL BLOCK.
 	Point2D<float> pos;
 	bool destroyed = false;
-	SDL_Rect colision;
+	SDL_Rect colision; // como no se cambian de sitio, elegimos hacer el collider como variable
 
 	// ENUMS.
 	Tipos tipo; // ladrillo, sorpresa, vacio, oculto

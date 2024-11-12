@@ -15,16 +15,16 @@ class Player{
 private:
 #pragma region References
 	Game* game;
-	Texture* texturaMario;
-	Texture* texturaSMario;
+	Texture* texturaMario; //mario
+	Texture* texturaSMario; // superMario
+
 #pragma endregion
 
 #pragma region Movement
 
 	Point2D<float> dir;
 	Point2D<float> pos;
-	Point2D<float> posIni;
-	Point2D<float> posInicio;
+	Point2D<float> posInicio;// para el reinicio
 
 	float verticalVelocity;
 	int height;
@@ -35,17 +35,16 @@ private:
 #pragma endregion
 
 #pragma region Animation
+
 	int anim; // indice del frame de la animacion
 
 #pragma endregion
 
 #pragma region Atributes
 
-	int invulnerableTimer;
 	int life;
 	int margenColi = 9;
 	bool superMario = false;
-	bool invulnerable;
 	bool dead;
 
 #pragma endregion
@@ -65,16 +64,15 @@ private:
 
 	//CONSTANTES.
 	// En sdl ir para arriba es negativo e ir para abajo es positivo.
-	
-	const int MAX_HEIGHT = 15; // velocidad de caída máxima.
+	const int MAX_HEIGHT = 15; // altuma maxima de salto
 	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
-	const float COLLISION_OFFSET = 0.3f; // velocidad de movimiento.
 
 #pragma endregion
 
 
 public:
-	Player(Game*, std::istream&);
+	
+	Player(Game*, std::istream&); // constructora
 
 	void render(SDL_Renderer* renderer);
 	void update();
@@ -82,7 +80,7 @@ public:
 	Collision::collision hit(const SDL_Rect otherRect);
 
 	// Getters
-	float getX()const { return this->pos.GetX(); }
+	float getX() const { return this->pos.GetX(); }
 	bool isSuperMario()const; // obtener si es superMario o no.
 
 	//metodos que devuelven la posicion y direccion para detectar colisiones
@@ -95,7 +93,6 @@ public:
 
 	void resetPos();
 
-	void animateMario();
 	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*) const;
 
 	bool isDead()const { return dead; } // Está vivo si life >0.

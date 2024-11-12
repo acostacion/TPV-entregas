@@ -52,10 +52,6 @@ Blocks::Blocks(Game* _game, std::istream& in) : game(_game)
 	colision.h = texturaBlock->getFrameHeight() * 2;
 };
 
-void Blocks::readBlocks(char c, std::istream& in) {
-	
-}
-
 SDL_Rect Blocks::createBlockRect() {
 
 	// 1. Se crea el rect.
