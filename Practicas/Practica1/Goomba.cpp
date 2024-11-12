@@ -11,9 +11,6 @@ Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false)
 	timer = 3;
 	anim = 0;
     texturaGoomba = game->getTexture(Game::GOOMBA);
-	collisionRect = createRect(
-		pos.GetX() * Game::TILE_SIDE,
-		pos.GetY() * Game::TILE_SIDE);
 }
 SDL_Rect Goomba::createRect(float x, float y) {
 	// 1. Se crea el rect.
@@ -120,15 +117,17 @@ Collision::collision Goomba::hit(const SDL_Rect& other, bool fromPlayer) {
 	SDL_Rect col = createRect(pos.GetX() * Game::TILE_SIDE, pos.GetY() * Game::TILE_SIDE);
 
 	//Colisiona un rect que viene de fuera con el del goomba.
-
 	if(fromPlayer) {
 		colGoomba.collides = SDL_IntersectRect(&col, &other, &colGoomba.intersectRect);
 		if (colGoomba.collides) {
-			if (colGoomba.intersectRect.w > col.w || other.y < col.y)
+			if ( other.y < col.y) // si viene por arriba
 				dead = true;
-			else if (colGoomba.intersectRect.h > col.h && !colGoomba.fromSuperMario) colGoomba.damages = true;
-			else colGoomba.fromEnemy = true;
+			else {
+				colGoomba.damages = true;
+				colGoomba.fromEnemy = true;
+			}
 		}
 	}
+
 	return colGoomba;
 }

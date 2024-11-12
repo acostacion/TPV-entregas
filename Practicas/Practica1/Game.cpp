@@ -184,7 +184,6 @@ void Game::deleteObj() {
 
 void Game::resetLevel() {
 	player->resetPos();
-	reset = true;
 	deleteObj(); //eleminar los vectores 
 	createEntitymap();
 	mapOffset = 0;
@@ -244,7 +243,7 @@ void Game::deleteEntities() {
 
 	// ELIMINAR KOOPAS
 	for (int i = 0; i < koopas.size(); ++i) {
-		if (!koopas[i]->isAlive()) {
+		if (!koopas[i]->isDead()) {
 			delete koopas[i];
 			koopas[i] = koopas.back();
 			koopas.pop_back();
@@ -279,8 +278,6 @@ void Game::ActMapOffset() {
 		// Si el jugador está a la derecha del centro, desplazamos el mapa a la izquierda
 		mapOffset += posP - mitadPantalla;
 	}
-
-
 }
 #pragma endregion
 
@@ -351,12 +348,11 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 	Collision::collision result;// por defecto los booleanos estan falsos todos
 	// Verificar colisión con bloques
 	//if (!result.collides) {
-		for (auto& block : blocks) {
-			result = block->hit(rect, fromPlayer);
-			if (result.collides) break;
-		}
+	for (auto& block : blocks) {
+		result = block->hit(rect, fromPlayer);
+		if (result.collides) break;
+	}
 	
-
 	// Verificar colisión con goombas
 	if (!result.collides) {
 		for (auto& goomba : goombas) {
@@ -392,7 +388,6 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 	
 
 	return result;
-
 }
 
 void Game::update()

@@ -61,7 +61,6 @@ public:
 
 	bool getDestroyed() const { return destroyed; }
 
-	void readBlocks(char, std::istream&);
 
 };
 

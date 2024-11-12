@@ -81,6 +81,7 @@ void Player::decreaseLife() {
         }
     }
 }
+
 void Player::jump() {
     if (isJumping && height < MAX_HEIGHT) {
         // Aumentar altura si está saltando y no ha alcanzado la altura máxima
@@ -92,6 +93,7 @@ void Player::jump() {
         dir.SetY(1);
     }
 }
+
 void Player::render(SDL_Renderer* renderer) {
 	
     SDL_Rect rect = getRect(true);
@@ -172,11 +174,14 @@ void Player::handleEvent(SDL_Event evento) {
 }
 
 void Player::update() {
-    //// Calcular la próxima posición
+    // Calcular la próxima posición
     Point2D<float> nextPosition = pos + dir * MOVE_SPEED;
-    //// Verificar que Mario no exceda el borde izquierdo del mapa
+    // Verificar que Mario no exceda el borde izquierdo del mapa
     if (nextPosition.GetX() * Game::TILE_SIDE < game->getMapOffset()) return;
-
+    if (nextPosition.GetY() * Game::TILE_SIDE + Game::TILE_SIDE * 2 > Game::WIN_HEIGHT) {
+        game->resetLevel();
+        return;
+    }
     SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, nextPosition.GetY() * Game::TILE_SIDE);
     Collision::collision result = game->checkCollision(nextCollider, true);
 
@@ -215,17 +220,8 @@ void Player::update() {
         dir = DIR_INI;
     }
 
-    // Intentar realizar salto
+    // Intenta realizar salto
     jump();
-
-    
-    //
-
-    //// Crear el rectángulo de colisión para la próxima posición
-    
-
-    //// Verificar colisión en la nueva posición
-    //Collision::collision result = game->checkCollision(nextCollider, true);
 
 }
 

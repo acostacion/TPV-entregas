@@ -25,7 +25,6 @@ private:
 
 	int timer;
 	int anim;
-	SDL_Rect collisionRect;
 	Collision::collision collisionResult;
 
 	// Submétodos.

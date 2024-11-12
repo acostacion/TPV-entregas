@@ -8,6 +8,7 @@ Blocks::Blocks(Game* _game, std::istream& in) : game(_game)
 	action = Accion::nada;
 	tipo = Tipos::ladrillo;
 	animFrame = 0;
+	destroyed = false;
 	animTimer = 3;
 	char c;
 	in >> c;
@@ -136,8 +137,9 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 
 						if (game->getSMario()) { // MARIO Grande.
 							// ladrillo se puede romper
-							tipo = Tipos::vacio;
 							//colBlock = { true, false, blockRect };
+							destroyed = true;
+
 						}
 
 					}
@@ -164,7 +166,7 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 						else if (action == Accion::potenciador) {
 							game->addMushroom(new Mushroom(game, { pos.GetX() / Game::TILE_SIDE, pos.GetY() / Game::TILE_SIDE - 1 }));
 						}
-						tipo = Tipos::ladrillo;
+						tipo = Tipos::vacio;
 						changeSprite();
 					}
 					else if (tipo == Tipos::vacio) {
