@@ -1,4 +1,5 @@
 #pragma once
+#include "CheckML.h"
 
 // Biblioteca estándar de C++.
 #include <array>
@@ -9,7 +10,6 @@
 #include <SDL.h>
 
 // Nuestras clases.
-#include "CheckML.h"
 #include <vector>
 #include "Texture.h"
 #include "Player.h"
