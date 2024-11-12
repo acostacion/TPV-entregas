@@ -31,7 +31,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 #pragma endregion
 
 // CONSTRUCTORA.
-Game::Game() : seguir(true), mapOffset(0), reset(false) {
+Game::Game() : gameContinue(true), mapOffset(0), reset(false), wonGame(false) {
 	try {
 		// --- SDL ---.
 		createSDL();
@@ -183,7 +183,6 @@ void Game::deleteObj() {
 }
 
 void Game::resetLevel() {
-
 	player->resetPos();
 	reset = true;
 	deleteObj(); //eleminar los vectores 
@@ -306,7 +305,7 @@ Game::~Game()
 void Game::run()
 {
 	// Bucle principal del juego
-	while (seguir) {
+	while (gameContinue) {
 		// Marca de tiempo del inicio de la iteración
 		uint32_t inicio = SDL_GetTicks();
 
@@ -409,13 +408,15 @@ void Game::update()
 		ActMapOffset();
 
 		// ELIMINAR PLAYER.
-		if (!player->isAlive()) {
+		if (player->isDead()) {
 			delete player;
-			endGame();
+			end();
 		}
-
+		if (player->getPlayerPos().GetX() == WIN_WIDTH * TILE_SIDE * 20) {
+			wonGame = true;
+			end();
+		}
 		deleteEntities();
-		
 	}
 }
 
@@ -427,7 +428,7 @@ void Game::handleEvents()
 
 	while (SDL_PollEvent(&evento)) {
 		if (evento.type == SDL_QUIT)
-			seguir = false;
+			gameContinue = false;
 		else if (evento.type == SDL_KEYDOWN) {
 
 			switch (evento.key.keysym.sym) {

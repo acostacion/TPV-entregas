@@ -35,6 +35,7 @@ private:
 	// COSAS DEL BLOCK.
 	Point2D<float> pos;
 	bool destroyed = false;
+	SDL_Rect colision;
 
 	// ENUMS.
 	Tipos tipo; // ladrillo, sorpresa, vacio, oculto
