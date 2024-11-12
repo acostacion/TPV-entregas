@@ -2,17 +2,15 @@
 #include <algorithm>
 
 Player::Player(Game* game, std::istream& in) 
-    : game(game), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
+    : game(game), superMario(true), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
 {
     try {
         in >> pos; // lee pos.
-        pos = pos - Point2D<float>(0, 1.5); // ajusta pos.
+        pos = pos - Point2D<float>(0, 7); // ajusta pos.
         in >> life; // vidas.
 
         texturaMario = game->getTexture(Game::MARIO);
         texturaSMario = game->getTexture(Game::SUPERMARIO);
-
-        invulnerable = false;
         verticalVelocity = 0;
 
 
@@ -33,8 +31,8 @@ SDL_Rect Player::createRect(float x, float y) {
         rect.h = texturaMario->getFrameHeight();
     }
     else { // SUPER MARIO.
-        rect.w = texturaSMario->getFrameWidth();
-        rect.h = texturaSMario->getFrameHeight();
+        rect.w = texturaSMario->getFrameWidth() * 2;
+        rect.h = texturaSMario->getFrameHeight() * 2;
     }
     rect.x = x;
     rect.y = y;
@@ -47,16 +45,20 @@ SDL_Rect Player::getRect(bool forRender) const {
 
     rect.x = pos.GetX() * Game::TILE_SIDE;
     rect.y = pos.GetY() * Game::TILE_SIDE;
-    if (forRender) {
-        rect.x = (pos.GetX() * Game::TILE_SIDE) - game->getMapOffset();
-    }
+    
     if (!superMario) {
         rect.w = texturaMario->getFrameWidth();
         rect.h = texturaMario->getFrameHeight();
     }
     else {
-        rect.w = texturaSMario->getFrameWidth();
-        rect.h = texturaSMario->getFrameHeight();
+        rect.w = texturaSMario->getFrameWidth() * 2;
+        rect.h = texturaSMario->getFrameHeight() * 2;
+        rect.y = pos.GetY() * Game::TILE_SIDE;
+    }
+    if (forRender) {
+        rect.x = (pos.GetX() * Game::TILE_SIDE) - game->getMapOffset();
+        rect.y -= 3;
+
     }
     return rect;
 }
@@ -94,7 +96,21 @@ void Player::render(SDL_Renderer* renderer) {
 	
     SDL_Rect rect = getRect(true);
 
-    animateMario();
+    if (dir == DIR_INI) { //cuando se queda quieto
+        anim = 0;
+    }
+    else if (!isGrounded) {//salto
+        anim = 6;
+    }
+    else if (dir.GetX() != 0 && isGrounded)
+    {
+        if (anim == 0) anim = 2;
+        else if (anim == 2) anim = 3;
+        else if (anim == 3) anim = 4;
+        else if (anim == 4) anim = 0;
+        else if (anim == 6) anim = 0;
+    }
+    else anim = 0;
     
 	// Se renderiza.
     renderMarioAnimation(rect, renderer);   
@@ -111,23 +127,6 @@ void Player::render(SDL_Renderer* renderer) {
     }
 }
 
-void Player::animateMario() {
-    if (dir == DIR_INI) { //cuando se queda quieto
-        anim = 0;
-    }
-    else if (!isGrounded) {//salto
-        anim = 6;
-    }
-    else if (dir.GetX() != 0 && isGrounded)
-    {
-        if (anim == 0) anim = 2;
-        else if (anim == 2) anim = 3;
-        else if (anim == 3) anim = 4;
-        else if (anim == 4) anim = 0;
-        else if (anim == 6) anim = 0;
-    }
-    else anim = 0;
-}
 
 void Player::renderMarioAnimation(const SDL_Rect& rect, SDL_Renderer* renderer) const  {
     if (!superMario) {
