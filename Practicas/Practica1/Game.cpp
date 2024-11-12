@@ -161,7 +161,7 @@ void Game::resetLevel() {
 
 	player->resetPos();
 	reset = true;
-	deleteObj(); //eleminar los vectores de elemetos antes de leer otra vez
+	deleteObj(); //eleminar los vectores 
 	createEntitymap();
 	mapOffset = 0;
 }
@@ -178,7 +178,7 @@ void Game::renderEntities()const {
 	}
 
 	// MUSHROOMS.
-	for (int i = 0; i < mushrooms.size(); ++i) { // no he contado cuantos hay en total
+	for (int i = 0; i < mushrooms.size(); ++i) { 
 		mushrooms[i]->render(renderer);
 	}
 
@@ -189,7 +189,7 @@ void Game::renderEntities()const {
 }
 void Game::updateEntities()const {
 	// MUSHROOMS.
-	for (int i = 0; i < mushrooms.size(); ++i) { // no he contado cuantos hay en total
+	for (int i = 0; i < mushrooms.size(); ++i) {
 		mushrooms[i]->update();
 	}
 
@@ -211,7 +211,7 @@ void Game::updateEntities()const {
 void Game::deleteEntities() {
 	// ELIMINAR GOOMBAS.
 	for (int i = 0; i < goombas.size(); ++i) {
-		if (!goombas[i]->isAlive()) {
+		if (goombas[i]->isDead()) {
 			delete goombas[i];
 			goombas[i] = goombas.back();
 			goombas.pop_back();
@@ -238,7 +238,7 @@ void Game::deleteEntities() {
 
 	// ELIMINAR SETAS.
 	for (int i = 0; i < mushrooms.size(); ++i) {
-		if (!mushrooms[i]->isAlive()) {
+  		if (mushrooms[i]->isDead()) {
 			delete mushrooms[i];
 			mushrooms[i] = mushrooms.back();
 			mushrooms.pop_back();
@@ -357,52 +357,6 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 	if (!result.collides) result = tileMap->hit(rect, fromPlayer);
 	return result;
 
-
-	//Collision::collision colTilemap = tileMap->hit(rect, fromPlayer); // Tilemap.
-	//if (colTilemap.collides) return colTilemap;
-
-	//// Goombas.
-	//int i = 0;
-	//bool found = false;
-	//while (i < goombas.size() && !found) 
-	//{
-	//	Collision::collision colGoomba = goombas[i]->hit(rect, fromPlayer);
-	//	if (colGoomba.collides) {
-	//		found = true;
-	//		return colGoomba;
-	//	}
-	//	i++;
-	//}
-
-	//// Bloques.
-	//i = 0;
-	//found = false;
-	//while (i < blocks.size() && !found)
-	//{
-	//	Collision::collision colBlock = blocks[i]->hit(rect, fromPlayer);
-	//	if (colBlock.collides) {
-	//		found = true;
-	//		return colBlock;
-	//	}
-	//	i++;
-	//}
-
-	//// Koopas.
-	//i = 0;
-	//found = false;
-	//while (i < koopas.size() && !found)
-	//{
-	//	Collision::collision colKoopas = koopas[i]->hit(rect, fromPlayer);
-	//	if (colKoopas.collides) {
-	//		found = true;
-	//		return colKoopas;
-	//	}
-	//	i++;
-	//}
-
-	//// Sin colisión.
-	//return { false, false, SDL_Rect{0,0,0,0} };
-	//
 }
 
 void Game::update()
@@ -424,7 +378,6 @@ void Game::update()
 		}
 
 		deleteEntities();
-
 		
 	}
 }

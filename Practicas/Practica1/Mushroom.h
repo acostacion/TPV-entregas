@@ -22,10 +22,13 @@ private:
 	bool isGrounded;
 	bool dead;
 
+	const int MARGIN_Y = 5;
+	const int MARGIN_X = 5;
+	
 	SDL_Rect getRect(bool) const;
 	SDL_Rect createRect(float, float);
 public:
-	Mushroom(Game *, float, float); // No tengo claro q ha de ir en la constructora, se leería con std??
+	Mushroom(Game *, const Point2D<float>&); // No tengo claro q ha de ir en la constructora, se leería con std??
 	void render(SDL_Renderer* renderer);
 	void update();
 	Collision::collision hit(const SDL_Rect&, bool);
@@ -37,7 +40,7 @@ public:
 	float getX()const { return this->pos.GetX(); }
 	Point2D<float> getDir()const { return dir; }
 
-	bool isAlive()const { return !dead; }
+	bool isDead()const { return dead; }
 
 };
 

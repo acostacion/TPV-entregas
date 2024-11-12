@@ -4,25 +4,35 @@ Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
-	dir = Point2D<float>(0,0);
+	dir = Point2D<float>(-1,0);
 
 	isGrounded = true;
-	frozen = false;
+	frozen = true;
 	timer = 3;
 	anim = 0;
     texturaGoomba = game->getTexture(Game::GOOMBA);
-	collisionRect = createRect(texturaGoomba->getFrameWidth() * 2,
-		texturaGoomba->getFrameHeight() * 2,
+	collisionRect = createRect(
 		pos.GetX() * Game::TILE_SIDE,
 		pos.GetY() * Game::TILE_SIDE);
+}
+SDL_Rect Goomba::createRect(float x, float y) {
+	// 1. Se crea el rect.
+	SDL_Rect rect;
+
+	// 2. Se le da dimensiones y posición.
+	rect.w = texturaGoomba->getFrameWidth() *2;
+	rect.h = texturaGoomba->getFrameHeight()*2;
+	rect.x = x;
+	rect.y = y;
+
+	return rect;
 }
 
 void Goomba::render(SDL_Renderer* renderer) {
 	
 	// 1. Se crea el rect.
-	SDL_Rect rect = createRect(texturaGoomba->getFrameWidth() * 2,
-		texturaGoomba->getFrameHeight() * 2,
-		pos.GetX() * Game::TILE_SIDE,
+	SDL_Rect rect = createRect(
+		pos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
 		pos.GetY() * Game::TILE_SIDE);
 
 	// 3. Frame de la animacion
@@ -43,44 +53,21 @@ void Goomba::render(SDL_Renderer* renderer) {
 
 
 	if (Game::DEBUG) {
-		Point2D<float> nectPos = pos + dir * MOVE_SPEED;
-		SDL_Rect rect2 = collider;
+		Point2D<float> nextPos = pos + dir * MOVE_SPEED;
+		SDL_Rect rect2 = createRect((nextPos.GetX() * Game::TILE_SIDE) - game->getMapOffset(), nextPos.GetY() * Game::TILE_SIDE);
 		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
 		SDL_RenderDrawRect(renderer, &rect2);
 		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
 	}
 }
 
-SDL_Rect Goomba::createRect(int w, int h, int x, int y) {
-	// 1. Se crea el rect.
-	SDL_Rect rect;
 
-	// 2. Se le da dimensiones y posición.
-	rect.w = w;
-	rect.h = h;
-	rect.x = x;
-	rect.y = y;
-
-	return rect;
-}
 
 
 void Goomba::update() {
 
-	// Gravedad.
-	if (!isGrounded) {
-		dir = Point2D<float>(dir.GetX(), dir.GetY() + GRAVITY);
-		if (dir.GetY() > MAX_FALL_SPEED) {
-			dir = Point2D<float>(dir.GetX(), MAX_FALL_SPEED);
-		}
-	}
-
-	// distancia del player para el start moving
-	Point2D<float> playerPos ;
-	Point2D<float> dis = playerPos - pos;
-	if (dis.GetX() >= 10.0) {
-		frozen = true;
-	}
+	if(pos.GetX() * Game::TILE_SIDE < game->getMapOffset() + Game::WIN_WIDTH)
+		frozen = false;
 
 
 	if (timer >= 0) {
@@ -90,64 +77,51 @@ void Goomba::update() {
 		timer = 3;
 	}
 
-    if (frozen) {
-		dir = Point2D<float>(-MOVE_SPEED, 0);
+    if (!frozen) {
+		Point2D<float> nextPos = pos + dir * MOVE_SPEED;
+
+		SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
+		Collision::collision result = game->checkCollision(nextCollider, false);
+
+		if (!result.collides) {
+			pos = nextPos;
+		}
+		else {
+			
+			if (result.intersectRect.h <= MARGIN_Y && result.intersectRect.w <= MARGIN_X) {
+				pos = nextPos;
+			}
+			else {
+				//invertir la direccion
+				dir.SetX(-dir.GetX());
+			}
+			
+		}
+
+		//si atraviesa el borde izquierdo del mapa o cae por su parte inferior
+		if (pos.GetX() * Game::TILE_SIDE < game->getMapOffset() || pos.GetY() > Game::WIN_HEIGHT) {
+			dead = true;
+		}
+
     }
-	pos = pos + dir;
-
-	// segun la dir hay que cambiar la pos del collisionRect
-
-
-	//collisionResult = game->checkCollision(collisionRect, false); // TILEMAP.
-
-	hit(collisionResult.intersectRect, collisionResult.damages);
-
-
-
 
 }
 
-Collision::collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
+Collision::collision Goomba::hit(const SDL_Rect& other, bool fromPlayer) {
 	// collides, damages, intersectrect.
-	/*Collision::collision colGoomba;
+	Collision::collision colGoomba;
+	SDL_Rect col = createRect(pos.GetX() * Game::TILE_SIDE, pos.GetY() * Game::TILE_SIDE);
 
 	//Colisiona un rect que viene de fuera con el del goomba.
-	SDL_bool collision = SDL_HasIntersection(&collisionRect, &rect);
 
-	if (collision) colGoomba.collides = true;
-
-	if (!fromPlayer) { // NOT JUGADOR.
-
-		colGoomba.damages = false;
-
-		if (rect.w >= rect.h){
-			if (rect.y < collisionRect.y) {
-				isGrounded = true;
-			}
-		}
-		else if(rect.h > rect.x) {
-			if (dir.GetX() == MOVE_SPEED) {
-				dir = Point2D<float>(-MOVE_SPEED, dir.GetY());
-			}
-			else if(dir.GetX() == -MOVE_SPEED){
-				dir = Point2D<float>(MOVE_SPEED, dir.GetY());
-			}
-		}
-		else {
-			isGrounded = true;
+	if(fromPlayer) {
+		colGoomba.collides = SDL_IntersectRect(&col, &other, &colGoomba.intersectRect);
+		if (colGoomba.collides) {
+			if (colGoomba.intersectRect.w > col.w / 4 && game->getPlayerDirectionY() == 1)
+				dead = true;
+			else if (colGoomba.intersectRect.h > col.h / 2 && !colGoomba.fromSuperMario) colGoomba.damages = true;
+			else colGoomba.fromEnemy = true;
 		}
 	}
-	else { // JUGADOR.
-		if (rect.w >= rect.h) { // Colisión de ARRIBA.
-			colGoomba.damages = false; // NO DAÑA JUGADOR.
-			delete this; // delete goomba.
-		}
-		else { // Colisión con OTRO SITIO.
-			colGoomba.damages = true; //  SI DAÑA JUGADOR.
-		}
-	}*/
-
-	Collision::collision col;
-	return col;
-
+	return colGoomba;
 }

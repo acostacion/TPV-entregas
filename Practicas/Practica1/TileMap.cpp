@@ -98,28 +98,20 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 {
 	Collision::collision colres;
 
-	int i = rect.y / Game::TILE_SIDE;
-	int row = (rect.y + rect.h) / Game::TILE_SIDE;
-	int col = (rect.x + rect.w) / Game::TILE_SIDE;
-	bool colisionado = false;
-	bool esObs = false;
-	while (i < map.size() && i <= row && (!colisionado || colisionado && !esObs)) {
-		int j = rect.x / Game::TILE_SIDE;
-		while (j < map[i].size() && j <= col && (!colisionado || colisionado && !esObs)) {
-			if (map[i][j] != -1) {
-				SDL_Rect aux = { j * Game::TILE_SIDE,i * Game::TILE_SIDE, Game::TILE_SIDE, Game::TILE_SIDE };
-				if (SDL_IntersectRect(&aux, &rect, &colres.intersectRect)) {
-					colisionado = true;
-					if (map[i][j] % texture->getNumColumns() < OBSTACLE_THRESHOLD) {
-						esObs = true;
-					}
+	// Celda del nivel que contiene la esquina inferior derecha del rectángulo
+	int row1 = (rect.y + rect.h - 1) / Game::TILE_SIDE;
+	int col1 = (rect.x + rect.w - 1) / Game::TILE_SIDE;
+
+	for (int row = rect.y / Game::TILE_SIDE; row <= row1 && !colres.collides; ++row)
+		for (int col = rect.x / Game::TILE_SIDE; col <= col1 && !colres.collides; ++col) {
+			int indice = map[row][col];
+			if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD) {
+				SDL_Rect tile = { col * Game::TILE_SIDE,row * Game::TILE_SIDE, Game::TILE_SIDE, Game::TILE_SIDE };
+				if (SDL_IntersectRect(&tile, &rect, &colres.intersectRect)) {
+					colres.collides = true;
 				}
 			}
-			++j;
 		}
-		++i;
-	}
-	colres.collides = colisionado && esObs;
 
 	return colres;
 

@@ -209,6 +209,8 @@ void Player::update() {
 
 Collision::collision Player::hit(const SDL_Rect otherRect) {
     Collision::collision resultadoFinal;
-   
-    return resultadoFinal;
+    resultadoFinal.fromPlayer = true;
+    resultadoFinal.collides = true;
+
+   return resultadoFinal;
 }

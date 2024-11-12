@@ -13,7 +13,6 @@ class Goomba
 {
 private:
 	Game* game;
-	SDL_Rect collider;
 	Texture* texturaGoomba;
 	Point2D<float> pos;
 	Point2D<float> dir;
@@ -21,6 +20,8 @@ private:
 	bool isGrounded;
 	bool frozen;
 	bool dead;
+	const int MARGIN_Y = 5;
+	const int MARGIN_X = 5;
 
 	int timer;
 	int anim;
@@ -28,7 +29,7 @@ private:
 	Collision::collision collisionResult;
 
 	// Submétodos.
-	SDL_Rect createRect(int, int, int, int);
+	SDL_Rect createRect(float, float);
 
 public:
 	Goomba(Game*, std::istream&);
@@ -46,6 +47,6 @@ public:
 	bool getFrozen()const { return frozen; }
 	Point2D<float> getDir()const { return dir; }
 
-	bool isAlive()const { return !dead; }
+	bool isDead()const { return dead; }
 };
 
