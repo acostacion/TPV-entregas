@@ -2,7 +2,7 @@
 #include <algorithm>
 
 Player::Player(Game* game, std::istream& in) 
-    : game(game), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI)
+    : game(game), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
 {
     try {
         in >> pos; // lee pos.
@@ -72,7 +72,7 @@ void Player::decreaseLife() {
     if (life > 0) {
         life--;
         if (life == 0) {
-            game->endGame(); //cuando no queda vidas acaba el juego
+            dead = true;
         }
         else {
             game->resetLevel(); // Reinicia el nivel si a¨²n quedan vidas

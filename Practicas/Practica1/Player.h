@@ -45,6 +45,7 @@ private:
 	int margenColi = 9;
 	bool superMario = false;
 	bool invulnerable;
+	bool dead;
 
 #pragma endregion
 
@@ -96,7 +97,7 @@ public:
 	void animateMario();
 	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*) const;
 
-	bool isAlive()const { return life > 0; } // Está vivo si life >0.
+	bool isDead()const { return dead; } // Está vivo si life >0.
 };
 
 
