@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 
-#include "CheckML.h"
 #include "Game.h"
 #include "Vector2D.h"
 #include "Collision.h"
@@ -12,40 +11,31 @@
 class Game;
 class Player;
 class Mushrrom;
+
 class Blocks
 {
 public: 
-	enum Tipos { 
-		ladrillo,
-		sorpresa,
-		vacio,
-		oculto,
-	};
-
-	enum Accion { 
-		potenciador,
-		moneda,
-		nada,
-	};
+	enum Tipos { ladrillo, sorpresa, vacio, oculto };
+	enum Accion { potenciador, moneda, nada };
 
 private:
-	// REFERENCES.
+	// Referencias.
 	Game* game;
 
-	// COSAS DEL BLOCK.
+	// Propiedades.
 	Point2D<float> pos;
 	bool destroyed = false;
-	SDL_Rect colision; // como no se cambian de sitio, elegimos hacer el collider como variable
+	SDL_Rect colision; 
 
-	// ENUMS.
-	Tipos tipo; // ladrillo, sorpresa, vacio, oculto
-	Accion action; // potenciador, moneda, nada
+	Tipos tipo; // ladrillo, sorpresa, vacio, oculto.
+	Accion action; // potenciador, moneda, nada.
 
-	// ANIMACIONES Y TEXTURAS.
+	// Gráficos.
 	Texture* texturaBlock;
 	int animFrame; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
 	bool anim; // si tiene que animarse, seria solo el sorpresa
 	int animTimer;
+
 	void changeSprite();
 
 public:

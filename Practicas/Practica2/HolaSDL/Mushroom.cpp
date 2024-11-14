@@ -1,4 +1,5 @@
-﻿#include "Mushroom.h"
+﻿#include "CheckML.h"
+#include "Mushroom.h"
 
 
 Mushroom::Mushroom(Game* _game, const Point2D<float>& _pos) {
