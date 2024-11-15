@@ -178,6 +178,18 @@ void Player::handleEvent(SDL_Event evento) {
 }
 
 void Player::update() {
+    if (invencible) {
+        if (timer >= 0) {
+            timer--;
+        }
+        else {
+            timer = TIMER;
+            invencible = false;
+        }
+    }
+    
+
+
     // Calcular la próxima posición
     Point2D<float> nextPosition = pos + dir * MOVE_SPEED;
     // Verificar que Mario no exceda el borde izquierdo del mapa
@@ -199,8 +211,11 @@ void Player::update() {
     }
 
     // Si hay daño en la colisión, reducir la vida
-    if (result.damages) {
-        if (superMario) changeMario();
+    if (result.damages || result.fromEnemy && !invencible) {
+        if (superMario) {
+            invencible = true;
+            changeMario();
+        }
         else decreaseLife();
         return;
     }

@@ -89,14 +89,12 @@ void Goomba::update() {
 			nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
 			result = game->checkCollision(nextCollider, false);
 			if (!result.collides) pos = nextPos;// Sin colisión en X, actualizar posición
-			else if (result.intersectRect.h <= MARGIN_Y && result.intersectRect.w <= MARGIN_X && !result.fromEnemy) pos = nextPos;// Si la colisión está dentro de los márgenes, actualizar posición
+			else if (result.intersectRect.h <= MARGIN_Y && result.intersectRect.w <= MARGIN_X) pos = nextPos;// Si la colisión está dentro de los márgenes, actualizar posición
 			else{
 				// Si la colisión excede los márgenes, invertir la dirección
 				dir.SetX(-dir.GetX());
 			}
 		}
-		
-
 
 		//si atraviesa el borde izquierdo del mapa o cae por su parte inferior
 		if (pos.GetX() * Game::TILE_SIDE < game->getMapOffset() || pos.GetY()>Game::WIN_HEIGHT) {
@@ -117,7 +115,8 @@ Collision::collision Goomba::hit(const SDL_Rect& other, bool fromPlayer) {
 		if (colGoomba.collides) {
 			if (colGoomba.intersectRect.w > col.w / 4 && game->getPlayerDirectionY() == 1)
 				dead = true;
-			else if (colGoomba.intersectRect.h > col.h / 2 && !game->getSMario()) colGoomba.damages = true;
+			else if (colGoomba.intersectRect.h > col.h / 2 && !game->getSMario()) 
+				colGoomba.damages = true;
 			else colGoomba.fromEnemy = true;
 		}
 	}

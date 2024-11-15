@@ -42,9 +42,13 @@ private:
 #pragma region Atributes
 
 	int life;
+	int const TIMER = 1000;
+	int timer = TIMER;
+
 	int margenColi = 9;
 	bool superMario = false;
 	bool dead;
+	bool invencible = false;
 
 #pragma endregion
 
