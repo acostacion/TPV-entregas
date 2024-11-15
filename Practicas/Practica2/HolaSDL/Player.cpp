@@ -2,13 +2,21 @@
 #include "Player.h"
 #include <algorithm>
 
-Player::Player(Game* game, std::istream& in) 
-    : game(game), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
+Player::Player(Game* _game, std::istream& in) 
+    : SceneObject(game, Point2D<float>(0,0), 0, 0)
 {
     try {
         in >> pos; // lee pos.
         pos = pos - Point2D<float>(0, 1); // ajusta pos.
         in >> life; // vidas.
+
+        Player::game = _game;
+        superMario = false;
+        height = 0;
+        isGrounded = false;
+        isJumping = false;
+        dir = DIR_INI;
+        dead = false;
 
         texturaMario = game->getTexture(Game::MARIO);
         texturaSMario = game->getTexture(Game::SUPERMARIO);

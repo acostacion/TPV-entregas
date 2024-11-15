@@ -4,9 +4,8 @@
 #include "Collision.h"
 
 
-class SceneObject : public GameObject
-{
-private:
+class SceneObject : public GameObject{
+protected:
 	Point2D<float>pos;
 	float width, height;
 public:
@@ -16,9 +15,7 @@ public:
 		height = h;
 	}
 
-	virtual Collision::collision hit(const SDL_Rect& other, bool fromPlayer);
-	void render()const override;
-	void update() override;
+	virtual Collision::collision hit(const SDL_Rect& other, bool fromPlayer) = 0;
 	virtual ~SceneObject();
 };
 
