@@ -13,6 +13,7 @@ TileMap::TileMap(std::istream& entrada, Game* _game)
 			int c = 0;
 			char cAux = ','; // Se separa el archivo por comas.
 			std::vector<int> fila;
+
 			x = 0;
 			// Mientras cAux siga obteniendo ","... (lee la fila).
 			while (cAux == ',') {

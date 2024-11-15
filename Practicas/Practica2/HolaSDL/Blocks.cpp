@@ -1,16 +1,15 @@
 #include "CheckML.h"
 #include "Blocks.h"
 
-Blocks::Blocks(Game* _game, std::istream& in) : game(_game)
+Blocks::Blocks(Game* _game, std::istream& in) 
+	: game(_game), anim(false), destroyed(false), 
+	animTimer(3), animFrame(0)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
-	anim = false;
 	action = Accion::nada;
 	tipo = Tipos::ladrillo;
-	animFrame = 0;
-	destroyed = false;
-	animTimer = 3;
+
 	char c;
 	in >> c;
 	switch (c) {
@@ -25,23 +24,15 @@ Blocks::Blocks(Game* _game, std::istream& in) : game(_game)
 		in >> c;
 		anim = true;
 
-		if (c == 'C') {
-			action = Accion::moneda; // Caso "coin".
-		}
-		else {
-			action = Accion::potenciador; // Caso "potentiator".//creo q mushroom
-		}
+		// c true -> action es moneda : c false -> action es potenciador
+		action = (c == 'C') ? Accion::moneda : Accion::potenciador;
+
 		animFrame = 0;
 		break;
 
 	case 'H': // Si es un bloque oculto...
 		tipo = Tipos::oculto;
-		if (c == 'C') {
-			action = Accion::moneda;
-		}
-		else {
-			action = Accion::potenciador;
-		}
+		action = (c == 'C') ? Accion::moneda : Accion::potenciador;
 		animFrame = 6;
 		break;
 	}
@@ -71,24 +62,20 @@ SDL_Rect Blocks::createBlockRect() {
 void Blocks::render(SDL_Renderer* renderer) {
 
 	// si es el sorpresa
-	if (animTimer == 0) {
-		if (anim) {
-			if (animFrame == 0) animFrame = 1;
-			else if (animFrame == 1) animFrame = 2;
-			else if (animFrame == 2) animFrame = 3;
-			else if (animFrame == 3) animFrame = 0;
-		}
+	if (animTimer == 0 && anim) {
+		
+		if (animFrame == 0) animFrame = 1;
+		else if (animFrame == 1) animFrame = 2;
+		else if (animFrame == 2) animFrame = 3;
+		else if (animFrame == 3) animFrame = 0;	
 	}
 	
 	SDL_Rect rect = createBlockRect();
-	// Se renderiza.
-	texturaBlock->renderFrame(rect, 0, animFrame);
+	texturaBlock->renderFrame(rect, 0, animFrame); // Se renderiza.
 
 	if (Game::DEBUG) {
-		SDL_Rect rect2 = createBlockRect();
-
 		SDL_SetRenderDrawColor(renderer, 255, 255, 0, 128);
-		SDL_RenderDrawRect(renderer, &rect2);
+		SDL_RenderDrawRect(renderer, &rect);
 		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
 	}
 }
@@ -103,10 +90,11 @@ void Blocks::changeSprite(){
 	else if (tipo == Tipos::oculto) {
 		animFrame = 6;
 	}
-	anim = false;
+	anim = false; // Si cambian de tipo detiene animacion.
 }
 
 void Blocks::update() {
+	// Va decrementando el temporizador si esta activo y lo reinicia al llegar 
 	if (animTimer >= 0) {
 		animTimer--;
 	}
@@ -115,6 +103,7 @@ void Blocks::update() {
 	}
 }
 
+// RUBÉN LUEGO DARÁ LAS COLISIONES HECHAS.
 Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 	Collision::collision colBlock;
 	if (!(colision.x == other.x && colision.y == other.y && colision.w == other.w && colision.h == other.h))

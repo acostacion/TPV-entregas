@@ -39,12 +39,12 @@ private:
 	void changeSprite();
 
 public:
-	Blocks(Game*, std::istream&);
+	Blocks(Game* _game, std::istream& in);
 
 	void render(SDL_Renderer* renderer);
 	void update();
 
-	Collision::collision hit(const SDL_Rect&, bool);
+	Collision::collision hit(const SDL_Rect& other, bool);
 
 	// Submétodos.
 	SDL_Rect createBlockRect();

@@ -22,9 +22,9 @@ public:
 	static constexpr uint TILE_MAP = 32;
 	const int OBSTACLE_THRESHOLD = 4; // constante
 
-	TileMap(std::istream&, Game*); // Constructora desde flujo de entrada y referencia al juego.
-	void render(SDL_Renderer*);
+	TileMap(std::istream& entrada, Game* _game); // Constructora desde flujo de entrada y referencia al juego.
+	void render(SDL_Renderer* renderer);
 	void update();
-	Collision::collision hit(const SDL_Rect&, bool);
+	Collision::collision hit(const SDL_Rect& rect, bool fromPlayer);
 };
 
