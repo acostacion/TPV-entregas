@@ -30,8 +30,7 @@ private:
 	const float MOVE_SPEED_Y = 0.175;
 	const float FALL_OFFSET = 0.06;
 	
-	SDL_Rect getRect(bool) const;
-	SDL_Rect createRect(float, float);
+	SDL_Rect createRect(int, int) const;
 public:
 	Mushroom(Game *, const Point2D<float>&); // No tengo claro q ha de ir en la constructora, se leería con std??
 	void render(SDL_Renderer* renderer);

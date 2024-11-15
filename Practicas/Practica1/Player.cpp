@@ -68,7 +68,11 @@ void Player::resetPos() { //REINICIAR LA POSICION DEL JUGADOR
     pos = posInicio;
 }
 
-void Player::changeMario() { superMario = !superMario; }
+void Player::changeMario() { 
+    superMario = !superMario; 
+    if (superMario) pos.SetY(pos.GetY() - 1);
+    else pos.SetY(pos.GetY() + 1);
+}
 
 void Player::decreaseLife() {
     if (life > 0) {

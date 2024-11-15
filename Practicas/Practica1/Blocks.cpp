@@ -150,8 +150,13 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 
 						}
 						else if (action == Accion::potenciador) {
+							Point2D<float> Spawn = { (float)(colision.x / Game::TILE_SIDE), (float)(colision.y / Game::TILE_SIDE - 1) };
+							std::cout << "Block: "<< pos.GetX() << " " << pos.GetY() << "\n";
 
-							game->addMushroom(new Mushroom(game, { pos.GetX() , pos.GetY()  - Game::TILE_SIDE }));
+							std::cout << "Block: " << Spawn.GetX() << " " << Spawn.GetY() << "\n";
+
+
+							game->addMushroom(new Mushroom(game, Spawn));
 						}
 
 						tipo = Tipos::vacio;
@@ -164,14 +169,13 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 
 						}
 						else if (action == Accion::potenciador) {
+							Point2D<float> Spawn = { (float)(colision.x / Game::TILE_SIDE), (float)(colision.y / Game::TILE_SIDE - 1) };
 							game->addMushroom(new Mushroom(game, { pos.GetX(), pos.GetY() - Game::TILE_SIDE }));
 						}
 						tipo = Tipos::vacio;
 						changeSprite();
 					}
-					else if (tipo == Tipos::vacio) {
-
-					}
+				
 				}
 			}
 			colBlock.collides = true;
