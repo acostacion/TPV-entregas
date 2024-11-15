@@ -37,29 +37,28 @@ void Mushroom::render(SDL_Renderer* renderer) {
 
 void Mushroom::update() {
 	// Calcular la próxima posicion basada en la direccion y velocidad de movimiento
-	Point2D<float> nextPos = pos + Vector2D<float>(dir.GetX() * (MOVE_SPEED_X - FALL_OFFSET), MOVE_SPEED_Y);
+	Point2D<float> nextPos = pos + Vector2D<float>(0, 1) * MOVE_SPEED;
 	SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
 	Collision::collision result = game->checkCollision(nextCollider, false);
 
-	if (!result.collides) {
+	if (!result.collides) {// Sin colisión en Y, actualizar posición
 		pos = nextPos;
 	}
 	else {
-		nextPos = pos + Vector2D<float>(dir.GetX() * MOVE_SPEED_X, dir.GetY() * MOVE_SPEED_Y);
-		SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
-		Collision::collision result = game->checkCollision(nextCollider, false);
-		if (!result.collides) {
-			pos = nextPos;
-		}
+		nextPos = pos + dir * MOVE_SPEED;
+		nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
+		result = game->checkCollision(nextCollider, false);
+		if (!result.collides) pos = nextPos;// Sin colisión en X, actualizar posición
+		else if (result.intersectRect.h <= MARGIN_Y && result.intersectRect.w <= MARGIN_X) pos = nextPos;// Si la colisión está dentro de los márgenes, actualizar posición
 		else {
-			if (result.intersectRect.h <= MARGENY && result.intersectRect.w <= MARGENX) {
-				pos = nextPos;
-			}
-			else {
-				//invertir la direccion
-				dir.SetX(-dir.GetX());
-			}
+			// Si la colisión excede los márgenes, invertir la dirección
+			dir.SetX(-dir.GetX());
 		}
+	}
+
+	//si atraviesa el borde izquierdo del mapa o cae por su parte inferior
+	if (pos.GetX() * Game::TILE_SIDE < game->getMapOffset() || pos.GetY()>Game::WIN_HEIGHT) {
+		dead = true;
 	}
 }
 
@@ -67,10 +66,11 @@ Collision::collision Mushroom::hit(const SDL_Rect& other, bool fromPlayer) {
 	Collision::collision res;
 	SDL_Rect rect = createRect(pos.GetX() * Game::TILE_SIDE, pos.GetY() * Game::TILE_SIDE);
 	if(SDL_IntersectRect(&other, &rect, &res.intersectRect)) {
-		res.collides = true;
 		if (fromPlayer) { // se elimina y cambia el player
 			dead = true;
 			res.fromMushroom = true;
+			res.collides = true;
+
 		}
 	}
 	
