@@ -1,10 +1,11 @@
 #include "Koopa.h"
 
-Koopa::Koopa(Game* game, std::istream& in) : game(game)
+Koopa::Koopa(Game* game, std::istream& in) : game(game), dead(false)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
-	dir = Point2D<float>(0,0);
+	dir = Point2D<float>(-1, 0);
+
 	isGrounded = true;
 	frozen = true;
 	timer = 3;
@@ -12,7 +13,7 @@ Koopa::Koopa(Game* game, std::istream& in) : game(game)
 	texturaKoopa = game->getTexture(Game::KOOPA);
 }
 SDL_Rect Koopa::createRect(float x, float y) {
-	//1. Se crea el rect.
+	// 1. Se crea el rect.
 	SDL_Rect rect;
 
 	// 2. Se le da dimensiones y posición.
@@ -23,29 +24,30 @@ SDL_Rect Koopa::createRect(float x, float y) {
 
 	return rect;
 }
-void Koopa::render(SDL_Renderer* renderer) {
-	
-	// 1. Se crea el rect.
-	SDL_Rect rect;
 
-	// 2. Se le da dimensiones y posici�n.
-	rect.w = texturaKoopa->getFrameWidth() * 2;
-	rect.h = texturaKoopa->getFrameHeight() * 2;
-	rect.x = pos.GetX() * Game::TILE_SIDE;
-	rect.y = pos.GetY() * Game::TILE_SIDE;
+void Koopa::render(SDL_Renderer* renderer) {
+
+	// 1. Se crea el rect.
+	SDL_Rect rect = createRect(
+		pos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
+		pos.GetY() * Game::TILE_SIDE);
 
 	// 3. Frame de la animacion
-	
+	if (dead) {
+		anim = 2;
+	}
+
+	if (timer == 0 && !dead) {
 		if (anim == 0) anim = 1;
 		else anim = 0;
-	
+	}
 
 	// Se renderiza.
 	texturaKoopa->renderFrame(rect, 0, anim);
 
 	if (Game::DEBUG) {
 		Point2D<float> nextPos = pos + dir * MOVE_SPEED;
-		SDL_Rect rect2 = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
+		SDL_Rect rect2 = createRect((nextPos.GetX() * Game::TILE_SIDE) - game->getMapOffset(), nextPos.GetY() * Game::TILE_SIDE);
 		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
 		SDL_RenderDrawRect(renderer, &rect2);
 		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
@@ -53,8 +55,9 @@ void Koopa::render(SDL_Renderer* renderer) {
 }
 
 
-void Koopa::update() {
 
+
+void Koopa::update() {
 	// Verificar si el personaje está dentro de la pantalla para activar movimiento
 	bool isOnScreen = (pos.GetX() * Game::TILE_SIDE > game->getMapOffset()) &&
 		(pos.GetX() * Game::TILE_SIDE < game->getMapOffset() + Game::WIN_WIDTH);
@@ -82,7 +85,6 @@ void Koopa::update() {
 			pos = nextPos;
 		}
 		else {
-			// Moverse en las X
 			nextPos = pos + dir * MOVE_SPEED;
 			nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
 			result = game->checkCollision(nextCollider, false);
@@ -104,19 +106,20 @@ void Koopa::update() {
 
 Collision::collision Koopa::hit(const SDL_Rect& other, bool fromPlayer) {
 	// collides, damages, intersectrect.
-	Collision::collision colKoopa;
+	Collision::collision colGoomba;
 	SDL_Rect col = createRect(pos.GetX() * Game::TILE_SIDE, pos.GetY() * Game::TILE_SIDE);
 
-	//Colisiona un rect que viene de fuera con el del koopa.
-
+	//Colisiona un rect que viene de fuera con el del goomba.
 	if (fromPlayer) {
-		colKoopa.collides = SDL_IntersectRect(&col, &other, &colKoopa.intersectRect);
-		if (colKoopa.collides) {
-			if (other.y < col.y)
+		colGoomba.collides = SDL_IntersectRect(&col, &other, &colGoomba.intersectRect);
+		if (colGoomba.collides) {
+			if (colGoomba.intersectRect.w > col.w / 4 && game->getPlayerDirectionY() == 1)
 				dead = true;
-			else if (colKoopa.intersectRect.h > col.h) colKoopa.damages = true;
-			else colKoopa.fromEnemy = true;
+			else if (colGoomba.intersectRect.h > col.h / 2 && !game->getSMario())
+				colGoomba.damages = true;
+			else colGoomba.fromEnemy = true;
 		}
 	}
-	return colKoopa;
+
+	return colGoomba;
 }

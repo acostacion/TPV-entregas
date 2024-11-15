@@ -1,6 +1,7 @@
 #pragma once
 #include <fstream>
 #include <iostream>
+#include <cmath>
 
 #include "CheckML.h"
 #include "Game.h"
@@ -13,7 +14,6 @@ class Koopa
 private:
 	Game* game;
 	Texture* texturaKoopa;
-	SDL_Rect collider;
 	Point2D<float> pos;
 	Point2D<float> dir;
 	bool isGrounded;
