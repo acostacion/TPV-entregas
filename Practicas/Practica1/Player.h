@@ -16,7 +16,6 @@ private:
 #pragma region References
 	Game* game;
 	Texture* texturaMario; //mario
-	Texture* texturaSMario; // superMario
 
 #pragma endregion
 
@@ -52,7 +51,7 @@ private:
 	
 #pragma region Methods
 
-	SDL_Rect createRect(float, float);
+	SDL_Rect createRect(int, int);
 	SDL_Rect getRect(bool forRender) const;
 	void changeMario();
 	void jump();

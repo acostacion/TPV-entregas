@@ -10,7 +10,6 @@ Player::Player(Game* game, std::istream& in)
         in >> life; // vidas.
 
         texturaMario = game->getTexture(Game::MARIO);
-        texturaSMario = game->getTexture(Game::SUPERMARIO);
         verticalVelocity = 0;
 
 
@@ -22,22 +21,20 @@ Player::Player(Game* game, std::istream& in)
 	
 }
 
-SDL_Rect Player::createRect(float x, float y) {
-    // Se crea el rect.
+SDL_Rect Player::createRect(int x, int y) {
+    // Se crea el rect.if (superMario) {
     SDL_Rect rect;
-
-    if (!superMario) { // MARIO.
-        rect.w = texturaMario->getFrameWidth() - 8;
-        rect.h = texturaMario->getFrameHeight();
-    }
-    else { // SUPER MARIO.
-        rect.w = texturaSMario->getFrameWidth() * 2;
-        rect.h = texturaSMario->getFrameHeight() * 2;
-    }
     rect.x = x;
     rect.y = y;
 
-    return rect;
+    rect.w = texturaMario->getFrameWidth();
+    rect.h = texturaMario->getFrameHeight();
+
+    if (superMario) {
+        rect.w *= 2;
+        rect.h *= 2;
+    }
+    return rect ;
 }
 
 SDL_Rect Player::getRect(bool forRender) const {
@@ -45,21 +42,20 @@ SDL_Rect Player::getRect(bool forRender) const {
 
     rect.x = pos.GetX() * Game::TILE_SIDE;
     rect.y = pos.GetY() * Game::TILE_SIDE;
+
+    rect.w = texturaMario->getFrameWidth();
+    rect.h = texturaMario->getFrameHeight();
+
+    if (superMario) {
+        rect.w *= 2;
+        rect.h *= 2;
+    }
     
-    if (!superMario) {
-        rect.w = texturaMario->getFrameWidth();
-        rect.h = texturaMario->getFrameHeight();
-    }
-    else {
-        rect.w = texturaSMario->getFrameWidth() * 2;
-        rect.h = texturaSMario->getFrameHeight() * 2;
-        rect.y = pos.GetY() * Game::TILE_SIDE;
-    }
+
     if (forRender) {
         rect.x = (pos.GetX() * Game::TILE_SIDE) - game->getMapOffset();
-        rect.y -= 3;
-
     }
+
     return rect;
 }
 
@@ -70,8 +66,15 @@ void Player::resetPos() { //REINICIAR LA POSICION DEL JUGADOR
 
 void Player::changeMario() { 
     superMario = !superMario; 
-    if (superMario) pos.SetY(pos.GetY() - 1);
-    else pos.SetY(pos.GetY() + 1);
+    if (superMario) {
+        pos.SetY(pos.GetY() - 1);
+        texturaMario = game->getTexture(Game::SUPERMARIO);
+    }
+    else {
+        texturaMario = game->getTexture(Game::MARIO);
+    }
+
+    game->ChangeMario();
 }
 
 void Player::decreaseLife() {
@@ -135,12 +138,9 @@ void Player::render(SDL_Renderer* renderer) {
 
 
 void Player::renderMarioAnimation(const SDL_Rect& rect, SDL_Renderer* renderer) const  {
-    if (!superMario) {
-        texturaMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
-    else {
-        texturaSMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
+  
+    texturaMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+   
 }
 
 // Input de teclado cambian la dir del jugador.
@@ -190,13 +190,6 @@ void Player::update() {
     SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, nextPosition.GetY() * Game::TILE_SIDE);
     Collision::collision result = game->checkCollision(nextCollider, true);
 
-
-    // Si hay daño en la colisión, reducir la vida
-    if (result.damages) {
-        decreaseLife();
-        return;
-    }
-
     // Sin colisión: actualizar posición y estado de "en el suelo"
     if (!result.collides) {
         pos = nextPosition;
@@ -205,14 +198,16 @@ void Player::update() {
         return;
     }
 
-    // Colisión con un hongo: cambiar a Super Mario si no lo es
-    if (result.fromMushroom) {
-        if (!superMario) changeMario();
-    }
-    // Colisión con un enemigo: revertir Super Mario o reducir vida
-    else if (result.fromEnemy) {
+    // Si hay daño en la colisión, reducir la vida
+    if (result.damages) {
         if (superMario) changeMario();
         else decreaseLife();
+        return;
+    }
+
+    // Colisión con un hongo: cambiar a Super Mario si no lo es
+    if (result.fromMushroom && !superMario) {
+        changeMario();
     }
     // Colisión con otro obstáculo: verificar el margen de colisión
     else if (result.intersectRect.h <= margenColi && result.intersectRect.y > nextCollider.y) {

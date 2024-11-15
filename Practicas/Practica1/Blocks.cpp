@@ -123,32 +123,32 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 			
 			if (fromPlayer) {
 				// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
-				if (action == Accion::potenciador) {
-					Point2D<float> Spawn = { (float)(colision.x / Game::TILE_SIDE), (float)(colision.y / Game::TILE_SIDE - 1) };
-					game->addMushroom(new Mushroom(game, Spawn));
-				}
-				else if (action == Accion::moneda) {
-					Point2D<float> Spawn = { (float)(colision.x / Game::TILE_SIDE), (float)(colision.y / Game::TILE_SIDE - 1) };
+				if (tipo == Tipos::sorpresa || tipo == Tipos::oculto){
+					// Si mario siendo M o SM choca con los sorpresa.
+					// O sale la seta o salen monedas, etc.
 
+					if (action == Accion::potenciador) {
+						Point2D<float> Spawn = { (float)(colision.x / Game::TILE_SIDE), (float)(colision.y / Game::TILE_SIDE - 1) };
+						game->addMushroom(new Mushroom(game, Spawn));
+					}
+					else if (action == Accion::moneda) {
+						Point2D<float> Spawn = { (float)(colision.x / Game::TILE_SIDE), (float)(colision.y / Game::TILE_SIDE - 1) };
+
+					}
+					tipo = Tipos::vacio;
+					changeSprite();
 				}
 
 				//Colisiona un rect que viene de fuera con el del bloque.
 				// Si colisiona el collider del bloque con otro...
 				// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
+				
 				if (tipo == Tipos::ladrillo) {
 					if (game->getSMario()) { // MARIO Grande.
 						// ladrillo se puede romper
-						destroyed = true;
+ 						destroyed = true;
 					}
-
 				}
-				else if (tipo == Tipos::sorpresa || tipo == Tipos::oculto) {
-					// Si mario siendo M o SM choca con los sorpresa.
-					// O sale la seta o salen monedas, etc.
-					tipo = Tipos::vacio;
-					changeSprite();
-				}
-				
 				
 			}
 			colBlock.collides = true;

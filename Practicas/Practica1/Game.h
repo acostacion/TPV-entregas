@@ -79,10 +79,7 @@ private:
 
     // Colisiones.
    
-    void ChangeMario() {
-        if (Smario) Smario = false;
-        else Smario = true;
-    }
+    
 
 public:
 
@@ -108,7 +105,9 @@ public:
     bool getSMario() { return Smario; }
     SDL_Renderer* getRender() { return renderer; }
   
-
+    void ChangeMario() {
+        Smario = !Smario;
+    }
     // Constante globales
     static constexpr int TILE_SIDE = 32;
     static constexpr int WIN_TILE_WIDTH = 18;
