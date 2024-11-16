@@ -20,6 +20,7 @@ private:
 	Texture* texturaSMario; // superMario
 	int life;
 	float verticalVelocity;
+	float w, h;
 
 public:
 

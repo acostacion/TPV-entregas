@@ -1,6 +1,6 @@
 #include "PlayerTest.h"
 
-PlayerTest::PlayerTest(Game* _game, std::istream& in) : SceneObject(_game, *(new Point2D<float>(0,0)), 0, 0) // game, pos, w, h.
+PlayerTest::PlayerTest(Game* _game, std::istream& in) : SceneObject(_game, dir, w, h) // game, pos, w, h.
 {
     try {
         in >> pos; // lee pos.
@@ -16,7 +16,7 @@ PlayerTest::PlayerTest(Game* _game, std::istream& in) : SceneObject(_game, *(new
         isJumping = false;
         dir = DIR_INI;
         dead = false;
-
+        w = h = 0; // luego modificar esto
 
         posInicio = pos;
     }
