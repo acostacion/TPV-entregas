@@ -3,20 +3,21 @@
 #include <SDL.h>
 
 /*
-* virtual: para indicar que un método se puede sobreescribir por subclases.
+* virtual: para indicar que un método se puede sobreescribir por subclases. virtual tipo method() = 0;
 * override: para indicar la sobreescritura de la clase base.
 */
 
 class GameObject
 {
-private:
+protected:
 	Game* game;
 public:
 	GameObject(Game* gameInstance) {
 		game = gameInstance;
 	}
-	virtual void render()const;
-	virtual void update();
+	// LUEGO HAY QUE HACER RENDER CONST.
+	virtual void render(SDL_Renderer* renderer) = 0;
+	virtual void update() = 0;
 	virtual ~GameObject();
 };
 

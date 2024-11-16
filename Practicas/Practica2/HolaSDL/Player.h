@@ -1,4 +1,5 @@
 #pragma once
+#include "CheckML.h"
 
 #include <fstream>
 #include <iostream>
@@ -10,7 +11,7 @@
 class Game;
 static const Point2D<float> DIR_INI{ 0, 0 };
 
-class Player{
+class Player {
 private:
 #pragma region References
 	Game* game;
@@ -30,7 +31,7 @@ private:
 
 	bool isGrounded; // si esta en el suelo
 	bool isJumping;
-	
+
 #pragma endregion
 
 #pragma region Animation
@@ -48,7 +49,7 @@ private:
 
 #pragma endregion
 
-	
+
 #pragma region Methods
 
 	SDL_Rect createRect(float, float);
@@ -56,7 +57,7 @@ private:
 	void changeMario();
 	void jump();
 	void decreaseLife();
-	
+
 #pragma endregion
 
 #pragma region Constants
@@ -70,7 +71,7 @@ private:
 
 
 public:
-	
+
 	Player(Game*, std::istream&); // constructora
 
 	void render(SDL_Renderer* renderer);
@@ -94,7 +95,7 @@ public:
 
 	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*) const;
 
-	bool isDead()const { return dead; } // Está vivo si life >0.
+	bool isDead()const { return dead; } // Est? vivo si life >0.
 };
 
 
@@ -116,7 +117,3 @@ inline int
 Player::getPlayerLife() const {
 	return life;
 }
-
-
-
-
