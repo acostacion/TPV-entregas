@@ -45,6 +45,7 @@ private:
 	int margenColi = 9;
 	bool superMario = false;
 	bool dead;
+	float height;
 
 #pragma endregion
 
