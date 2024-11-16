@@ -7,16 +7,14 @@
 * override: para indicar la sobreescritura de la clase base.
 */
 
-class GameObject
-{
+class GameObject{
 protected:
+	// Atributos.
 	Game* game;
-public:
-	GameObject(Game* gameInstance) {
-		game = gameInstance;
-	}
-	// LUEGO HAY QUE HACER RENDER CONST.
-	virtual void render(SDL_Renderer* renderer) = 0;
+
+	// Métodos.
+	GameObject(Game*);
+	virtual void render(SDL_Renderer* renderer)const = 0;
 	virtual void update() = 0;
 	virtual ~GameObject();
 };

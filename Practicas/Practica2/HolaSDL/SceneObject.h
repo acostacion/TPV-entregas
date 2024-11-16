@@ -4,16 +4,14 @@
 #include "Collision.h"
 
 
-class SceneObject : public GameObject{
+class SceneObject : public GameObject{ // SceneObject hereda de GameObject.
 protected:
+	// Atributos.
 	Point2D<float>pos;
 	float width, height;
-public:
-	SceneObject(Game* gameInstance, Point2D<float>& position, float w, float h) : GameObject(gameInstance) {
-		pos = position;
-		width = w;
-		height = h;
-	}
+
+	// Métodos.
+	SceneObject(Game*, Point2D<float>&, float, float);
 
 	virtual Collision::collision hit(const SDL_Rect& other, bool fromPlayer) = 0;
 	virtual ~SceneObject();
