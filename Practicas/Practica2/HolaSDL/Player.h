@@ -27,7 +27,6 @@ private:
 	Point2D<float> posInicio;// para el reinicio
 
 	float verticalVelocity;
-	int height;
 
 	bool isGrounded; // si esta en el suelo
 	bool isJumping;
