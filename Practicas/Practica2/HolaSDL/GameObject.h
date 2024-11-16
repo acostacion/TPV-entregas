@@ -15,7 +15,8 @@ public:
 	GameObject(Game* gameInstance) {
 		game = gameInstance;
 	}
-	virtual void render(SDL_Renderer* renderer)const = 0;
+	// LUEGO HAY QUE HACER RENDER CONST.
+	virtual void render(SDL_Renderer* renderer) = 0;
 	virtual void update() = 0;
 	virtual ~GameObject();
 };

@@ -1,22 +1,13 @@
-#include "CheckML.h"
 #include "Player.h"
 #include <algorithm>
 
-Player::Player(Game* _game, std::istream& in) 
-    : SceneObject(game, Point2D<float>(0,0), 0, 0)
+Player::Player(Game* game, std::istream& in)
+    : game(game), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
 {
     try {
         in >> pos; // lee pos.
         pos = pos - Point2D<float>(0, 1); // ajusta pos.
         in >> life; // vidas.
-
-        Player::game = _game;
-        superMario = false;
-        height = 0;
-        isGrounded = false;
-        isJumping = false;
-        dir = DIR_INI;
-        dead = false;
 
         texturaMario = game->getTexture(Game::MARIO);
         texturaSMario = game->getTexture(Game::SUPERMARIO);
@@ -28,7 +19,7 @@ Player::Player(Game* _game, std::istream& in)
     catch (...) {
         std::cout << "Error creando Player.";
     }
-	
+
 }
 
 SDL_Rect Player::createRect(float x, float y) {
@@ -54,7 +45,7 @@ SDL_Rect Player::getRect(bool forRender) const {
 
     rect.x = pos.GetX() * Game::TILE_SIDE;
     rect.y = pos.GetY() * Game::TILE_SIDE;
-    
+
     if (!superMario) {
         rect.w = texturaMario->getFrameWidth();
         rect.h = texturaMario->getFrameHeight();
@@ -104,7 +95,7 @@ void Player::jump() {
 }
 
 void Player::render(SDL_Renderer* renderer) {
-	
+
     SDL_Rect rect = getRect(true);
 
     if (dir == DIR_INI) { //cuando se queda quieto
@@ -122,24 +113,24 @@ void Player::render(SDL_Renderer* renderer) {
         else if (anim == 6) anim = 0;
     }
     else anim = 0;
-    
-	// Se renderiza.
-    renderMarioAnimation(rect, renderer);   
 
-    if (Game::DEBUG){
+    // Se renderiza.
+    renderMarioAnimation(rect, renderer);
+
+    if (Game::DEBUG) {
         Point2D<float> nextPos = pos + dir * MOVE_SPEED;
         SDL_Rect rect2 = createRect(
             nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
             nextPos.GetY() * Game::TILE_SIDE);
 
-        SDL_SetRenderDrawColor(renderer,255,0,0,128 );
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
         SDL_RenderDrawRect(renderer, &rect2);
         SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
     }
 }
 
 
-void Player::renderMarioAnimation(const SDL_Rect& rect, SDL_Renderer* renderer) const  {
+void Player::renderMarioAnimation(const SDL_Rect& rect, SDL_Renderer* renderer) const {
     if (!superMario) {
         texturaMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
@@ -173,12 +164,12 @@ void Player::handleEvent(SDL_Event evento) {
     // Al despulsar la tecla...
     else if (evento.type == SDL_KEYUP) {
         if (tecla == SDL_SCANCODE_A || tecla == SDL_SCANCODE_LEFT || tecla == SDL_SCANCODE_D || tecla == SDL_SCANCODE_RIGHT) {
-            dir.SetX(0); 
+            dir.SetX(0);
         }
         else if (tecla == SDL_SCANCODE_W || tecla == SDL_SCANCODE_SPACE || tecla == SDL_SCANCODE_UP) {
             isJumping = false;
         }
-        
+
     }
 }
 
@@ -241,5 +232,5 @@ Collision::collision Player::hit(const SDL_Rect otherRect) {
     resultadoFinal.fromPlayer = true;
     resultadoFinal.collides = true;
 
-   return resultadoFinal;
+    return resultadoFinal;
 }
