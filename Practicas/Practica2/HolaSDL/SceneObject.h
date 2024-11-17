@@ -21,11 +21,15 @@ protected:
 
 	// Métodos.
 	SceneObject(Game*, Point2D<float>&, Point2D<float>&, Game::TextureName);
+	virtual void render(SDL_Renderer* renderer);
+
 
 	virtual Collision::collision hit(const SDL_Rect& other, bool fromPlayer) = 0;
 	virtual ~SceneObject();
 
 	SDL_Rect createRect(float, float);
+
+	float getX()const { return this->pos.GetX(); }
 
 	Point2D<float> getPos();
 	Point2D<float> getDir();
