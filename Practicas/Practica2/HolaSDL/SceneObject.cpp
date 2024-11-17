@@ -16,6 +16,12 @@ SDL_Rect SceneObject::createRect(int x , int y) {
 	return{ x, y, textura->getFrameWidth() * 2,textura->getFrameHeight() * 2 };
 }
 
+void SceneObject::update() {
+	// Actualiza la posición basada en la dir
+	pos = pos + dir;
+}
+
+
 
 void SceneObject::tryToMove(Vector2D<int> velocity, bool allowVertical) {
 	nextPosition = { pos.GetX() + velocity.GetX(),pos.GetY() + velocity.GetY()};

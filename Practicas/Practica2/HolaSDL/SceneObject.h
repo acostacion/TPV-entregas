@@ -1,9 +1,10 @@
 #pragma once
 #include "GameObject.h"
+#include "gameList.h"
 #include "Vector2D.h"
 #include "Collision.h"
 
-
+class Game;
 class SceneObject : public GameObject{ // SceneObject hereda de GameObject.
 protected:
 	// Atributos.
@@ -25,14 +26,19 @@ protected:
 public:
 	// Métodos.
 	SceneObject(Game*, Point2D<float>&, Point2D<float>&, Game::TextureName);
+	
 	void setListAnchor(GameList<SceneObject>::anchor&& anchor) {
 		listAnchor = std::move(anchor);
 	}
 
-
 	void removeFromList() {
 		listAnchor.unlink();
 	}
+
+
+
+	void update() override;
+
 
 	virtual Collision::collision hit(const SDL_Rect& other, bool fromPlayer) = 0;
 	

@@ -11,7 +11,6 @@
 // Nuestras clases.
 #include <vector>
 #include "Texture.h"
-#include "gameList.h"
 #include "SceneObject.h"
 #include "Player.h"
 #include "TileMap.h"  
@@ -20,8 +19,6 @@
 #include "Blocks.h"
 #include "Collision.h"
 
-
-
 using uint = unsigned int;
 class TileMap; 
 class Player;
@@ -29,6 +26,7 @@ class Goomba;
 class Koopa;
 class Blocks;
 class Mushroom;
+class SceneObject;
 
 class Game {
 public:
@@ -72,10 +70,7 @@ private:
     void createTilemap();
     void createEntitymap();
 
-    void deleteEntities();
-
     void ActMapOffset();
-    void deleteObj();
 
     // Colisiones.
    

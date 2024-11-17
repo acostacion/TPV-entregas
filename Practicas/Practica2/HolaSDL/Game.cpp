@@ -143,15 +143,15 @@ void Game::createEntitymap() {
 				break;
 				// uno para cada objeto
 			case 'G':
-				this->goombas.push_back(new Goomba(this, lineStream));
+				this->sceneObjects.push_back(new Goomba(this, lineStream));
 
 				break;
 			case 'B':
-				this->blocks.push_back(new Blocks(this, lineStream));
+				this->sceneObjects.push_back(new Blocks(this, lineStream));
 
 				break;
 			case 'K':
-				this->koopas.push_back(new Koopa(this, lineStream));
+				this->sceneObjects.push_back(new Koopa(this, lineStream));
 				break;
 			}
 
@@ -165,24 +165,6 @@ void Game::createEntitymap() {
 	}
 }
 
-void Game::deleteObj() {
-	// Eliminar los obstaculos
-	for (Goomba* g : goombas)
-		delete g;
-	goombas.clear();
-
-	for (Koopa* k : koopas)
-		delete k;
-	koopas.clear();
-
-	for (Blocks* s : blocks)
-		delete s;
-	blocks.clear();
-
-	for (Mushroom* m : mushrooms)
-		delete m;
-	mushrooms.clear();
-}
 
 void Game::resetLevel() {
 	player->resetPos();
@@ -191,44 +173,6 @@ void Game::resetLevel() {
 	mapOffset = 0;
 }
 
-
-void Game::deleteEntities() {
-	// ELIMINAR GOOMBAS.
-	for (int i = 0; i < goombas.size(); ++i) {
-		if (goombas[i]->isDead()) {
-			delete goombas[i];
-			goombas[i] = goombas.back();
-			goombas.pop_back();
-		}
-	}
-
-	// ELIMINAR KOOPAS
-	for (int i = 0; i < koopas.size(); ++i) {
-		if (!koopas[i]->isDead()) {
-			delete koopas[i];
-			koopas[i] = koopas.back();
-			koopas.pop_back();
-		}
-	}
-
-	// ELIMINAR BLOQUES
-	for (int i = 0; i < blocks.size(); ++i) {
-		if (blocks[i]->getDestroyed()) {
-			delete blocks[i];
-			blocks[i] = blocks.back();
-			blocks.pop_back();
-		}
-	}
-
-	// ELIMINAR SETAS.
-	for (int i = 0; i < mushrooms.size(); ++i) {
-  		if (mushrooms[i]->isDead()) {
-			delete mushrooms[i];
-			mushrooms[i] = mushrooms.back();
-			mushrooms.pop_back();
-		}
-	}
-}
 
 
 void Game::ActMapOffset() {
