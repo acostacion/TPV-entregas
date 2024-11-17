@@ -1,7 +1,7 @@
 #include "SceneObject.h"
 
-SceneObject::SceneObject(Game* _game, Point2D<float>& _pos, float _w, float _h) : GameObject(_game){
+SceneObject::SceneObject(Game* _game, Point2D<float>& _pos, Point2D<float>& _dir, Game::TextureName _textura) : GameObject(_game){
 	pos = _pos;
-	width = _w;
-	height = _h;
+	dir = _dir;
+	textura = game->getTexture(_textura);
 }

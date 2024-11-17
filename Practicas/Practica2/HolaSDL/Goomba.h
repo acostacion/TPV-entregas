@@ -4,11 +4,12 @@
 #include <cmath>
 
 #include "Game.h"
+#include "Enemy.h"
 #include "Vector2D.h"
 #include "Collision.h"
 
 class Game;
-class Goomba
+class Goomba : public Enemy
 {
 private:
 	Game* game;
