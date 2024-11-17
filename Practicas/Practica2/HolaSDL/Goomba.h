@@ -15,15 +15,19 @@ private:
 
 
 public:
-	Goomba(Game*, std::istream&);
+	Goomba(int x, int y)
+		: Enemy(x, y, 16, 16, 100) {}
 
-	const float GRAVITY = 0.1f;
-	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
-	const float MAX_FALL_SPEED = 0.2f;
 
-	void render(SDL_Renderer* renderer) override;
-	void update() override;
-	Collision::collision hit(const SDL_Rect&, bool);
+    virtual void render() const override {
+        if (!dead) {
+            // Dibujar Goomba normal
+            SDL_RenderCopy(game->getRenderer(), game->getTexture(), nullptr, &getRect());
+        }
+    }
 
+    virtual void update() override {
+        Enemy::update(); // Movimiento básico definido en Enemy
+    }
 };
 

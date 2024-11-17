@@ -11,6 +11,8 @@
 // Nuestras clases.
 #include <vector>
 #include "Texture.h"
+#include "gameList.h"
+#include "SceneObject.h"
 #include "Player.h"
 #include "TileMap.h"  
 #include "Goomba.h"
@@ -49,6 +51,10 @@ private:
     std::array<Texture*, NUM_TEXTURES> textures; // Array con todas las texturas del juego
     bool gameContinue; // Interruptor para terminar el juego
     bool wonGame; // Ganar
+    
+    GameList<SceneObject> sceneObjects;
+    
+    int totalPoints;
     int mapOffset; // Lleva la coordenada x del extremo izquierdo de la vista.
     int sumMapOffset = 1;
 
@@ -58,10 +64,6 @@ private:
     TileMap* tileMap;
     Player* player = nullptr;
 
-    std::vector<Goomba*> goombas;
-    std::vector<Blocks*> blocks;
-    std::vector<Koopa*> koopas;
-    std::vector<Mushroom*> mushrooms;
 
     // --- MÉTODOS AUXILIARES ---.
     // Constructora.
@@ -70,8 +72,6 @@ private:
     void createTilemap();
     void createEntitymap();
 
-    void renderEntities()const;
-    void updateEntities()const;
     void deleteEntities();
 
     void ActMapOffset();
@@ -93,11 +93,15 @@ public:
     void update();
     void render() const;
     void handleEvents();
+    void addPoints(int points) { totalPoints += points; };
     void resetLevel();
     void end();
+
     bool won() const {
         return wonGame;
     };
+
+
     Collision::collision checkCollision(const SDL_Rect&, bool);
     
     Texture* getTexture(TextureName) const;

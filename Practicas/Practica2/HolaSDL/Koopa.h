@@ -7,41 +7,53 @@
 #include "Collision.h"
 
 class Game;
-class Koopa
+class Koopa : public Enemy
 {
 private:
-	Game* game;
-	Texture* texturaKoopa;
-	SDL_Rect collider;
-	Point2D<float> pos;
-	Point2D<float> dir;
-	bool isGrounded;
-	bool frozen;
-	bool dead;
-	const int MARGIN_Y = 5;
-	const int MARGIN_X = 5;
-
-	int timer;
-	int anim;
-	SDL_Rect createRect(float, float);
+	bool isShell;
 
 public:
-	Koopa(Game*, std::istream&);
+	Koopa();
+    virtual Collision::collision hit(const SDL_Rect& attackRect, bool isFromPlayer) override {
+        if (!dead) {
+            if (isShell) {
+                // Si está en forma de caparazón, se lanza como proyectil
+                launchShell(attackRect);
+            }
+            else {
+                // Cambiar a forma de caparazón
+                isShell = true;
+                points = 0; // Sin puntos por cambiar de forma
+                // Cambiar sprite o animación
+            }
+        }
+        else {
+            Enemy::hit(attackRect, isFromPlayer); // Comportamiento base
+        }
+    }
 
-	const float GRAVITY = 0.1f;
-	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
-	const float MAX_FALL_SPEED = 0.2f;
+    virtual void render() const override {
+        if (!dead) {
+            const char* texture = isShell ? "koopa_shell" : "koopa";
+            SDL_RenderCopy(game->getRenderer(), game->getTexture(texture), nullptr, &getRect());
+        }
+    }
 
-	void render(SDL_Renderer* renderer);
-	void update();
-	Collision::collision hit(const SDL_Rect&, bool);
+    virtual void update() override {
+        if (!isShell) {
+            Enemy::update(); // Movimiento base para Koopa normal
+        }
+        else {
+            tryToMove({ 2, 0 }, true); // Movimiento de caparazón si es lanzado
+        }
+    }
 
-	// Getter de la posX del Goomba.
-	float getX()const { return this->pos.GetX(); }
-	bool getFrozen()const { return frozen; }
-	Point2D<float> getDir()const { return dir; }
-
-	bool isDead()const { return dead; }
-
+protected:
+    void launchShell(const SDL_Rect& attackRect) {
+        // Lógica para lanzar la caparazón como proyectil
+        int direction = attackRect.x < position.x ? 1 : -1;
+        velocity.x = direction * 5; // Velocidad del caparazón
+    }
 };
+
 

@@ -191,48 +191,7 @@ void Game::resetLevel() {
 	mapOffset = 0;
 }
 
-void Game::renderEntities()const {
-	// BLOCKS.
-	for (int i = 0; i < blocks.size(); ++i) {
-		blocks[i]->render(renderer);
-	}
 
-	// GOOMBAS.
-	for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
-		goombas[i]->render(renderer);
-	}
-
-	// MUSHROOMS.
-	for (int i = 0; i < mushrooms.size(); ++i) { 
-		mushrooms[i]->render(renderer);
-	}
-
-	// KOOPAS.
-	for (int i = 0; i < koopas.size(); ++i) {
-		koopas[i]->render(renderer);
-	}
-}
-void Game::updateEntities()const {
-	// MUSHROOMS.
-	for (int i = 0; i < mushrooms.size(); ++i) {
-		mushrooms[i]->update();
-	}
-
-	// KOOPAS.
-	for (int i = 0; i < koopas.size(); ++i) {
-		koopas[i]->update();
-	}
-
-	// GOOMBAS.
-	for (int i = 0; i < goombas.size(); ++i) {
-		goombas[i]->update();
-	}
-
-	// BLOCKS.
-	for (int i = 0; i < blocks.size(); ++i) {
-		blocks[i]->update();
-	}
-}
 void Game::deleteEntities() {
 	// ELIMINAR GOOMBAS.
 	for (int i = 0; i < goombas.size(); ++i) {
@@ -335,10 +294,7 @@ void Game::render() const
 	// Se limpia la pantalla.
 	SDL_RenderClear(renderer);
 
-	// Pinta los objetos del juego.
-	tileMap->render(renderer);
-	player->render(renderer);
-	renderEntities();
+	for (auto& obj : sceneObjects) obj->render();
 
 	// Muestra todo lo renderizado.
 	SDL_RenderPresent(renderer);
@@ -399,9 +355,8 @@ void Game::update()
 
 	if (!reset) {
 		// Actualiza los objetos del juego
-		tileMap->update();
 
-		updateEntities();
+		for (auto& obj : sceneObjects) obj->update();
 
 		ActMapOffset();
 
