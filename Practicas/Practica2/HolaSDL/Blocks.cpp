@@ -1,13 +1,11 @@
 #include "CheckML.h"
 #include "Blocks.h"
 
-Blocks::Blocks(Game* _game, std::istream& in) 
+Blocks::Blocks(Game* _game, std::istream& in) : SceneObject(_game, in)
 {
-	in >> pos; // lee pos.
-	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	action = Action::nada;
 	tipo = Variant::ladrillo;
-
+	
 	char c;
 	in >> c;
 	switch (c) {

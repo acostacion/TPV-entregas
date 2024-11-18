@@ -39,6 +39,7 @@ protected:
 #pragma endregion
 
 	GameList<SceneObject>::anchor listAnchor;
+
 public:
 	// Métodos.
 	SceneObject(Game*, Point2D<float>&, Point2D<float>&, Game::TextureName);
