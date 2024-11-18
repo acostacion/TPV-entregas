@@ -11,19 +11,33 @@ class Game;
 class SceneObject : public GameObject{ // SceneObject hereda de GameObject.
 protected:
 	// Atributos.
+#pragma region Movement
 	Point2D<float> pos;
 	Point2D<float> nextPosition;
 	Point2D<float> dir;
-	Texture* textura;
-	int anim;
-	int timer;
-	int width, height;
-	bool isGrounded;
+	float moveSpeed = 0.3f; // velocidad de movimiento.
+
+	bool isGrounded; // si esta en el suelo
 
 	const int MARGIN_Y = 5;
 	const int MARGIN_X = 5;
 
-	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
+#pragma endregion
+
+#pragma region References
+
+	Texture* textura;
+	int width, height;
+
+#pragma endregion
+
+#pragma region Animation
+
+	int anim; // indice del frame de la animacion
+	int timer;
+
+#pragma endregion
+
 	GameList<SceneObject>::anchor listAnchor;
 public:
 	// Métodos.
@@ -47,7 +61,7 @@ public:
 
 	virtual Collision::collision hit(const SDL_Rect& other, bool fromPlayer) = 0;
 	
-	void tryToMove(Vector2D<int> velocity, bool allowVertical);
+	Collision tryToMove(const Vector2D<int>& speed, Collision::Target attack);
 	
 	virtual ~SceneObject() = default;
 

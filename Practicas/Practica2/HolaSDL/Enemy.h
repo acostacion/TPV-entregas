@@ -5,6 +5,8 @@
 #include <fstream>
 #include <iostream>
 
+static const Point2D<float> DIR_INI{ -1, 0 };
+
 class Enemy : public SceneObject
 {
 protected:

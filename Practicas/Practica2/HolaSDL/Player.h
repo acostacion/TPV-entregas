@@ -5,37 +5,21 @@
 #include <iostream>
 
 #include "Game.h"
+#include "SceneObject.h"
 #include "Vector2D.h"
 #include "Collision.h"
 
 class Game;
-static const Point2D<float> DIR_INI{ 0, 0 };
+static const Point2D<float> DIR_INI_PLAYER{ 0, 0 };
 
-class Player {
+class Player : SceneObject {
 private:
-#pragma region References
-	Game* game;
-	Texture* texturaMario; //mario
-	Texture* texturaSMario; // superMario
-
-#pragma endregion
 
 #pragma region Movement
 
-	Point2D<float> dir;
-	Point2D<float> pos;
 	Point2D<float> posInicio;// para el reinicio
-
-	float verticalVelocity;
-
-	bool isGrounded; // si esta en el suelo
 	bool isJumping;
-
-#pragma endregion
-
-#pragma region Animation
-
-	int anim; // indice del frame de la animacion
+	float height;
 
 #pragma endregion
 
@@ -44,16 +28,12 @@ private:
 	int life;
 	int margenColi = 9;
 	bool superMario = false;
-	bool dead;
-	float height;
 
 #pragma endregion
 
 
 #pragma region Methods
 
-	SDL_Rect createRect(float, float);
-	SDL_Rect getRect(bool forRender) const;
 	void changeMario();
 	void jump();
 	void decreaseLife();
@@ -65,8 +45,7 @@ private:
 	//CONSTANTES.
 	// En sdl ir para arriba es negativo e ir para abajo es positivo.
 	const int MAX_HEIGHT = 15; // altuma maxima de salto
-	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
-
+	
 #pragma endregion
 
 

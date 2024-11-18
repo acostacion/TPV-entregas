@@ -1,68 +1,18 @@
 #include "Player.h"
 #include <algorithm>
 
-Player::Player(Game* game, std::istream& in)
-    : game(game), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
+Player::Player(Game* game, std::istream& in) : SceneObject(game, in), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
 {
-    try {
-        in >> pos; // lee pos.
-        pos = pos - Point2D<float>(0, 1); // ajusta pos.
+    
         in >> life; // vidas.
 
-        texturaMario = game->getTexture(Game::MARIO);
-        texturaSMario = game->getTexture(Game::SUPERMARIO);
         verticalVelocity = 0;
 
 
         posInicio = pos;
-    }
-    catch (...) {
-        std::cout << "Error creando Player.";
-    }
+  
 
 }
-
-SDL_Rect Player::createRect(float x, float y) {
-    // Se crea el rect.
-    SDL_Rect rect;
-
-    if (!superMario) { // MARIO.
-        rect.w = texturaMario->getFrameWidth() - 8;
-        rect.h = texturaMario->getFrameHeight();
-    }
-    else { // SUPER MARIO.
-        rect.w = texturaSMario->getFrameWidth() * 2;
-        rect.h = texturaSMario->getFrameHeight() * 2;
-    }
-    rect.x = x;
-    rect.y = y;
-
-    return rect;
-}
-
-SDL_Rect Player::getRect(bool forRender) const {
-    SDL_Rect rect;
-
-    rect.x = pos.GetX() * Game::TILE_SIDE;
-    rect.y = pos.GetY() * Game::TILE_SIDE;
-
-    if (!superMario) {
-        rect.w = texturaMario->getFrameWidth();
-        rect.h = texturaMario->getFrameHeight();
-    }
-    else {
-        rect.w = texturaSMario->getFrameWidth() * 2;
-        rect.h = texturaSMario->getFrameHeight() * 2;
-        rect.y = pos.GetY() * Game::TILE_SIDE;
-    }
-    if (forRender) {
-        rect.x = (pos.GetX() * Game::TILE_SIDE) - game->getMapOffset();
-        rect.y -= 3;
-
-    }
-    return rect;
-}
-
 
 void Player::resetPos() { //REINICIAR LA POSICION DEL JUGADOR
     pos = posInicio;
@@ -118,7 +68,7 @@ void Player::render(SDL_Renderer* renderer) {
     renderMarioAnimation(rect, renderer);
 
     if (Game::DEBUG) {
-        Point2D<float> nextPos = pos + dir * MOVE_SPEED;
+        Point2D<float> nextPos = pos + dir * moveSpeed;
         SDL_Rect rect2 = createRect(
             nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
             nextPos.GetY() * Game::TILE_SIDE);
@@ -132,10 +82,10 @@ void Player::render(SDL_Renderer* renderer) {
 
 void Player::renderMarioAnimation(const SDL_Rect& rect, SDL_Renderer* renderer) const {
     if (!superMario) {
-        texturaMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+        textura->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
     else {
-        texturaSMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+        textura->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
 }
 
