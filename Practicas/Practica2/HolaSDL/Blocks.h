@@ -5,36 +5,27 @@
 #include "Game.h"
 #include "Vector2D.h"
 #include "Collision.h"
-#include "Player.h"
+#include "SceneObject.h"
 #include "Mushroom.h"
 
 class Game;
-class Player;
 class Mushrrom;
 
-class Blocks
+class Blocks : SceneObject
 {
 public: 
-	enum Tipos { ladrillo, sorpresa, vacio, oculto };
-	enum Accion { potenciador, moneda, nada };
+	enum Variant { ladrillo, sorpresa, vacio, oculto };
+	enum Action { potenciador, moneda, nada };
 
 private:
-	// Referencias.
-	Game* game;
 
 	// Propiedades.
-	Point2D<float> pos;
 	bool destroyed = false;
-	SDL_Rect colision; 
-
-	Tipos tipo; // ladrillo, sorpresa, vacio, oculto.
-	Accion action; // potenciador, moneda, nada.
+	int animFrame;
+	Variant tipo; // ladrillo, sorpresa, vacio, oculto.
+	Action action; // potenciador, moneda, nada.
 
 	// Gráficos.
-	Texture* texturaBlock;
-	int animFrame; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
-	bool anim; // si tiene que animarse, seria solo el sorpresa
-	int animTimer;
 
 	void changeSprite();
 
@@ -47,10 +38,8 @@ public:
 	Collision::collision hit(const SDL_Rect& other, bool);
 
 	// Submétodos.
-	SDL_Rect createBlockRect();
 
 	bool getDestroyed() const { return destroyed; }
-
 
 };
 
