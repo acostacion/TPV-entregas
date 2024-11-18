@@ -13,7 +13,7 @@ private:
 	bool isShell;
 
 public:
-	Koopa();
+	Koopa(Game*, std::istringstream&);
 
     Collision::collision hit(const SDL_Rect&, bool) override;
 

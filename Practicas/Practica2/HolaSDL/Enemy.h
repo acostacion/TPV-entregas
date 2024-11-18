@@ -13,8 +13,7 @@ protected:
 	bool frozen;
 
 public:
-	Enemy(int x, int y, int width, int height, int points)
-		: SceneObject(x, y, width, height), points(points), dead(false) {}
+	Enemy(Game* _game, std::istream entrada, int points);
 
 	virtual Collision::collision hit(const SDL_Rect& attackRect, bool isFromPlayer) override {
 		if (isFromPlayer && !dead) {

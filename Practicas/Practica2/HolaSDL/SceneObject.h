@@ -3,6 +3,9 @@
 #include "gameList.h"
 #include "Vector2D.h"
 #include "Collision.h"
+#include <istream>
+#include <iostream>
+#include <fstream>
 
 class Game;
 class SceneObject : public GameObject{ // SceneObject hereda de GameObject.
@@ -15,7 +18,6 @@ protected:
 	int anim;
 	int timer;
 	int width, height;
-	bool dead;
 	bool isGrounded;
 
 	const int MARGIN_Y = 5;
@@ -27,6 +29,9 @@ public:
 	// Métodos.
 	SceneObject(Game*, Point2D<float>&, Point2D<float>&, Game::TextureName);
 	
+	SceneObject(Game*, std::istream&);
+
+
 	void setListAnchor(GameList<SceneObject>::anchor&& anchor) {
 		listAnchor = std::move(anchor);
 	}

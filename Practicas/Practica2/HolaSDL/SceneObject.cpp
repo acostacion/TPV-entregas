@@ -8,9 +8,13 @@ SceneObject::SceneObject(Game* _game, Point2D<float>& _pos, Point2D<float>& _dir
 	height = textura->getFrameHeight();
 	anim = 0;
 	timer = 0;
-	dead = false;
 	isGrounded = false;
 }
+
+SceneObject::SceneObject(Game* _game, std::istream& entrada) : GameObject(_game) {
+	
+}
+
 
 SDL_Rect SceneObject::createRect(int x , int y) {
 	return{ x, y, textura->getFrameWidth() * 2,textura->getFrameHeight() * 2 };

@@ -1,9 +1,8 @@
 #include "CheckML.h"
 #include "Koopa.h"
 
-Koopa::Koopa() 
-{
-	
+Koopa::Koopa(Game * _game, std::istream& entrada, int _points) : Enemy(_game, entrada, _points){
+
 }
 
 void Koopa::render(SDL_Renderer*) const {
