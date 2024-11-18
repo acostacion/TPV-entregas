@@ -29,6 +29,12 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"images/blocks.png", 6, 1},
 	TextureSpec{"images/koopa.png", 4, 1},
 	TextureSpec{"images/mushroom.png", 1, 1},
+	TextureSpec{"images/coin.png", 1, 1},
+	TextureSpec{"images/firemario.png", 21, 1},
+	TextureSpec{"images/shell.png", 2, 1},
+	TextureSpec{"images/star.png", 4, 1},
+	TextureSpec{"images/lift.png", 1, 1},
+	TextureSpec{"images/piranha.png", 1, 1}
 };
 #pragma endregion
 

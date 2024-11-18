@@ -39,6 +39,12 @@ public:
         BLOCKS,
         KOOPA,
         MUSHROOM,
+        COIN,
+        FIREMARIO,
+        SHELL,
+        STAR,
+        LIFT,
+        PIRANHA,
         NUM_TEXTURES,  // Truco C++: número de texturas definidas
     };
 
