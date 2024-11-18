@@ -42,7 +42,7 @@ protected:
 
 public:
 	// Métodos.
-	SceneObject(Game*, Point2D<float>&, Point2D<float>&, Game::TextureName);
+	SceneObject(Game*, Point2D<float>&, Point2D<float>&);
 	
 	SceneObject(Game*, std::istream&);
 

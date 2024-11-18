@@ -41,6 +41,7 @@ Game::Game() : gameContinue(true), mapOffset(0), reset(false), wonGame(false) {
 		// --- TEXTURAS ---.
 		createTextures();
 
+		totalPoints = 0;
 		Smario = false;
 
 		// --- MAPAS ---.

@@ -1,17 +1,13 @@
 #include "Player.h"
 #include <algorithm>
 
-Player::Player(Game* game, std::istream& in) : SceneObject(game, in), superMario(false), height(0), isGrounded(false), isJumping(false), dir(DIR_INI), dead(false)
-{
+Player::Player(Game* game, std::istream& in) : SceneObject(game, in), superMario(false), height(0){
     
         in >> life; // vidas.
 
-        verticalVelocity = 0;
-
+        textura = game->getTexture(Game::MARIO);
 
         posInicio = pos;
-  
-
 }
 
 void Player::resetPos() { //REINICIAR LA POSICION DEL JUGADOR

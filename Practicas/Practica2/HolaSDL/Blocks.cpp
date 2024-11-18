@@ -5,7 +5,8 @@ Blocks::Blocks(Game* _game, std::istream& in) : SceneObject(_game, in)
 {
 	action = Action::nada;
 	tipo = Variant::ladrillo;
-	
+	timer = 3;
+
 	char c;
 	in >> c;
 	switch (c) {

@@ -1,9 +1,8 @@
 #include "SceneObject.h"
 
-SceneObject::SceneObject(Game* _game, Point2D<float>& _pos, Point2D<float>& _dir, Game::TextureName _textura) : GameObject(_game){
+SceneObject::SceneObject(Game* _game, Point2D<float>& _pos, Point2D<float>& _dir) : GameObject(_game){
 	pos = _pos;
 	dir = _dir;
-	textura = game->getTexture(_textura);
 	width = textura->getFrameWidth();
 	height = textura->getFrameHeight();
 	anim = 0;
@@ -12,7 +11,12 @@ SceneObject::SceneObject(Game* _game, Point2D<float>& _pos, Point2D<float>& _dir
 }
 
 SceneObject::SceneObject(Game* _game, std::istream& entrada) : GameObject(_game) {
-	
+	entrada >> pos; // lee pos.
+	pos = pos - Point2D<float>(0, 1); // ajusta pos.
+	dir = Point2D<float>(-1, 0);
+	isGrounded = false;
+	anim = 0;
+	timer = 0;
 }
 
 
