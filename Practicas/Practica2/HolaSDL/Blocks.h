@@ -31,9 +31,9 @@ private:
 
 public:
 	Blocks(Game* _game, std::istream& in);
-
-	void render(SDL_Renderer* renderer);
-	void update();
+	void animation() override;
+	void render(SDL_Renderer* renderer)const override;
+	void update()override;
 
 	Collision::collision hit(const SDL_Rect& other, bool);
 

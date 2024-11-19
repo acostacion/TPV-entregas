@@ -56,7 +56,8 @@ public:
 	void render(SDL_Renderer* renderer);
 	void update();
 	void handleEvent(SDL_Event);
-	Collision::collision hit(const SDL_Rect otherRect);
+	Collision hit(SDL_Rect&, bool) override;
+
 
 	// Getters
 	float getX() const { return this->pos.GetX(); }

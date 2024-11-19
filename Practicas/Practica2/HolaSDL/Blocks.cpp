@@ -37,19 +37,20 @@ Blocks::Blocks(Game* _game, std::istream& in) : SceneObject(_game, in)
 	textura = _game->getTexture(Game::BLOCKS); // obtiene la textura.
 };
 
-
-
-void Blocks::render(SDL_Renderer* renderer) {
+void Blocks::animation() {
 
 	// si es el sorpresa
 	if (timer == 0 && anim) {
-		
+
 		if (animFrame == 0) animFrame = 1;
 		else if (animFrame == 1) animFrame = 2;
 		else if (animFrame == 2) animFrame = 3;
-		else if (animFrame == 3) animFrame = 0;	
+		else if (animFrame == 3) animFrame = 0;
 	}
-	
+}
+
+void Blocks::render(SDL_Renderer* renderer) const{
+
 	SDL_Rect rect = createRect(pos.GetX(), pos.GetY());
 	textura->renderFrame(rect, 0, animFrame); // Se renderiza.
 

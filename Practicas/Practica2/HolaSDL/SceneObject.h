@@ -57,31 +57,33 @@ public:
 		listAnchor.unlink();
 	}
 
-	void update() override;
+	virtual void animation()=0;
 
 
 	virtual Collision::collision hit(const SDL_Rect& other, bool fromPlayer) = 0;
 	
 	Collision tryToMove(const Vector2D<int>& speed, Collision::Target attack);
 	
+	virtual Collision hit(SDL_Rect&, bool) = 0;
+	
 	virtual ~SceneObject() = default;
 
-	SDL_Rect createRect(int, int);
+	SDL_Rect createRect(int, int)const;
 
 	float getX()const { return this->pos.GetX(); }
 
-	Point2D<float> getPos();
-	Point2D<float> getDir();
+	Point2D<float> getPos() const;
+	Point2D<float> getDir() const;
 	bool isDead()const { return dead; } // Está vivo si life >0.
 
 };
 
 inline Point2D<float>
-SceneObject::getPos() {
+SceneObject::getPos() const {
 	return pos;
 }
 
 inline Point2D<float>
-SceneObject::getDir() {
+SceneObject::getDir()const {
 	return dir;
 }

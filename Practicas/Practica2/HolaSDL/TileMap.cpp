@@ -3,7 +3,7 @@
 #include "SDL_rect.h"
 
 
-TileMap::TileMap(std::istream& entrada, Game* _game)
+TileMap::TileMap(Game* _game, std::istream& entrada)
 	:SceneObject(_game, entrada) {
 	int x = 0, y = 0;
 	textura = _game->getTexture(Game::BACKGROUND);
@@ -38,7 +38,7 @@ TileMap::TileMap(std::istream& entrada, Game* _game)
 	}
 }
 
-void TileMap::render(SDL_Renderer* renderer) {
+void TileMap::render(SDL_Renderer* renderer) const{
 
 	// Primera columna de la matriz del mapa visible en la ventana
 	int x0 = game->getMapOffset() / TILE_MAP;
