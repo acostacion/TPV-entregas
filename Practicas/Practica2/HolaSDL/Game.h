@@ -103,7 +103,7 @@ public:
     };
 
 
-    Collision::collision checkCollision(const SDL_Rect&, bool);
+    Collision checkCollision(const SDL_Rect&, bool);
     
     Texture* getTexture(TextureName) const;
     int getMapOffset() const;
@@ -143,7 +143,7 @@ Game::getMapOffset() const {
 
 inline void
 Game::addMushroom(Mushroom* n) {
-    mushrooms.push_back(n);
+    //mushrooms.push_back(n);
 }
 inline void
 Game::end() {

@@ -112,7 +112,7 @@ void Game::createTilemap() {
 			throw "No se ha podido leer el archivo world1"s;
 		}
 
-		tileMap = new TileMap(entradaCSV, this);
+		tileMap = new TileMap(this, entradaCSV);
 		entradaCSV.close();
 	}
 	catch (...) {
@@ -150,15 +150,15 @@ void Game::createEntitymap() {
 				break;
 				// uno para cada objeto
 			case 'G':
-				this->sceneObjects.push_back(new Goomba(this, lineStream));
+				//this->sceneObjects.push_back(new Goomba(this, lineStream));
 
 				break;
 			case 'B':
-				this->sceneObjects.push_back(new Blocks(this, lineStream));
+				//this->sceneObjects.push_back(new Blocks(this, lineStream));
 
 				break;
 			case 'K':
-				this->sceneObjects.push_back(new Koopa(this, lineStream));
+				//this->sceneObjects.push_back(new Koopa(this, lineStream));
 				break;
 			}
 
@@ -258,45 +258,7 @@ Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 	Collision::collision result;// por defecto los booleanos estan falsos todos
 	// Verificar colisión con bloques
 	//if (!result.collides) {
-	for (auto& block : blocks) {
-		result = block->hit(rect, fromPlayer);
-		if (result.collides) break;
-	}
 	
-	// Verificar colisión con goombas
-	if (!result.collides) {
-		for (auto& goomba : goombas) {
-			if (!goomba->getFrozen()) {
-				result = goomba->hit(rect, fromPlayer);
-				if (result.collides) break;
-			}
-		}
-	}
-
-	// Verificar colisión con koopas
-	if (!result.collides) {
-		for (auto& koopa : koopas) {
-			if (!koopa->getFrozen()) {
-				result = koopa->hit(rect, fromPlayer);
-				if (result.collides) break;
-			}
-		}
-	}
-
-	// Verificar colisión con hongos
-	if (!result.collides) {
-		for (auto& mushroom : mushrooms) {
-			result = mushroom->hit(rect, fromPlayer);
-			if (result.collides) break;
-		}
-	}
-
-	// Verificar colisión con el fondo
-	if (!result.collides) {
-		result = tileMap->hit(rect, fromPlayer);
-	}
-	
-
 	return result;
 }
 

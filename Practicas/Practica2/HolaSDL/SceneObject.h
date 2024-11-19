@@ -47,7 +47,9 @@ public:
 	SceneObject(Game*, Point2D<float>&, Point2D<float>&);
 	
 	SceneObject(Game*, std::istream&);
-
+	virtual void update() override;
+	virtual void render(SDL_Renderer* renderer) const override;
+	void tryToMove(Vector2D<int>, bool);
 
 	void setListAnchor(GameList<SceneObject>::anchor&& anchor) {
 		listAnchor = std::move(anchor);
@@ -59,12 +61,10 @@ public:
 
 	virtual void animation()=0;
 
-
-	virtual Collision::collision hit(const SDL_Rect& other, bool fromPlayer) = 0;
 	
-	Collision tryToMove(const Vector2D<int>& speed, Collision::Target attack);
+	//Collision tryToMove(const Vector2D<int>& speed, Collision::Target attack);
 	
-	virtual Collision hit(SDL_Rect&, bool) = 0;
+	virtual Collision hit(const SDL_Rect&, bool) = 0;
 	
 	virtual ~SceneObject() = default;
 

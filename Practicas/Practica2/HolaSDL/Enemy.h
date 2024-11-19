@@ -16,19 +16,10 @@ protected:
 public:
 	Enemy(Game* _game, std::istream entrada, int points);
 
-	virtual Collision::collision hit(const SDL_Rect& attackRect, bool isFromPlayer) override {
-		if (isFromPlayer && !dead) {
-			// Si el ataque proviene del jugador y no ha sido derrotado
-			dead = true;
-			givePointsToPlayer();
-		}
-	}
-
-	virtual void update() override {
-		if (!dead) {
-			tryToMove({ -1, 0 }, true); // Movimiento básico hacia la izquierda
-		}
-	}
+	virtual	void render(SDL_Renderer* renderer) const override;
+	virtual void update() override;
+	virtual Collision hit(const SDL_Rect&, bool) override;
+	virtual void animation() override;
 
 	bool getFrozen()const { return frozen; }
 

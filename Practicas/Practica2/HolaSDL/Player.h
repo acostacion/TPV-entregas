@@ -53,11 +53,12 @@ public:
 
 	Player(Game*, std::istream&); // constructora
 
-	void render(SDL_Renderer* renderer);
-	void update();
 	void handleEvent(SDL_Event);
-	Collision hit(SDL_Rect&, bool) override;
+	void render(SDL_Renderer* renderer)const override;
+	void update() override;
+	void animation() override;
 
+	Collision hit(const SDL_Rect&, bool) override;
 
 	// Getters
 	float getX() const { return this->pos.GetX(); }

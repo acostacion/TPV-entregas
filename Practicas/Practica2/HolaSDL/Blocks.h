@@ -33,10 +33,10 @@ public:
 	Blocks(Game* _game, std::istream& in);
 	void animation() override;
 	void render(SDL_Renderer* renderer)const override;
-	void update()override;
+	void update() override;
+	void animation() override;
 
-	Collision::collision hit(const SDL_Rect& other, bool);
-
+	Collision hit(const SDL_Rect&, bool) override;
 	// Submétodos.
 
 	bool getDestroyed() const { return destroyed; }

@@ -21,7 +21,7 @@ SceneObject::SceneObject(Game* _game, std::istream& entrada) : GameObject(_game)
 }
 
 
-SDL_Rect SceneObject::createRect(int x , int y) {
+SDL_Rect SceneObject::createRect(int x , int y) const {
 	return{ x, y, textura->getFrameWidth() * 2,textura->getFrameHeight() * 2 };
 }
 

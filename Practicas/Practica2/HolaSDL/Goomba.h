@@ -15,19 +15,13 @@ private:
 
 
 public:
-	Goomba(int x, int y)
-		: Enemy(x, y, 16, 16, 100) {}
+	Goomba(int x, int y) : Enemy(x, y, 16, 16, 100) {}
 
 
-    virtual void render() const override {
-        if (!dead) {
-            // Dibujar Goomba normal
-            SDL_RenderCopy(game->getRenderer(), game->getTexture(), nullptr, &getRect());
-        }
-    }
+	void render(SDL_Renderer* renderer)const override;
+	void update() override;
+	void animation() override;
 
-    virtual void update() override {
-        Enemy::update(); // Movimiento básico definido en Enemy
-    }
+	Collision hit(const SDL_Rect&, bool) override;
 };
 

@@ -23,6 +23,6 @@ public:
 	void update() override;
 	void triggerAction() override;
 
-	Collision::collision hit(const SDL_Rect&, bool) override;
+	Collision hit(const SDL_Rect&, bool) override;
 };
 

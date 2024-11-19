@@ -4,7 +4,7 @@
 
 
 TileMap::TileMap(Game* _game, std::istream& entrada)
-	:SceneObject(_game, entrada) {
+	:SceneObject(_game, {0,0}, {0,0}) {
 	int x = 0, y = 0;
 	textura = _game->getTexture(Game::BACKGROUND);
 	try {
@@ -76,16 +76,13 @@ void TileMap::render(SDL_Renderer* renderer) const{
 	}
 }
 
-void TileMap::update() {
-
-}
 
 
-Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
+Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 {
-	Collision::collision colres;
+	Collision colres;
 
-	// Celda del nivel que contiene la esquina inferior derecha del rectángulo
+	// Celda del nivel que contiene la esquina in	ferior derecha del rectángulo
 	int row1 = (rect.y + rect.h - 1) / Game::TILE_SIDE;
 	int col1 = (rect.x + rect.w - 1) / Game::TILE_SIDE;
 
@@ -101,6 +98,5 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 		}
 
 	return colres;
-
 }
 

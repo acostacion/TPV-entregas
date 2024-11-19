@@ -14,12 +14,11 @@ private:
 
 public:
 	Koopa(Game*, std::istream&);
+	void render(SDL_Renderer* renderer)const override;
+	void update() override;
+	void animation() override;
 
-    Collision::collision hit(const SDL_Rect&, bool) override;
-
-    void render(SDL_Renderer*) const override;
-
-    void update() override;
+	Collision hit(const SDL_Rect&, bool) override;
 
 protected:
     void launchShell(const SDL_Rect&);
