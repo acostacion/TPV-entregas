@@ -119,7 +119,7 @@ void PlayerTest::render(SDL_Renderer* renderer) {
         Point2D<float> nextPos = pos + dir * MOVE_SPEED;
         SDL_Rect rect2 = createRect(
             nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
-            nextPos.GetY() * Game::TILE_SIDE);
+            nextPos.GetY() * Game::TILE_SIDE, w, h);
 
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
         SDL_RenderDrawRect(renderer, &rect2);
@@ -180,7 +180,7 @@ void PlayerTest::update() {
         return;
     }
 
-    SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, nextPosition.GetY() * Game::TILE_SIDE);
+    SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, nextPosition.GetY() * Game::TILE_SIDE, w, h);
     Collision::collision result = game->checkCollision(nextCollider, true);
 
 
@@ -222,7 +222,7 @@ void PlayerTest::update() {
     jump();
 }
 
-Collision::collision Player::hit(const SDL_Rect otherRect) {
+Collision::collision PlayerTest::hit(const SDL_Rect otherRect) {
     Collision::collision resultadoFinal;
     resultadoFinal.fromPlayer = true;
     resultadoFinal.collides = true;

@@ -19,7 +19,6 @@ private:
 
 	// PARAMETERS.
 	Point2D<float> dir;
-	Point2D<float> pos;
 	Point2D<float> posInicio;// para el reinicio
 	bool isGrounded; // si esta en el suelo
 	bool isJumping;
