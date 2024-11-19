@@ -14,7 +14,7 @@ protected:
 
 	// Métodos.
 	GameObject(Game*);
-	virtual void render(SDL_Renderer* renderer)const = 0;
+	virtual void render(SDL_Renderer*)const = 0;
 	virtual void update() = 0;
 	virtual ~GameObject();
 };

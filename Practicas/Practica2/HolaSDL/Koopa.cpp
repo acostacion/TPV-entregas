@@ -5,11 +5,23 @@ Koopa::Koopa(Game * _game, std::istream& entrada, int _points) : Enemy(_game, en
 
 }
 
-void Koopa::render(SDL_Renderer*) const {
-	if (!dead) {
-		const char* texture = isShell ? "koopa_shell" : "koopa";
-		SDL_RenderCopy(game->getRenderer(), game->getTexture(texture), nullptr, &getRect());
-	}
+void Koopa::render(SDL_Renderer* renderer) const {
+    SDL_Rect rect = createRect(pos.GetX() - game->getMapOffset(), pos.GetY());
+    
+
+    // Se renderiza.
+    textura->renderFrame(rect, 0, anim);
+
+    if (Game::DEBUG) {
+        Point2D<float> nextPos = pos + dir * moveSpeed;
+        SDL_Rect rect2 = createRect(
+            nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
+            nextPos.GetY() * Game::TILE_SIDE);
+
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
+        SDL_RenderDrawRect(renderer, &rect2);
+        SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+    }
 }
 
 

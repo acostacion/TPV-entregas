@@ -4,9 +4,9 @@
 
 
 TileMap::TileMap(std::istream& entrada, Game* _game)
-	:game(_game), texture(_game->getTexture(Game::BACKGROUND))  {
+	:SceneObject(_game, entrada) {
 	int x = 0, y = 0;
-
+	textura = _game->getTexture(Game::BACKGROUND);
 	try {
 		// Lee el archivo CSV.
 		while (entrada) {
@@ -64,7 +64,7 @@ void TileMap::render(SDL_Renderer* renderer) {
 				rect.y = j * Game::TILE_SIDE;
 
 				// Usa renderFrame para pintar la tesela
-				texture->renderFrame(rect, fy, fx);
+				textura->renderFrame(rect, fy, fx);
 
 				if (Game::DEBUG) {
 					SDL_SetRenderDrawColor(renderer, 0, 255, 0, 128);
@@ -92,7 +92,7 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 	for (int row = rect.y / Game::TILE_SIDE; row <= row1 && !colres.collides; ++row)
 		for (int col = rect.x / Game::TILE_SIDE; col <= col1 && !colres.collides; ++col) {
 			int indice = map[row][col];
-			if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD) {
+			if (indice != -1 && indice % textura->getNumColumns() < OBSTACLE_THRESHOLD) {
 				SDL_Rect tile = { col * Game::TILE_SIDE,row * Game::TILE_SIDE, Game::TILE_SIDE, Game::TILE_SIDE };
 				if (SDL_IntersectRect(&tile, &rect, &colres.intersectRect)) {
 					colres.collides = true;

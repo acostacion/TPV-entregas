@@ -11,7 +11,6 @@ class Enemy : public SceneObject
 {
 protected:
 	int points;
-	bool dead;
 	bool frozen;
 
 public:
@@ -32,7 +31,6 @@ public:
 	}
 
 	bool getFrozen()const { return frozen; }
-	bool isDead()const { return dead; }
 
 protected:
 

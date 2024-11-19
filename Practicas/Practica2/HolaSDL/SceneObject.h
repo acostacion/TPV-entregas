@@ -12,12 +12,14 @@ class SceneObject : public GameObject{ // SceneObject hereda de GameObject.
 protected:
 	// Atributos.
 #pragma region Movement
+
 	Point2D<float> pos;
 	Point2D<float> nextPosition;
 	Point2D<float> dir;
-	float moveSpeed = 0.3f; // velocidad de movimiento.
+	float moveSpeed; // velocidad de movimiento.
 
 	bool isGrounded; // si esta en el suelo
+	bool dead;
 
 	const int MARGIN_Y = 5;
 	const int MARGIN_X = 5;
@@ -55,8 +57,6 @@ public:
 		listAnchor.unlink();
 	}
 
-
-
 	void update() override;
 
 
@@ -72,6 +72,8 @@ public:
 
 	Point2D<float> getPos();
 	Point2D<float> getDir();
+	bool isDead()const { return dead; } // Está vivo si life >0.
+
 };
 
 inline Point2D<float>

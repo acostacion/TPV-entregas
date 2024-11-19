@@ -63,36 +63,26 @@ public:
 	bool isSuperMario()const; // obtener si es superMario o no.
 
 	//metodos que devuelven la posicion y direccion para detectar colisiones
-	Point2D<float> getPlayerPos();
-	Point2D<float> getPlayerDir();
+	Point2D<float> getPlayerPos() { return pos; }
+	Point2D<float> getPlayerDir() { return dir; }
 
 	//metodo auxiliare que devuelve si es un supermario
 
-	int getPlayerLife() const;
+	int getLives() const;
 
 	void resetPos();
 
 	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*) const;
 
-	bool isDead()const { return dead; } // Est? vivo si life >0.
+	
 };
-
 
 inline bool
 Player::isSuperMario() const {
 	return superMario;
 }
 
-inline Point2D<float>
-Player::getPlayerPos() {
-	return pos;
-}
-
-inline Point2D<float>
-Player::getPlayerDir() {
-	return dir;
-}
 inline int
-Player::getPlayerLife() const {
+Player::getLives() const {
 	return life;
 }

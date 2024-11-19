@@ -2,12 +2,13 @@
 #include <algorithm>
 
 Player::Player(Game* game, std::istream& in) : SceneObject(game, in), superMario(false), height(0){
-    
-        in >> life; // vidas.
+    in >> life; // vidas.
 
-        textura = game->getTexture(Game::MARIO);
-
-        posInicio = pos;
+    textura = game->getTexture(Game::MARIO);
+    width = textura->getFrameWidth();
+    height = textura->getFrameHeight();
+    dir = DIR_INI;
+    posInicio = pos;
 }
 
 void Player::resetPos() { //REINICIAR LA POSICION DEL JUGADOR
@@ -42,7 +43,7 @@ void Player::jump() {
 
 void Player::render(SDL_Renderer* renderer) {
 
-    SDL_Rect rect = getRect(true);
+    SDL_Rect rect = createRect(true);
 
     if (dir == DIR_INI) { //cuando se queda quieto
         anim = 0;
