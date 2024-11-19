@@ -13,12 +13,11 @@ private:
 	bool isShell;
 
 public:
-	Koopa(Game*, std::istream&);
+	Koopa(Game*, std::istream&, int);
 	void render(SDL_Renderer* renderer)const override;
-	void update() override;
 	void animation() override;
 
-	Collision hit(const SDL_Rect&, bool) override;
+	Collision hit(const SDL_Rect&, Collision::Target) override;
 
 protected:
     void launchShell(const SDL_Rect&);

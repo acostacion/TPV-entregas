@@ -34,9 +34,8 @@ public:
 	void animation() override;
 	void render(SDL_Renderer* renderer)const override;
 	void update() override;
-	void animation() override;
 
-	Collision hit(const SDL_Rect&, bool) override;
+	Collision hit(const SDL_Rect&, Collision::Target) override;
 	// Submétodos.
 
 	bool getDestroyed() const { return destroyed; }

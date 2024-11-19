@@ -1,16 +1,8 @@
 #pragma once
-#include "CheckML.h"
-
-#include <fstream>
-#include <iostream>
-
-#include "Game.h"
 #include "SceneObject.h"
-#include "Vector2D.h"
-#include "Collision.h"
 
-class Game;
 static const Point2D<float> DIR_INI_PLAYER{ 0, 0 };
+class Game;
 
 class Player : SceneObject {
 private:
@@ -58,7 +50,7 @@ public:
 	void update() override;
 	void animation() override;
 
-	Collision hit(const SDL_Rect&, bool) override;
+	Collision hit(const SDL_Rect&, Collision::Target) override;
 
 	// Getters
 	float getX() const { return this->pos.GetX(); }
@@ -76,7 +68,6 @@ public:
 
 	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*) const;
 
-	
 };
 
 inline bool

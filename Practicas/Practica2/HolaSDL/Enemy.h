@@ -1,12 +1,10 @@
 #pragma once
-#include "CheckML.h"
 #include "SceneObject.h"
+#include "Game.h"
 
-#include <fstream>
-#include <iostream>
+class Game;
 
 static const Point2D<float> DIR_INI{ -1, 0 };
-
 class Enemy : public SceneObject
 {
 protected:
@@ -14,22 +12,17 @@ protected:
 	bool frozen;
 
 public:
-	Enemy(Game* _game, std::istream entrada, int points);
+	Enemy(Game* , std::istream& , int );
 
 	virtual	void render(SDL_Renderer* renderer) const override;
 	virtual void update() override;
-	virtual Collision hit(const SDL_Rect&, bool) override;
+	virtual Collision hit(const SDL_Rect&, Collision::Target) override;
 	virtual void animation() override;
 
 	bool getFrozen()const { return frozen; }
 
 protected:
 
-	virtual void givePointsToPlayer() {
-		// Lógica para sumar puntos al jugador
-		if (game) {
-			game->addPoints(points); 
-		}
-	}
+	virtual void givePointsToPlayer();
 };
 

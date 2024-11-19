@@ -1,7 +1,6 @@
 #include "CheckML.h"
 #include "TileMap.h"
-#include "SDL_rect.h"
-
+#include "Game.h"
 
 TileMap::TileMap(Game* _game, std::istream& entrada)
 	:SceneObject(_game, {0,0}, {0,0}) {
@@ -78,7 +77,7 @@ void TileMap::render(SDL_Renderer* renderer) const{
 
 
 
-Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
+Collision TileMap::hit(const SDL_Rect& rect, Collision::Target)
 {
 	Collision colres;
 

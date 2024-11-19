@@ -60,7 +60,7 @@ void Koopa::launchShell(const SDL_Rect& attackRect) {
 //	return colKoopa;
 //}
 
-Collision::collision Koopa::hit(const SDL_Rect& attackRect, bool isFromPlayer) {
+Collision Koopa::hit(const SDL_Rect& attackRect, Collision::Target) {
     if (!dead) {
         if (isShell) {
             // Si está en forma de caparazón, se lanza como proyectil
@@ -74,6 +74,6 @@ Collision::collision Koopa::hit(const SDL_Rect& attackRect, bool isFromPlayer) {
         }
     }
     else {
-        Enemy::hit(attackRect, isFromPlayer); // Comportamiento base
+        hit(attackRect, isFromPlayer); // Comportamiento base
     }
 }

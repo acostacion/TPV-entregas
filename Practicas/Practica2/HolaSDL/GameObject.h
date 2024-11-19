@@ -1,11 +1,13 @@
 #pragma once
-#include "Game.h"
+#include "CheckML.h"
 #include <SDL.h>
 
 /*
 * virtual: para indicar que un método se puede sobreescribir por subclases. virtual tipo method() = 0;
 * override: para indicar la sobreescritura de la clase base.
 */
+
+class Game;
 
 class GameObject{
 protected:

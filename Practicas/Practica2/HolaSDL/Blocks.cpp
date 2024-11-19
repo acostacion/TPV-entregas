@@ -37,6 +37,29 @@ Blocks::Blocks(Game* _game, std::istream& in) : SceneObject(_game, in)
 	textura = _game->getTexture(Game::BLOCKS); // obtiene la textura.
 };
 
+
+
+Collision
+Blocks::hit(const SDL_Rect& region, Collision::Target target)
+{
+	// Calcula la intersección
+	SDL_Rect intersection;
+	SDL_Rect ownRect = getCollisionRect();
+	bool hasIntersection = SDL_IntersectRect(&ownRect, &region, &intersection);
+
+	if (hasIntersection) {
+		Collision collision{ Collision::OBSTACLE, intersection.w, intersection.h };
+
+		// [...] Manejo del efecto del bloque
+
+		return collision;
+	}
+
+	return NO_COLLISION;
+}
+
+
+
 void Blocks::animation() {
 
 	// si es el sorpresa
@@ -84,72 +107,3 @@ void Blocks::update() {
 	}
 }
 
-// RUBÉN LUEGO DARÁ LAS COLISIONES HECHAS.
-Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
-	Collision::collision colBlock;
-	SDL_Rect colision = createRect(pos.GetX(), pos.GetY());
-	if (!(colision.x == other.x && colision.y == other.y && colision.w == other.w && colision.h == other.h))
-	{
-		colBlock.collides = SDL_IntersectRect(&other, &colision, &colBlock.intersectRect);
-		if (colBlock.collides) { // si hay interseccion
-			/*if (!(collider.x == rect.x && collider.y == rect.y && collider.w == rect.w && collider.h == rect.h))
-			{*/
-			if (fromPlayer && other.y > colision.y) {
-				if (other.y <= colision.y + colision.h) {
-					// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
-
-					//Colisiona un rect que viene de fuera con el del bloque.
-
-
-					// Si colisiona el collider del bloque con otro...
-					//if (collision) colBlock = { true, false, blockRect }; // {colisiona, damage, rect interseccion}
-
-					// IR MODIFICANDO COLBLOCK SEGUN SE NECESITE.
-					if (tipo == Variant::ladrillo) {
-
-						if (game->getSMario()) { // MARIO Grande.
-							// ladrillo se puede romper
-							//colBlock = { true, false, blockRect };
-							destroyed = true;
-
-						}
-
-					}
-					else if (tipo == Variant::sorpresa) {
-						// Si mario siendo M o SM choca con los sorpresa.
-						// O sale la seta o salen monedas, etc.
-						if (action == Action::moneda) {
-
-						}
-						else if (action == Action::potenciador) {
-
-							game->addMushroom(new Mushroom(game, { pos.GetX() , pos.GetY()  - Game::TILE_SIDE }));
-						}
-
-						tipo = Variant::vacio;
-						changeSprite();
-					}
-					else if (tipo == Variant::oculto) {
-						// Si mario siendo M o SM choca con los vacios.
-						// Aparece el bloque vacío (se le cambia la textura y se muestra lo que era).
-						if (action == Action::moneda) {
-
-						}
-						else if (action == Action::potenciador) {
-							game->addMushroom(new Mushroom(game, { pos.GetX(), pos.GetY() - Game::TILE_SIDE }));
-						}
-						tipo = Variant::vacio;
-						changeSprite();
-					}
-					else if (tipo == Variant::vacio) {
-
-					}
-				}
-			}
-			colBlock.collides = true;
-
-		}
-	}
-	return colBlock;
-
-}

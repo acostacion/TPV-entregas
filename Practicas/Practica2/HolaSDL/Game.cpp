@@ -175,7 +175,7 @@ void Game::createEntitymap() {
 
 void Game::resetLevel() {
 	player->resetPos();
-	deleteObj(); //eleminar los vectores 
+	//deleteObj(); //eleminar los vectores 
 	createEntitymap();
 	mapOffset = 0;
 }
@@ -200,7 +200,7 @@ Game::~Game()
 	//delete perro;
 	delete player;
 	delete tileMap;
-	deleteObj();
+	//deleteObj();
 	// Elimina las texturas.
 	for (Texture* texture : textures) 
 		delete texture;
@@ -245,7 +245,7 @@ void Game::render() const
 	// Se limpia la pantalla.
 	SDL_RenderClear(renderer);
 
-	for (auto& obj : sceneObjects) obj->render();
+	//for (auto& obj : sceneObjects) obj->render();
 
 	// Muestra todo lo renderizado.
 	SDL_RenderPresent(renderer);
@@ -253,9 +253,9 @@ void Game::render() const
 
 
 
-Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
+Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
 
-	Collision::collision result;// por defecto los booleanos estan falsos todos
+	Collision result;// por defecto los booleanos estan falsos todos
 	// Verificar colisión con bloques
 	//if (!result.collides) {
 	
@@ -269,12 +269,12 @@ void Game::update()
 	if (!reset) {
 		// Actualiza los objetos del juego
 
-		for (auto& obj : sceneObjects) obj->update();
+		//for (auto& obj : sceneObjects) obj->update();
 
 		ActMapOffset();
 
 		// ELIMINAR PLAYER.
-		if (player->isDead()) {
+		if (/*player->isDead()*/ false) {
 			delete player;
 			end();
 		}
@@ -282,7 +282,7 @@ void Game::update()
 			wonGame = true;
 			end();
 		}
-		deleteEntities();
+		//deleteEntities();
 	}
 }
 

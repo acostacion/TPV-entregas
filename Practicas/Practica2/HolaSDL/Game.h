@@ -18,6 +18,7 @@
 #include "Koopa.h"
 #include "Blocks.h"
 #include "Collision.h"
+//#include "Mushroom.h"
 
 using uint = unsigned int;
 class TileMap; 
@@ -25,8 +26,9 @@ class Player;
 class Goomba;
 class Koopa;
 class Blocks;
-class Mushroom;
+//class Mushroom;
 class SceneObject;
+
 
 class Game {
 public:
@@ -116,6 +118,7 @@ public:
 
     // Constante globales
     static constexpr int TILE_SIDE = 32;
+    static constexpr int GRAVITY = 2;
     static constexpr int WIN_TILE_WIDTH = 18;
     static constexpr int WIN_TILE_HEIGHT = 16;
     static constexpr int WIN_WIDTH = TILE_SIDE* WIN_TILE_WIDTH;
@@ -141,10 +144,10 @@ Game::getMapOffset() const {
 }
 
 
-inline void
-Game::addMushroom(Mushroom* n) {
-    //mushrooms.push_back(n);
-}
+//inline void
+//Game::addMushroom(Mushroom* n) {
+//    //mushrooms.push_back(n);
+//}
 inline void
 Game::end() {
     gameContinue = false;

@@ -1,13 +1,14 @@
+#include "CheckML.h"
 #include "Player.h"
-#include <algorithm>
+#include "Game.h"
 
-Player::Player(Game* game, std::istream& in) : SceneObject(game, in), superMario(false), height(0){
+Player::Player(Game* _game, std::istream& in) : SceneObject(_game, in), superMario(false), height(0){
     in >> life; // vidas.
 
     textura = game->getTexture(Game::MARIO);
     width = textura->getFrameWidth();
     height = textura->getFrameHeight();
-    dir = DIR_INI;
+    dir = DIR_INI_PLAYER;
     posInicio = pos;
 }
 
@@ -16,6 +17,28 @@ void Player::resetPos() { //REINICIAR LA POSICION DEL JUGADOR
 }
 
 void Player::changeMario() { superMario = !superMario; }
+
+
+void Player::animation() {
+    SDL_Rect rect = createRect(pos.GetX() - game->getMapOffset(), pos.GetY());
+
+    if (dir == DIR_INI_PLAYER) { //cuando se queda quieto
+        anim = 0;
+    }
+    else if (!isGrounded) {//salto
+        anim = 6;
+    }
+    else if (dir.GetX() != 0 && isGrounded)
+    {
+        if (anim == 0) anim = 2;
+        else if (anim == 2) anim = 3;
+        else if (anim == 3) anim = 4;
+        else if (anim == 4) anim = 0;
+        else if (anim == 6) anim = 0;
+    }
+    else anim = 0;
+
+}
 
 void Player::decreaseLife() {
     if (life > 0) {
@@ -41,28 +64,11 @@ void Player::jump() {
     }
 }
 
-void Player::render(SDL_Renderer* renderer) {
+void Player::render(SDL_Renderer* renderer) const {
 
-    SDL_Rect rect = createRect(true);
-
-    if (dir == DIR_INI) { //cuando se queda quieto
-        anim = 0;
-    }
-    else if (!isGrounded) {//salto
-        anim = 6;
-    }
-    else if (dir.GetX() != 0 && isGrounded)
-    {
-        if (anim == 0) anim = 2;
-        else if (anim == 2) anim = 3;
-        else if (anim == 3) anim = 4;
-        else if (anim == 4) anim = 0;
-        else if (anim == 6) anim = 0;
-    }
-    else anim = 0;
-
+  
     // Se renderiza.
-    renderMarioAnimation(rect, renderer);
+    //renderMarioAnimation(rect, renderer);
 
     if (Game::DEBUG) {
         Point2D<float> nextPos = pos + dir * moveSpeed;
@@ -122,7 +128,7 @@ void Player::handleEvent(SDL_Event evento) {
 
 void Player::update() {
     // Calcular la próxima posición
-    Point2D<float> nextPosition = pos + dir * MOVE_SPEED;
+    Point2D<float> nextPosition = pos + dir * moveSpeed;
     // Verificar que Mario no exceda el borde izquierdo del mapa
     if (nextPosition.GetX() * Game::TILE_SIDE < game->getMapOffset()) return;
     if (nextPosition.GetY() * Game::TILE_SIDE + Game::TILE_SIDE * 2 > Game::WIN_HEIGHT) {
@@ -131,7 +137,7 @@ void Player::update() {
     }
 
     SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, nextPosition.GetY() * Game::TILE_SIDE);
-    Collision::collision result = game->checkCollision(nextCollider, true);
+    Collision result = game->checkCollision(nextCollider, true);
 
 
     // Si hay daño en la colisión, reducir la vida
@@ -165,7 +171,7 @@ void Player::update() {
     }
     // Colisión sin margen: detener el movimiento
     else {
-        dir = DIR_INI;
+        dir = DIR_INI_PLAYER;
     }
 
     // Intenta realizar salto
@@ -174,8 +180,8 @@ void Player::update() {
 
 
 
-Collision::collision Player::hit(const SDL_Rect otherRect) {
-    Collision::collision resultadoFinal;
+Collision Player::hit(const SDL_Rect& otherRect, Collision::Target) {
+    Collision resultadoFinal;
     resultadoFinal.fromPlayer = true;
     resultadoFinal.collides = true;
 

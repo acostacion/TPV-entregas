@@ -1,13 +1,7 @@
 #pragma once
 
-#include "Texture.h"
 #include "SceneObject.h"
-#include "Game.h"
-#include <SDL.h>
-#include <fstream>
-#include <iostream>
-#include "Collision.h"
-
+#include <vector>
 using uint = unsigned int;
 
 class Game;
@@ -26,7 +20,7 @@ public:
 	void update() override;
 	void animation() override;
 
-	Collision hit(const SDL_Rect&, bool) override;
+	Collision hit(const SDL_Rect&, Collision::Target) override;
 
 };
 
