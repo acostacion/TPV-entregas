@@ -1,13 +1,117 @@
 #include "Player.h"
-#include <algorithm>
 
-void Player::render(SDL_Renderer* renderer) {
+Player::Player(std::istream& in) : SceneObject(game, pos, width, height) // game, pos, w, h.
+{
+    try {
+        in >> pos; // lee pos.
+        pos = pos - Point2D<float>(0, 1); // ajusta pos.
+        in >> life; // vidas.
 
-    
+        texturaMario = game->getTexture(Game::MARIO);
+        texturaSMario = game->getTexture(Game::SUPERMARIO);
+        verticalVelocity = 0;
+
+        superMario = false;
+        isGrounded = false;
+        isJumping = false;
+        dir = DIR_INI;
+        dead = false;
+
+        if (!superMario) { // MARIO.
+            width = texturaMario->getFrameWidth() - 8;
+            height = texturaMario->getFrameHeight();
+        }
+        else { // SUPER MARIO.
+            width = texturaSMario->getFrameWidth() * 2;
+            height = texturaSMario->getFrameHeight() * 2;
+        }
+
+        posInicio = pos;
+    }
+    catch (...) {
+        std::cout << "Error creando Player.";
+    }
 }
 
+SDL_Rect Player::createRect(float x, float y, float w, float h) {
+    // Se crea el rect.
+    SDL_Rect rect;
 
+    rect.w = w;
+    rect.h = h;
+    rect.x = x;
+    rect.y = y;
 
+    return rect;
+}
+
+void Player::changeMario() { superMario = !superMario; }
+void Player::resetPos() { pos = posInicio; }
+
+void Player::decreaseLife() {
+    if (life > 0) {
+        life--;
+        if (life == 0) dead = true;
+        else {
+            game->resetLevel(); // Reinicia el nivel si a®≤n quedan vidas
+        }
+    }
+}
+
+void Player::jump() {
+    if (isJumping && height < MAX_HEIGHT) {
+        // Aumentar altura si est· saltando y no ha alcanzado la altura m·xima
+        height++;
+        isGrounded = false;
+    }
+    else if (!isGrounded) {
+        // Si alcanzÛ la altura m·xima y a˙n no ha tocado el suelo, empieza a caer
+        dir.SetY(1);
+    }
+}
+
+void Player::render(SDL_Renderer* renderer) {
+    SDL_Rect rect = getRect(true);
+
+    if (dir == DIR_INI) { //cuando se queda quieto
+        anim = 0;
+    }
+    else if (!isGrounded) {//salto
+        anim = 6;
+    }
+    else if (dir.GetX() != 0 && isGrounded)
+    {
+        if (anim == 0) anim = 2;
+        else if (anim == 2) anim = 3;
+        else if (anim == 3) anim = 4;
+        else if (anim == 4) anim = 0;
+        else if (anim == 6) anim = 0;
+    }
+    else anim = 0;
+
+    // Se renderiza.
+    renderMarioAnimation(rect, renderer);
+
+    if (Game::DEBUG) {
+        Point2D<float> nextPos = pos + dir * MOVE_SPEED;
+        SDL_Rect rect2 = createRect(
+            nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
+            nextPos.GetY() * Game::TILE_SIDE, width, height);
+
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
+        SDL_RenderDrawRect(renderer, &rect2);
+        SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+    }
+}
+
+void Player::renderMarioAnimation(const SDL_Rect& rect, SDL_Renderer* renderer) const {
+    if (!superMario) {
+        texturaMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    }
+    else {
+        texturaSMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    }
+}
 
 // Input de teclado cambian la dir del jugador.
 void Player::handleEvent(SDL_Event evento) {
@@ -44,7 +148,7 @@ void Player::handleEvent(SDL_Event evento) {
 }
 
 void Player::update() {
-    // Calcular la pr√≥xima posici√≥n
+    // Calcular la prÛxima posiciÛn
     Point2D<float> nextPosition = pos + dir * MOVE_SPEED;
     // Verificar que Mario no exceda el borde izquierdo del mapa
     if (nextPosition.GetX() * Game::TILE_SIDE < game->getMapOffset()) return;
@@ -53,17 +157,17 @@ void Player::update() {
         return;
     }
 
-    SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, nextPosition.GetY() * Game::TILE_SIDE);
+    SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, nextPosition.GetY() * Game::TILE_SIDE, width, height);
     Collision::collision result = game->checkCollision(nextCollider, true);
 
 
-    // Si hay da√±o en la colisi√≥n, reducir la vida
+    // Si hay daÒo en la colisiÛn, reducir la vida
     if (result.damages) {
         decreaseLife();
         return;
     }
 
-    // Sin colisi√≥n: actualizar posici√≥n y estado de "en el suelo"
+    // Sin colisiÛn: actualizar posiciÛn y estado de "en el suelo"
     if (!result.collides) {
         pos = nextPosition;
         isGrounded = false;
@@ -71,22 +175,22 @@ void Player::update() {
         return;
     }
 
-    // Colisi√≥n con un hongo: cambiar a Super Mario si no lo es
+    // ColisiÛn con un hongo: cambiar a Super Mario si no lo es
     if (result.fromMushroom) {
         if (!superMario) changeMario();
     }
-    // Colisi√≥n con un enemigo: revertir Super Mario o reducir vida
+    // ColisiÛn con un enemigo: revertir Super Mario o reducir vida
     else if (result.fromEnemy) {
         if (superMario) changeMario();
         else decreaseLife();
     }
-    // Colisi√≥n con otro obst√°culo: verificar el margen de colisi√≥n
+    // ColisiÛn con otro obst·culo: verificar el margen de colisiÛn
     else if (result.intersectRect.h <= margenColi && result.intersectRect.y > nextCollider.y) {
-        // Si hay margen suficiente en la direcci√≥n Y, actualizar posici√≥n y estado de "en el suelo"
+        // Si hay margen suficiente en la direcciÛn Y, actualizar posiciÛn y estado de "en el suelo"
         pos = nextPosition;
         isGrounded = true;
     }
-    // Colisi√≥n sin margen: detener el movimiento
+    // ColisiÛn sin margen: detener el movimiento
     else {
         dir = DIR_INI;
     }
@@ -94,8 +198,6 @@ void Player::update() {
     // Intenta realizar salto
     jump();
 }
-
-
 
 Collision::collision Player::hit(const SDL_Rect otherRect) {
     Collision::collision resultadoFinal;

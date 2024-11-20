@@ -19,8 +19,6 @@ public:
 	enum Accion { potenciador, moneda, nada };
 
 private:
-	// Referencias.
-	Game* game;
 
 	// Propiedades.
 	Point2D<float> pos;
