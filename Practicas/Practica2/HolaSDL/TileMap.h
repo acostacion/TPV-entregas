@@ -1,17 +1,12 @@
 #pragma once
-
 #include "Texture.h"
-#include "Game.h"
-#include <SDL.h>
-#include <fstream>
-#include <iostream>
-#include "Collision.h"
+#include "SceneObject.h"
 
 using uint = unsigned int;
 
 class Game;
 
-class TileMap
+class TileMap : public SceneObject
 {
 private:
 	std::vector<std::vector<int>> map; // Tilemap.

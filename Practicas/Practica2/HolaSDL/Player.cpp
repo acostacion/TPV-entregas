@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(std::istream& in) : SceneObject(game, pos, width, height) // game, pos, w, h.
+Player::Player(Game* _game, std::istream& in) : SceneObject(_game, pos, width, height) // game, pos, w, h.
 {
     try {
         in >> pos; // lee pos.
@@ -16,6 +16,7 @@ Player::Player(std::istream& in) : SceneObject(game, pos, width, height) // game
         isJumping = false;
         dir = DIR_INI;
         dead = false;
+        anim = 0;
 
         if (!superMario) { // MARIO.
             width = texturaMario->getFrameWidth() - 8;

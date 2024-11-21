@@ -7,6 +7,8 @@
 * override: para indicar la sobreescritura de la clase base.
 */
 
+class Game;
+
 class GameObject{
 protected:
 	// Atributos.
@@ -16,6 +18,6 @@ protected:
 	GameObject(Game*);
 	virtual void render(SDL_Renderer* renderer)const = 0;
 	virtual void update() = 0;
-	virtual ~GameObject();
+	virtual ~GameObject() {}
 };
 

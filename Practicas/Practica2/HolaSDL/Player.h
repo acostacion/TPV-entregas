@@ -2,12 +2,6 @@
 #include "CheckML.h"
 #include "SceneObject.h"
 
-#include <fstream>
-#include <iostream>
-
-#include "Vector2D.h"
-#include "Collision.h"
-
 static const Point2D<float> DIR_INI{ 0, 0 };
 class Player : public SceneObject
 {
@@ -34,7 +28,7 @@ private:
 
 public:
 
-	Player(std::istream&); // constructora
+	Player(Game*, std::istream&); // constructora
 
 	void render(SDL_Renderer*);
 	void update();
