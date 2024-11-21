@@ -3,9 +3,9 @@
 #include "SDL_rect.h"
 
 
-TileMap::TileMap(std::istream& entrada, Game* _game)
-	:game(_game), texture(_game->getTexture(Game::BACKGROUND))  {
+TileMap::TileMap(std::istream& entrada, Game* _game) : SceneObject(_game,  pos, width, height){
 	int x = 0, y = 0;
+	texture = _game->getTexture(Game::BACKGROUND);
 
 	try {
 		// Lee el archivo CSV.
@@ -32,6 +32,8 @@ TileMap::TileMap(std::istream& entrada, Game* _game)
 			map.push_back(fila);
 			y++;
 		}
+
+		
 	}
 	catch (...) {
 		std::cout << "Error creando TileMap.";

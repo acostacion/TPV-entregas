@@ -1,0 +1,19 @@
+-GAMEOBJECT.
+GameObject(Game*)
+void render(SDL_Renderer* renderer)const
+void update()
+
+#pragma once
+#include "Game.h"
+#include <SDL.h>
+
+-SCENEOBJECT.
+SceneObject(Game*, Point2D<float>&, float, float)
+Collision::collision hit(const SDL_Rect& other, bool fromPlayer)
+
+#include "GameObject.h"
+#include "Vector2D.h"
+#include "Collision.h"
+
+Player, Block y Tilemap han de heredar de SceneObject
+

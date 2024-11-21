@@ -2,14 +2,20 @@
 #include "CheckML.h"
 #include "SceneObject.h"
 
+// para evitar inclusiones cruzadas.
+class Game; 
+
 static const Point2D<float> DIR_INI{ 0, 0 };
 class Player : public SceneObject
 {
 private:
+	// REFERENCES.
+	Game* game;
 	Texture* texturaMario; //mario
 	Texture* texturaSMario; // superMario
 
 	// PARAMETERS.
+	Point2D<float> pos;
 	Point2D<float> dir;
 	Point2D<float> posInicio;// para el reinicio
 	bool isGrounded; // si esta en el suelo
@@ -46,31 +52,16 @@ private:
 
 	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*) const;
 	
+	// Getters
 	float getX() const { return this->pos.GetX(); }
-	Point2D<float> getPlayerPos();
-	Point2D<float> getPlayerDir();
-	int getPlayerLife() const;
-	bool isDead()const { return dead; } // Est? vivo si life >0.
-	bool isSuperMario()const;
+	float getY()const { return this->pos.GetY(); }
+	Point2D<float> getPlayerPos() { return pos; }
+	Point2D<float> getPlayerDir() { return dir; }
+	int getPlayerLife() const { return life; }
+	bool isDead()const { return life <= 0; } // Est? vivo si life >0.
+	bool isSuperMario()const { return superMario; }
 
 };
 
-inline bool
-Player::isSuperMario() const {
-	return superMario;
-}
-
-inline Point2D<float>
-Player::getPlayerPos() {
-	return pos;
-}
-
-inline Point2D<float>
-Player::getPlayerDir() {
-	return dir;
-}
-inline int
-Player::getPlayerLife() const {
-	return life;
-}
+inline bool Player::isSuperMario() const { return superMario; }
 

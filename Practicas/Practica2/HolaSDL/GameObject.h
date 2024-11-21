@@ -1,6 +1,8 @@
 #pragma once
-#include "Game.h"
+#include "checkML.h"	
 #include <SDL.h>
+#include "Vector2D.h"
+#include "Texture.h"
 
 /*
 * virtual: para indicar que un método se puede sobreescribir por subclases. virtual tipo method() = 0;
@@ -14,10 +16,14 @@ protected:
 	// Atributos.
 	Game* game;
 
+public:
 	// Métodos.
-	GameObject(Game*);
+	//GameObject(Game* _game) { game = _game; }
+
 	virtual void render(SDL_Renderer* renderer)const = 0;
+
 	virtual void update() = 0;
+
 	virtual ~GameObject() {}
 };
 

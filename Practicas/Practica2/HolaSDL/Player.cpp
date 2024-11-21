@@ -1,12 +1,15 @@
 #include "Player.h"
+#include "Game.h" // para evitar inclusiones cruzadas.
 
-Player::Player(Game* _game, std::istream& in) : SceneObject(_game, pos, width, height) // game, pos, w, h.
+Player::Player(Game* _game, std::istream& in)
 {
     try {
+
         in >> pos; // lee pos.
         pos = pos - Point2D<float>(0, 1); // ajusta pos.
         in >> life; // vidas.
 
+        game = _game;
         texturaMario = game->getTexture(Game::MARIO);
         texturaSMario = game->getTexture(Game::SUPERMARIO);
         verticalVelocity = 0;

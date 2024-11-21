@@ -1,14 +1,17 @@
 #include "CheckML.h"
 #include "Blocks.h"
 
-Blocks::Blocks(Game* _game, std::istream& in) 
-	: game(_game), anim(false), destroyed(false), 
-	animTimer(3), animFrame(0)
+Blocks::Blocks(Game* _game, std::istream& in) : SceneObject(_game, pos, width, height)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 	action = Accion::nada;
 	tipo = Tipos::ladrillo;
+
+	anim = false;
+	destroyed = false;
+	animTimer = 3;
+	animFrame = 0;
 
 	char c;
 	in >> c;
