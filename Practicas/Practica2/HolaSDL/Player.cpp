@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Game.h" // para evitar inclusiones cruzadas.
 
-Player::Player(Game* _game, std::istream& in)
+Player::Player(Game* _game, std::istream& in) : SceneObject(_game, pos, width, height)
 {
     try {
 

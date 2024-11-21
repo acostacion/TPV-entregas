@@ -10,20 +10,24 @@ class Player : public SceneObject
 {
 private:
 	// REFERENCES.
-	Game* game;
-	Texture* texturaMario; //mario
-	Texture* texturaSMario; // superMario
+	Game* game = nullptr;
+	Texture* texturaMario = nullptr; //mario
+	Texture* texturaSMario = nullptr; // superMario
 
 	// PARAMETERS.
 	Point2D<float> pos;
 	Point2D<float> dir;
 	Point2D<float> posInicio;// para el reinicio
+
 	bool isGrounded; // si esta en el suelo
 	bool isJumping;
 	bool superMario = false;
 	bool dead;
-	int life;
+
+	
 	float verticalVelocity;
+
+	int life;
 	int anim; // indice del frame de la animacion
 	int margenColi = 9;
 
@@ -60,8 +64,6 @@ private:
 	int getPlayerLife() const { return life; }
 	bool isDead()const { return life <= 0; } // Est? vivo si life >0.
 	bool isSuperMario()const { return superMario; }
-
 };
 
-inline bool Player::isSuperMario() const { return superMario; }
 

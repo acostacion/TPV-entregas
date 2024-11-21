@@ -76,6 +76,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
