@@ -1,7 +1,8 @@
 #include "CheckML.h"
 #include "Blocks.h"
+#include "Game.h"
 
-Blocks::Blocks(Game* _game, std::istream& in) : SceneObject(_game, pos, width, height)
+Blocks::Blocks(Game* _game, std::istream& in) : SceneObject(_game, pos, width, height, texture)
 {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
@@ -40,12 +41,15 @@ Blocks::Blocks(Game* _game, std::istream& in) : SceneObject(_game, pos, width, h
 		break;
 	}
 
-	texturaBlock = _game->getTexture(Game::BLOCKS); // obtiene la textura.
+	texture = _game->getTexture(Game::BLOCKS); // obtiene la textura.
+
+	width = texture->getFrameWidth() * 2;
+	height = texture->getFrameHeight() * 2;
 
 	colision.x = pos.GetX() * Game::TILE_SIDE;
 	colision.y = pos.GetY() * Game::TILE_SIDE;
-	colision.w = texturaBlock->getFrameWidth() * 2;
-	colision.h = texturaBlock->getFrameHeight() * 2;
+	colision.w = width;
+	colision.h = height;
 };
 
 SDL_Rect Blocks::createBlockRect() {
@@ -54,8 +58,8 @@ SDL_Rect Blocks::createBlockRect() {
 	SDL_Rect rect;
 
 	// 2. Se le da dimensiones y posici�n.
-	rect.w = texturaBlock->getFrameWidth() * 2;
-	rect.h = texturaBlock->getFrameHeight() * 2;
+	rect.w = width;
+	rect.h = height;
 	rect.x = pos.GetX() * Game::TILE_SIDE - game->getMapOffset();
 	rect.y = pos.GetY() * Game::TILE_SIDE;
 
@@ -74,7 +78,7 @@ void Blocks::render(SDL_Renderer* renderer) {
 	}
 	
 	SDL_Rect rect = createBlockRect();
-	texturaBlock->renderFrame(rect, 0, animFrame); // Se renderiza.
+	texture->renderFrame(rect, 0, animFrame); // Se renderiza.
 
 	if (Game::DEBUG) {
 		SDL_SetRenderDrawColor(renderer, 255, 255, 0, 128);
@@ -113,8 +117,6 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 	{
 		colBlock.collides = SDL_IntersectRect(&other, &colision, &colBlock.intersectRect);
 		if (colBlock.collides) { // si hay interseccion
-			/*if (!(collider.x == rect.x && collider.y == rect.y && collider.w == rect.w && collider.h == rect.h))
-			{*/
 			if (fromPlayer && other.y > colision.y) {
 				if (other.y <= colision.y + colision.h) {
 					// Se crea el rect de colision del bloque con el mismo tamaño que el del render.
@@ -143,8 +145,8 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 
 						}
 						else if (action == Accion::potenciador) {
-
-							game->addMushroom(new Mushroom(game, { pos.GetX() , pos.GetY()  - Game::TILE_SIDE }));
+							//LUEGO.
+							//game->addMushroom(new Mushroom(game, { pos.GetX() , pos.GetY()  - Game::TILE_SIDE }));
 						}
 
 						tipo = Tipos::vacio;
@@ -157,7 +159,8 @@ Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
 
 						}
 						else if (action == Accion::potenciador) {
-							game->addMushroom(new Mushroom(game, { pos.GetX(), pos.GetY() - Game::TILE_SIDE }));
+							//LUEGO.
+							//game->addMushroom(new Mushroom(game, { pos.GetX(), pos.GetY() - Game::TILE_SIDE }));
 						}
 						tipo = Tipos::vacio;
 						changeSprite();

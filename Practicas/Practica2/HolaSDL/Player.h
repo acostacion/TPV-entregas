@@ -11,8 +11,7 @@ class Player : public SceneObject
 private:
 	// REFERENCES.
 	Game* game = nullptr;
-	Texture* texturaMario = nullptr; //mario
-	Texture* texturaSMario = nullptr; // superMario
+	Texture* texture = nullptr;
 
 	// PARAMETERS.
 	Point2D<float> pos;
@@ -40,21 +39,26 @@ public:
 
 	Player(Game*, std::istream&); // constructora
 
-	void render(SDL_Renderer*);
-	void update();
+	void render(SDL_Renderer* _renderer) override;
+	void update() override;
 	void handleEvent(SDL_Event);
-	Collision::collision hit(const SDL_Rect);
+	Collision::collision hit(const SDL_Rect& otherRect, bool fromPlayer) override;
 
 private:
 	// METHODS.
 	SDL_Rect createRect(float, float, float, float);
 	SDL_Rect getRect(bool forRender) const;
-	void changeMario();
+	
 	void resetPos(); // reinicia pos del player.
 	void decreaseLife();
 	void jump();
 
-	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*) const;
+	void renderMarioAnimation(const SDL_Rect&, SDL_Renderer*);
+
+	// Mario swapping.
+	void setSuperMario();
+	void setOnlyMario();
+	void changeMario();
 	
 	// Getters
 	float getX() const { return this->pos.GetX(); }

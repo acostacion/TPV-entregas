@@ -1,5 +1,4 @@
-#pragma once
-#include "checkML.h"	
+#pragma once	
 #include "GameObject.h"
 #include "gameList.h"
 #include "Vector2D.h"
@@ -18,16 +17,16 @@ protected:
 	// Referencias.
 	Texture* texture = nullptr;
 	Game* game = nullptr;
+
 	// HAY QUE METER LO DEL ITERADOR.
 
 public:
 	// Constructores y Destructores.
 	SceneObject() = default;
-	SceneObject(Game* _game, Point2D<float>& _pos, float _W, float _h);
+	SceneObject(Game* _game, Point2D<float>& _pos, float& _W, float& _h, Texture* _textue);
 
 	// Métodos.
-	virtual void render()const override = 0;
-	virtual Collision::collision hit(const SDL_Rect* other, bool fromPlayer) = 0; // Detecta colisión con otro rectángulo
+	virtual Collision::collision hit(const SDL_Rect& otherRect, bool fromPlayer) = 0; // Detecta colisión con otro rectángulo
 	// HAY QUE METER EL TRYTOMOVE.
 
 	// Getters.

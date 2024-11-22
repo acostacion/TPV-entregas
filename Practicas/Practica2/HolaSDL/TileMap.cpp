@@ -1,11 +1,13 @@
 #include "CheckML.h"
+#include "Game.h"
 #include "TileMap.h"
 #include "SDL_rect.h"
 
 
-TileMap::TileMap(std::istream& entrada, Game* _game) : SceneObject(_game,  pos, width, height){
+TileMap::TileMap(std::istream& entrada, Game* _game) : SceneObject(_game,  pos, width, height, texture){
 	int x = 0, y = 0;
 	texture = _game->getTexture(Game::BACKGROUND);
+	width = height = Game::TILE_SIDE;
 
 	try {
 		// Lee el archivo CSV.
@@ -21,8 +23,8 @@ TileMap::TileMap(std::istream& entrada, Game* _game) : SceneObject(_game,  pos, 
 				entrada >> c;
 				fila.push_back(c);
 				SDL_Rect rect;
-				rect.w = Game::TILE_SIDE;
-				rect.h = Game::TILE_SIDE;
+				rect.w = width;
+				rect.h = height;
 				rect.x = x;
 				rect.y = y;
 				// Get() lee el siguiente char (",").
@@ -77,11 +79,6 @@ void TileMap::render(SDL_Renderer* renderer) {
 		}
 	}
 }
-
-void TileMap::update() {
-
-}
-
 
 Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 {

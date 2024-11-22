@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Game.h" // para evitar inclusiones cruzadas.
 
-Player::Player(Game* _game, std::istream& in) : SceneObject(_game, pos, width, height)
+Player::Player(Game* _game, std::istream& in) : SceneObject(_game, pos, width, height, texture)
 {
     try {
 
@@ -10,25 +10,17 @@ Player::Player(Game* _game, std::istream& in) : SceneObject(_game, pos, width, h
         in >> life; // vidas.
 
         game = _game;
-        texturaMario = game->getTexture(Game::MARIO);
-        texturaSMario = game->getTexture(Game::SUPERMARIO);
+
+        texture = game->getTexture(Game::MARIO); // Inicialmente es Only Mario.
+        superMario = false;
+
         verticalVelocity = 0;
 
-        superMario = false;
         isGrounded = false;
         isJumping = false;
         dir = DIR_INI;
         dead = false;
         anim = 0;
-
-        if (!superMario) { // MARIO.
-            width = texturaMario->getFrameWidth() - 8;
-            height = texturaMario->getFrameHeight();
-        }
-        else { // SUPER MARIO.
-            width = texturaSMario->getFrameWidth() * 2;
-            height = texturaSMario->getFrameHeight() * 2;
-        }
 
         posInicio = pos;
     }
@@ -49,7 +41,31 @@ SDL_Rect Player::createRect(float x, float y, float w, float h) {
     return rect;
 }
 
-void Player::changeMario() { superMario = !superMario; }
+void Player::setSuperMario() {
+    texture = game->getTexture(Game::SUPERMARIO);
+    width = texture->getFrameWidth() * 2;
+    height = texture->getFrameHeight() * 2;
+}
+
+void Player::setOnlyMario() {
+    texture = game->getTexture(Game::MARIO);
+    width = texture->getFrameWidth() - 8;
+    height = texture->getFrameHeight();
+}
+
+void Player::changeMario() 
+{ 
+    if (!isSuperMario()) { // MARIO NORMAL.
+        setSuperMario();
+        superMario = true;
+        
+    }
+    else { // SUPER MARIO.
+        setOnlyMario();
+        superMario = false;
+    }
+    
+}
 void Player::resetPos() { pos = posInicio; }
 
 void Player::decreaseLife() {
@@ -108,12 +124,14 @@ void Player::render(SDL_Renderer* renderer) {
     }
 }
 
-void Player::renderMarioAnimation(const SDL_Rect& rect, SDL_Renderer* renderer) const {
+void Player::renderMarioAnimation(const SDL_Rect& rect, SDL_Renderer* renderer) {
     if (!superMario) {
-        texturaMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+        setOnlyMario();
+        texture->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
     else {
-        texturaSMario->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+        setSuperMario();
+        texture->renderFrame(rect, 0, anim, dir.GetX() < 0 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
 }
 
@@ -203,7 +221,9 @@ void Player::update() {
     jump();
 }
 
-Collision::collision Player::hit(const SDL_Rect otherRect) {
+Collision::collision Player::hit(const SDL_Rect& otherRect, bool fromPlayer) {
+    fromPlayer = false; // FROMPLAYER SIEMPRE SERA FALSE AQUÍ.
+
     Collision::collision resultadoFinal;
     resultadoFinal.fromPlayer = true;
     resultadoFinal.collides = true;

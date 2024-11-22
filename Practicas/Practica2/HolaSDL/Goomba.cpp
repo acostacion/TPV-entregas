@@ -1,5 +1,6 @@
 #include "CheckML.h"
 #include "Goomba.h"
+#include "Game.h"
 
 Goomba::Goomba(Game* game, std::istream& in) : game(game), dead(false)
 {

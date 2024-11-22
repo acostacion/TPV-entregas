@@ -1,6 +1,8 @@
 #pragma once
 #include "SceneObject.h"
 
+class Game;
+
 class Blocks : public SceneObject
 {
 public: 
@@ -18,7 +20,7 @@ private:
 	Accion action; // potenciador, moneda, nada.
 
 	// Gráficos.
-	Texture* texturaBlock;
+	Texture* texture;
 	int animFrame; // indentificador del sprite, 0-3 -> sorpresa, 4 -> vacio, 5 -> ladrillo
 	bool anim; // si tiene que animarse, seria solo el sorpresa
 	int animTimer;
@@ -28,10 +30,10 @@ private:
 public:
 	Blocks(Game* _game, std::istream& in);
 
-	void render(SDL_Renderer* renderer);
-	void update();
+	void render(SDL_Renderer* renderer) override;
+	void update() override;
 
-	Collision::collision hit(const SDL_Rect& other, bool);
+	Collision::collision hit(const SDL_Rect& other, bool fromPlayer) override;
 
 	// Submétodos.
 	SDL_Rect createBlockRect();

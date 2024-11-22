@@ -20,7 +20,7 @@ public:
 	virtual ~GameObject() = default; // Destructora default.
 
 	// Métodos virtuales puros (las subclases los reescribirán).
-	virtual void render()const = 0;
+	virtual void render(SDL_Renderer*) = 0;
 	virtual void update() = 0;
 
 	// Getters.

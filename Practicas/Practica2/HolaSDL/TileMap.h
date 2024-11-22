@@ -17,8 +17,7 @@ public:
 	const int OBSTACLE_THRESHOLD = 4; // constante
 
 	TileMap(std::istream& entrada, Game* _game); // Constructora desde flujo de entrada y referencia al juego.
-	void render(SDL_Renderer* renderer);
-	void update();
-	Collision::collision hit(const SDL_Rect& rect, bool fromPlayer);
+	void render(SDL_Renderer* renderer) override;
+	Collision::collision hit(const SDL_Rect& rect, bool fromPlayer) override;
 };
 

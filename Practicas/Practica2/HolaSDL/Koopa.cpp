@@ -1,5 +1,6 @@
 #include "CheckML.h"
 #include "Koopa.h"
+#include "Game.h"
 
 Koopa::Koopa(Game* game, std::istream& in) : game(game)
 {
