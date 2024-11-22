@@ -122,6 +122,10 @@ public:
     Uint64 LAST = NOW;
     double deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
   
+
+    // Iterador.
+    std::vector<SceneObject*> objectQueue;
+    int nextObject;
 };
 
 
