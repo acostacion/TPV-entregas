@@ -52,26 +52,25 @@ void Enemy::update() {
 	// SceneObject::update(); // si hiciera falta
 }
 
-Collision::collision Enemy::hit(const SDL_Rect& other, bool fromPlayer) {
-	// collides, damages, intersectrect.
-	Collision::collision colGoomba;
-	SDL_Rect col = createRect(pos.GetX() * Game::TILE_SIDE, pos.GetY() * Game::TILE_SIDE);
-
-	//Colisiona un rect que viene de fuera con el del goomba.
-	if (fromPlayer) {
-		colGoomba.collides = SDL_IntersectRect(&col, &other, &colGoomba.intersectRect);
-		if (colGoomba.collides) {
-			if (other.y < col.y) // si viene por arriba
-				dead = true;
-			else {
-				colGoomba.damages = true;
-				colGoomba.fromEnemy = true;
-			}
-		}
-	}
-
-	return colGoomba;
-}
+//Collision Enemy::hit(const SDL_Rect& other, bool fromPlayer) {
+//	Collision colGoomba = NO_COLLISION; // Inicialmente no hay colision.
+//	SDL_Rect col = createRect(pos.GetX() * Game::TILE_SIDE, pos.GetY() * Game::TILE_SIDE);
+//
+//	SDL_Rect intersection;
+//	bool collides = SDL_IntersectRect(&col, &other, &intersection);
+//	
+//	if (fromPlayer) {
+//		if (collides) {
+//			if (other.y < col.y) // si viene por arriba
+//				dead = true;
+//			else {
+//				colGoomba.result = Collision::DAMAGE;
+//			}
+//		}
+//	}
+//
+//	return colGoomba;
+//}
 
 #pragma region Submétodos
 SDL_Rect Enemy::createRect(float x, float y) {

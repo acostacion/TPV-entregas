@@ -19,7 +19,7 @@ protected:
 	Texture* texture = nullptr;
 	Game* game = nullptr;
 
-	// HAY QUE METER LO DEL ITERADOR.
+	// HAY QUE METER LO DEL ANCHOR.
 
 	SDL_Rect getCollisionRect();
 	SDL_Rect getRenderRect() const;
