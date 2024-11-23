@@ -79,7 +79,7 @@ void TileMap::render(SDL_Renderer* renderer) {
 	}
 }
 
-Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
+Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 {
 	Collision::collision colres;
 

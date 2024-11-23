@@ -71,39 +71,22 @@ void Blocks::update() {
 	}
 }
 
-Collision::collision Blocks::hit(const SDL_Rect& other, bool fromPlayer){
-	Collision::collision colBlock;
+Collision Blocks::hit(const SDL_Rect& region, Collision::Target target)
+{
+	// Calcula la intersección
+	SDL_Rect intersection;
+	SDL_Rect ownRect = getCollisionRect();
+	bool hasIntersection = SDL_IntersectRect(&ownRect, &region, &intersection);
 
-	if (SDL_IntersectRect(&other, &colision, &colBlock.intersectRect)) { // si hay interseccion
-		if (fromPlayer && other.y > colision.y && other.y <= colision.y + colision.h) {
-			if (tipo == Tipos::LADRILLO) {
-				if (game->getSMario()) { // MARIO Grande.
-					destroyed = true;
-				}
-			}
-			else if (tipo == Tipos::SORPRESA) {
-				if (action == Accion::MONEDA) {
-				}
-				else if (action == Accion::POTENCIADOR) {
-				}
-				tipo = Tipos::VACIO;
-				changeSprite();
-			}
-			else if (tipo == Tipos::OCULTO) {
-				if (action == Accion::MONEDA) {
-				}
-				else if (action == Accion::POTENCIADOR) {
-				}
-				tipo = Tipos::VACIO;
-				changeSprite();
-			}
-			else if (tipo == Tipos::VACIO) {
-			}
-		}
-		colBlock.collides = true;
+	if (hasIntersection) {
+		Collision collision{ Collision::OBSTACLE, intersection.w, intersection.h };
+
+		// LÓGICA DE EFECTOS DE BLOQUE.
+
+		return collision;
 	}
-	return colBlock;
 
+	return NO_COLLISION;
 }
 
 #pragma region Submétodos

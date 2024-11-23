@@ -34,7 +34,7 @@ public:
 
 	void render(SDL_Renderer* renderer) override;
 	void update() override;
-	Collision::collision hit(const SDL_Rect& other, bool fromPlayer) override;
+	Collision hit(const SDL_Rect& region, Collision::Target target);
 
 	// Submétodos.
 	SDL_Rect createBlockRect();

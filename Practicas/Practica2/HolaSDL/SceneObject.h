@@ -12,7 +12,8 @@ class SceneObject : public GameObject{ // SceneObject hereda de GameObject.
 protected:
 	// Propiedades.
 	Point2D<float>pos;
-	float width, height;
+	float width = texture->getFrameWidth();
+	float height = texture->getFrameHeight();
 
 	// Referencias.
 	Texture* texture = nullptr;
@@ -20,19 +21,22 @@ protected:
 
 	// HAY QUE METER LO DEL ITERADOR.
 
+	SDL_Rect getCollisionRect();
+	SDL_Rect getRenderRect() const;
+
 public:
 	// Constructores y Destructores.
-	SceneObject() = default;
 	SceneObject(Game* _game, Point2D<float>& _pos, float& _W, float& _h, Texture* _textue);
 
 	// Métodos.
-	virtual Collision::collision hit(const SDL_Rect& otherRect, bool fromPlayer) = 0; // Detecta colisión con otro rectángulo
-	// HAY QUE METER EL TRYTOMOVE.
+	virtual Collision hit(const SDL_Rect& otherRect, bool fromPlayer) = 0; // Detecta colisión con otro rectángulo
+	Collision tryToMove(const Vector2D<float>& speed, Collision::Target target);
 
 	// Getters.
 	Point2D<float> getPosition() const { return pos; }
 	float getWidth() const { return width; } 
 	float getHeight() const { return height; } 
 	Texture* getTexture() const { return texture; } 
+	
 };
 

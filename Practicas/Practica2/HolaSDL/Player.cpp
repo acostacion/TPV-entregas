@@ -79,7 +79,7 @@ void Player::update() {
 
     SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, 
         nextPosition.GetY() * Game::TILE_SIDE, width, height);
-    Collision::collision result = game->checkCollision(nextCollider, true);
+    Collision result = game->checkCollision(nextCollider, true);
 
     // Si hay daño en la colisión, reducir la vida
     if (result.damages) {
@@ -119,7 +119,7 @@ void Player::update() {
     jump();
 }
 
-Collision::collision Player::hit(const SDL_Rect& otherRect, bool fromPlayer) {
+Collision Player::hit(const SDL_Rect& otherRect, bool fromPlayer) {
     fromPlayer = false; // FROMPLAYER SIEMPRE SERA FALSE AQUÍ.
 
     Collision::collision resultadoFinal;
