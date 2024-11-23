@@ -1,15 +1,16 @@
 #include "CheckML.h"
-#include "Game.h"
 #include "TileMap.h"
+#include "Game.h"
 #include "SDL_rect.h"
+#include <iostream>
 
-
-TileMap::TileMap(std::istream& entrada, Game* _game) : SceneObject(_game,  pos, width, height, texture){
-	int x = 0, y = 0;
+TileMap::TileMap(std::istream& entrada, Game* _game) 
+	: SceneObject(_game,  pos, width, height, texture){
 	texture = _game->getTexture(Game::BACKGROUND);
 	width = height = Game::TILE_SIDE;
 
 	try {
+		int x = 0, y = 0;
 		// Lee el archivo CSV.
 		while (entrada) {
 			int c = 0;
@@ -34,8 +35,6 @@ TileMap::TileMap(std::istream& entrada, Game* _game) : SceneObject(_game,  pos, 
 			map.push_back(fila);
 			y++;
 		}
-
-		
 	}
 	catch (...) {
 		std::cout << "Error creando TileMap.";
@@ -100,6 +99,5 @@ Collision::collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 		}
 
 	return colres;
-
 }
 
