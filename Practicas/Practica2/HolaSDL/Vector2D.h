@@ -1,10 +1,6 @@
 #pragma once
 #include "CheckML.h"
 
-#include <string>
-#include <fstream>
-#include <iostream>
-
 // Template para representar una clase de tipo T (genérica).
 template <class T>
 class Vector2D

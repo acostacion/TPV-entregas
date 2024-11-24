@@ -42,8 +42,10 @@ public:
 	void render(SDL_Renderer* _renderer) override;
 	void update() override;
 	void handleEvent(SDL_Event _event);
-	Collision::collision hit(const SDL_Rect& otherRect, bool fromPlayer) override;
+	Collision hit(const SDL_Rect& otherRect, bool fromPlayer) override;
 
+
+	bool isDead() { return life <= 0; }
 private:
 	// Submétodos.
 	SDL_Rect createRect(float x, float y, float h, float w);

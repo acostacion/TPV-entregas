@@ -12,7 +12,8 @@ struct Collision
 	enum Result {
 		NONE,		// no ha habido colisión
 		DAMAGE,		// la colisión produce daño
-		OBSTACLE,	// la colisión impide el movimiento
+		OBSTACLE,	// la colisión impide el movimiento.
+		EFFECT,		// la colisión produce un efecto (jugador).
 	};
 
 	Result result = NONE;

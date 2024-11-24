@@ -4,6 +4,6 @@
 class Game;
 class Coin : public Pickable
 {
-	void triggerAction(){game->givePoints(200);}
+	//void triggerAction(){game->givePoints(200);}
 };
 

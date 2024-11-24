@@ -24,6 +24,9 @@ protected:
 	SDL_Rect getCollisionRect();
 	SDL_Rect getRenderRect() const;
 
+	// Iterador de sceneobjects.
+	GameList<SceneObject>::anchor anchor;
+
 public:
 	// Constructores y Destructores.
 	SceneObject(Game* _game, Point2D<float>& _pos, float& _W, float& _h, Texture* _textue);
@@ -31,6 +34,10 @@ public:
 	// Métodos.
 	virtual Collision hit(const SDL_Rect& otherRect, bool fromPlayer) = 0; // Detecta colisión con otro rectángulo
 	Collision tryToMove(const Vector2D<float>& speed, Collision::Target target);
+
+	void setListAnchor(GameList<SceneObject>::anchor&& anchor) {
+		this->anchor = std::move(anchor);
+	}
 
 	// Getters.
 	Point2D<float> getPosition() const { return pos; }

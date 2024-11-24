@@ -1,10 +1,10 @@
 #pragma once
 #include "Texture.h"
-#include "SceneObject.h"
 #include <vector>
 #include <iostream>
 
 using uint = unsigned int;
+class SceneObject;
 class Game;
 
 class TileMap : public SceneObject
@@ -20,6 +20,6 @@ public:
 	TileMap(std::istream& entrada, Game* _game); // Constructora desde flujo de entrada y referencia al juego.
 	
 	void render(SDL_Renderer* renderer) override;
-	Collision::collision hit(const SDL_Rect& rect, bool fromPlayer) override;
+	Collision hit(const SDL_Rect& rect, bool fromPlayer) override;
 };
 

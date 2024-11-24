@@ -206,11 +206,11 @@ void Game::render() const
 
 
 
-Collision::collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
+Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) 
+{
+	Collision result;
 
-	Collision::collision result;// por defecto los booleanos estan falsos todos
 	// Verificar colisión con bloques
-	//if (!result.collides) {
 	for (auto& block : blocks) {
 		result = block->hit(rect, fromPlayer);
 		if (result.collides) break;
@@ -266,11 +266,11 @@ void Game::update()
 		ActMapOffset();
 
 		// ELIMINAR PLAYER.
-		if (player->isDead()) {
+		if (player.) {
 			delete player;
 			end();
 		}
-		if (player->getPlayerPos().GetX() == WIN_WIDTH * TILE_SIDE * 20) {
+		if (player->getPosition().GetX() == WIN_WIDTH * TILE_SIDE * 20) {
 			wonGame = true;
 			end();
 		}
@@ -394,22 +394,18 @@ void Game::createEntitymap() {
 			lineStream >> tipo;
 
 			switch (tipo) {
-			case 'M':
+			case 'M': // Mario.
 				if (player == nullptr) {
 					player = new Player(this, lineStream);
+					gameList.push_back(player);
 				}
 				break;
-				// uno para cada objeto
-			case 'G':
-				this->goombas.push_back(new Goomba(this, lineStream));
-
+			case 'G': // Goomba
+			case 'K': // Koopa
+				gameList.push_back(new Enemy(this, lineStream));
 				break;
 			case 'B':
-				this->blocks.push_back(new Blocks(this, lineStream));
-
-				break;
-			case 'K':
-				this->koopas.push_back(new Koopa(this, lineStream));
+				gameList.push_back(new Blocks(this, lineStream));
 				break;
 			}
 
@@ -424,22 +420,9 @@ void Game::createEntitymap() {
 }
 
 void Game::deleteObj() {
-	// Eliminar los obstaculos
-	for (Goomba* g : goombas)
-		delete g;
-	goombas.clear();
+	delete player;
 
-	for (Koopa* k : koopas)
-		delete k;
-	koopas.clear();
-
-	for (Blocks* s : blocks)
-		delete s;
-	blocks.clear();
-
-	for (Mushroom* m : mushrooms)
-		delete m;
-	mushrooms.clear();
+	for (Texture* texture : textures) delete texture;
 }
 #pragma endregion
 

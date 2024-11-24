@@ -54,7 +54,7 @@ void Blocks::render(SDL_Renderer* renderer) {
 	SDL_Rect rect = createBlockRect();
 	texture->renderFrame(rect, 0, animFrame); // Se renderiza.
 
-	if (Game::DEBUG) {
+	if (DEBUG) {
 		SDL_SetRenderDrawColor(renderer, 255, 255, 0, 128);
 		SDL_RenderDrawRect(renderer, &rect);
 		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);

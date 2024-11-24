@@ -68,8 +68,13 @@ private:
     bool reset = false;
 
     // Objetos del juego
-    std::vector<SceneObject*> objectQueue;
+    Player* player = nullptr; // Player nunca se elimina.
+    GameList<SceneObject> gameList; // Lista doblemente enlazada de los objetos de juego.
+    std::vector<SceneObject*> objectQueue; // Cola de objetos que aun no han salido.
     int nextObject = 0;
+
+
+    
 
     // --- MÉTODOS AUXILIARES ---.
     void createSDL();

@@ -35,6 +35,6 @@ public:
 
 	virtual void render(SDL_Renderer* renderer) override;
 	virtual void update() override;
-	virtual Collision::collision hit(const SDL_Rect&, bool) override;
+	virtual Collision hit(const SDL_Rect&, bool) override;
 };
 

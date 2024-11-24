@@ -26,11 +26,11 @@ void Player::render(SDL_Renderer* renderer) {
     updateAnimation();
     renderAnimation(rect, renderer);
 
-    if (Game::DEBUG) {
+    if (DEBUG) {
         Point2D<float> nextPos = pos + dir * MOVE_SPEED;
         SDL_Rect debugRect = createRect(
-            nextPos.GetX() * Game::TILE_SIDE - game->getMapOffset(),
-            nextPos.GetY() * Game::TILE_SIDE, width, height);
+            nextPos.GetX() * TILE_SIDE - game->getMapOffset(),
+            nextPos.GetY() * TILE_SIDE, width, height);
 
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
         SDL_RenderDrawRect(renderer, &debugRect);
@@ -66,41 +66,43 @@ void Player::handleEvent(SDL_Event evento) {
     }
 }
 
-void Player::update() {
-    // Calcular la próxima posición
+void Player::update() 
+{
     Point2D<float> nextPosition = pos + dir * MOVE_SPEED;
 
     // Verificar que Mario no exceda el borde izquierdo del mapa
-    if (nextPosition.GetX() * Game::TILE_SIDE < game->getMapOffset() 
-        || nextPosition.GetY() * Game::TILE_SIDE + Game::TILE_SIDE * 2 > Game::WIN_HEIGHT){
+    if (nextPosition.GetX() * TILE_SIDE < game->getMapOffset() 
+        || nextPosition.GetY() * TILE_SIDE + TILE_SIDE * 2 > WIN_HEIGHT){
         game->resetLevel();
         return;
     }
 
-    SDL_Rect nextCollider = createRect(nextPosition.GetX() * Game::TILE_SIDE, 
-        nextPosition.GetY() * Game::TILE_SIDE, width, height);
+    SDL_Rect nextCollider = createRect(nextPosition.GetX() * TILE_SIDE, 
+        nextPosition.GetY() * TILE_SIDE, width, height);
     Collision result = game->checkCollision(nextCollider, true);
+    result.horizontal = 2;
+    result.vertical = 2;
 
     // Si hay daño en la colisión, reducir la vida
-    if (result.damages) {
+    if (result.result = Collision::DAMAGE) {
         decreaseLife();
         return;
     }
 
     // Sin colisión: actualizar posición y estado de "en el suelo"
-    if (!result.collides) {
+    if (result.result = Collision::NONE) {
         pos = nextPosition;
         isGrounded = false;
         jump();
         return;
     }
 
-    // Colisión con un hongo: cambiar a Super Mario si no lo es
-    if (result.fromMushroom) {
+    // Colisión con un hongo: cambiar a Super Mario si no lo es. 
+    if (result.result == Collision::EFFECT) {
         setSuperMario(true);
     }
     // Colisión con un enemigo: revertir Super Mario o reducir vida
-    else if (result.fromEnemy) {
+    else if (result.result == Collision::DAMAGE) {
         if (superMario) setSuperMario(false);
         else decreaseLife();
     }
@@ -122,8 +124,10 @@ void Player::update() {
 Collision Player::hit(const SDL_Rect& otherRect, bool fromPlayer) {
     fromPlayer = false; // FROMPLAYER SIEMPRE SERA FALSE AQUÍ.
 
-    Collision::collision resultadoFinal;
-    resultadoFinal.fromPlayer = true;
+    Collision resultadoFinal;
+    resultadoFinal.horizontal = 2;
+    resultadoFinal.vertical = 2;
+    resultadoFinal.result = 
     resultadoFinal.collides = true;
 
     return resultadoFinal;
