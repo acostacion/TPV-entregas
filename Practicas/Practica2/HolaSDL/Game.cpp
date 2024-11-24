@@ -61,31 +61,15 @@ Game::~Game()
 
 
 void Game::resetLevel() {
-	player->resetPos();
+	player->resetPosition();
 	deleteObj(); //eleminar los vectores 
 	createEntitymap();
 	mapOffset = 0;
 }
 
 void Game::renderEntities()const {
-	// BLOCKS.
-	for (int i = 0; i < blocks.size(); ++i) {
-		blocks[i]->render(renderer);
-	}
-
-	// GOOMBAS.
-	for (int i = 0; i < goombas.size(); ++i) { // no he contado cuantos hay en total
-		goombas[i]->render(renderer);
-	}
-
-	// MUSHROOMS.
-	for (int i = 0; i < mushrooms.size(); ++i) { 
-		mushrooms[i]->render(renderer);
-	}
-
-	// KOOPAS.
-	for (int i = 0; i < koopas.size(); ++i) {
-		koopas[i]->render(renderer);
+	for (auto i = gameList.begin(); i < gameList.end(); ++i) {
+		
 	}
 }
 void Game::updateEntities()const {
@@ -150,7 +134,7 @@ void Game::deleteEntities() {
 
 void Game::ActMapOffset() {
 
-	int posP = player->getPlayerPos().GetX() * TILE_SIDE;
+	int posP = player->getPosition().GetX() * TILE_SIDE;
 	int mitadPantalla = (WIN_WIDTH / 2) + mapOffset;
 	if (posP > mitadPantalla) {
 		// Si el jugador está a la derecha del centro, desplazamos el mapa a la izquierda
@@ -266,7 +250,7 @@ void Game::update()
 		ActMapOffset();
 
 		// ELIMINAR PLAYER.
-		if (player.) {
+		if (player->isDead()) {
 			delete player;
 			end();
 		}

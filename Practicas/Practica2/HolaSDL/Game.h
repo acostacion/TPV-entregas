@@ -74,8 +74,7 @@ private:
     int nextObject = 0;
 
 
-    
-
+   
     // --- MÉTODOS AUXILIARES ---.
     void createSDL();
     void createTextures();

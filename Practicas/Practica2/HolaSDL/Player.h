@@ -9,11 +9,11 @@ static const Point2D<float> DIR_INI{ 0, 0 };
 class Player : public SceneObject
 {
 private:
-	// REFERENCES.
+	// References.
 	Game* game = nullptr;
 	Texture* texture = nullptr;
 
-	// PARAMETERS.
+	// Parameters.
 	Point2D<float> pos;
 	Point2D<float> dir = DIR_INI;
 	Point2D<float> posInicio;// para el reinicio
@@ -29,7 +29,7 @@ private:
 	int anim = 0; // indice del frame de la animacion
 
 
-	// CONSTANTS.
+	// Constans.
 	// En sdl ir para arriba es negativo e ir para abajo es positivo.
 	const int MARGEN_COLI = 9;
 	const int MAX_HEIGHT = 15; // altuma maxima de salto
@@ -37,17 +37,20 @@ private:
 
 public:
 
-	Player(Game* _game, std::istream& in); // constructora
+	// Main Methods.
+	Player(Game* _game, std::istream& in); 
 
 	void render(SDL_Renderer* _renderer) override;
 	void update() override;
 	void handleEvent(SDL_Event _event);
 	Collision hit(const SDL_Rect& otherRect, bool fromPlayer) override;
 
-
+	// Other Methods.
 	bool isDead() { return life <= 0; }
+	void resetPosition() { pos = posInicio; }
+
 private:
-	// Submétodos.
+	// Submethods.
 	SDL_Rect createRect(float x, float y, float h, float w);
 	SDL_Rect getRect(bool forRender) const;
 
