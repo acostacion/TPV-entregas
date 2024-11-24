@@ -4,9 +4,8 @@
 #include "SceneObject.h"
 
 TileMap::TileMap(std::istream& entrada, Game* _game) 
-	: SceneObject(_game,  pos, width, height, texture){
+	: SceneObject(_game, Vector2D<float>(0,0), TILE_SIDE, TILE_SIDE, nullptr) {
 	texture = _game->getTexture(Game::BACKGROUND);
-	width = height = Game::TILE_SIDE;
 
 	try {
 		int x = 0, y = 0;
@@ -22,12 +21,6 @@ TileMap::TileMap(std::istream& entrada, Game* _game)
 				// Lee el entero y lo añade a la fila actual.
 				entrada >> c;
 				fila.push_back(c);
-				SDL_Rect rect;
-				rect.w = width;
-				rect.h = height;
-				rect.x = x;
-				rect.y = y;
-				// Get() lee el siguiente char (",").
 				x++;
 				cAux = entrada.get();
 			}

@@ -31,7 +31,8 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 };
 
 // CONSTRUCTORA.
-Game::Game(){
+Game::Game()
+{
 	try {
 		createSDL();
 		createTextures();
@@ -46,19 +47,13 @@ Game::Game(){
 // DESTRUCTORA.
 Game::~Game()
 {
-	delete player;
-	delete tileMap;
 	deleteObj();
-	// Elimina las texturas.
-	for (Texture* texture : textures) delete texture;
 
 	// Desactiva la SDL.
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
-
-
 
 void Game::resetLevel() {
 	player->resetPosition();
@@ -69,65 +64,16 @@ void Game::resetLevel() {
 
 void Game::renderEntities()const {
 	for (auto i = gameList.begin(); i < gameList.end(); ++i) {
-		
 	}
 }
 void Game::updateEntities()const {
-	// MUSHROOMS.
-	for (int i = 0; i < mushrooms.size(); ++i) {
-		mushrooms[i]->update();
-	}
+	for (auto i = gameList.begin(); i < gameList.end(); ++i) {
 
-	// KOOPAS.
-	for (int i = 0; i < koopas.size(); ++i) {
-		koopas[i]->update();
-	}
-
-	// GOOMBAS.
-	for (int i = 0; i < goombas.size(); ++i) {
-		goombas[i]->update();
-	}
-
-	// BLOCKS.
-	for (int i = 0; i < blocks.size(); ++i) {
-		blocks[i]->update();
 	}
 }
 void Game::deleteEntities() {
-	// ELIMINAR GOOMBAS.
-	for (int i = 0; i < goombas.size(); ++i) {
-		if (goombas[i]->isDead()) {
-			delete goombas[i];
-			goombas[i] = goombas.back();
-			goombas.pop_back();
-		}
-	}
+	for (auto i = gameList.begin(); i < gameList.end(); ++i) {
 
-	// ELIMINAR KOOPAS
-	for (int i = 0; i < koopas.size(); ++i) {
-		if (!koopas[i]->isDead()) {
-			delete koopas[i];
-			koopas[i] = koopas.back();
-			koopas.pop_back();
-		}
-	}
-
-	// ELIMINAR BLOQUES
-	for (int i = 0; i < blocks.size(); ++i) {
-		if (blocks[i]->getDestroyed()) {
-			delete blocks[i];
-			blocks[i] = blocks.back();
-			blocks.pop_back();
-		}
-	}
-
-	// ELIMINAR SETAS.
-	for (int i = 0; i < mushrooms.size(); ++i) {
-  		if (mushrooms[i]->isDead()) {
-			delete mushrooms[i];
-			mushrooms[i] = mushrooms.back();
-			mushrooms.pop_back();
-		}
 	}
 }
 
@@ -405,7 +351,6 @@ void Game::createEntitymap() {
 
 void Game::deleteObj() {
 	delete player;
-
 	for (Texture* texture : textures) delete texture;
 }
 #pragma endregion
