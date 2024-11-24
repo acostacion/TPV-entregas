@@ -136,49 +136,21 @@ void Game::render() const
 
 
 
-Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) 
+Collision Game::checkCollision(const SDL_Rect& rect, Collision::Target target) 
 {
-	Collision result;
+	Collision result = NO_COLLISION; // Inicialmente no hay colisión.
 
-	// Verificar colisión con bloques
-	for (auto& block : blocks) {
-		result = block->hit(rect, fromPlayer);
-		if (result.collides) break;
-	}
-	
-	// Verificar colisión con goombas
-	if (!result.collides) {
-		for (auto& goomba : goombas) {
-			if (!goomba->getFrozen()) {
-				result = goomba->hit(rect, fromPlayer);
-				if (result.collides) break;
-			}
+	// Iteramos a través de todos los objetos de la gameList.
+	for (auto obj : gameList) {
+
+		// Vemos si el objeto tiene colision con el rectangulo y el target.
+		if (obj->hit(rect, target).result != Collision::NONE) {
+			
+			// Si hay colisión actualizamos el resultado.
+			result = obj->hit(rect, target);
+			return result;
 		}
 	}
-
-	// Verificar colisión con koopas
-	if (!result.collides) {
-		for (auto& koopa : koopas) {
-			if (!koopa->getFrozen()) {
-				result = koopa->hit(rect, fromPlayer);
-				if (result.collides) break;
-			}
-		}
-	}
-
-	// Verificar colisión con hongos
-	if (!result.collides) {
-		for (auto& mushroom : mushrooms) {
-			result = mushroom->hit(rect, fromPlayer);
-			if (result.collides) break;
-		}
-	}
-
-	// Verificar colisión con el fondo
-	if (!result.collides) {
-		result = tileMap->hit(rect, fromPlayer);
-	}
-	
 
 	return result;
 }

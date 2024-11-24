@@ -116,7 +116,7 @@ public:
     bool getSMario() { return Smario; }
     SDL_Renderer* getRender() { return renderer; }
 
-    Collision checkCollision(const SDL_Rect&, bool);
+    Collision checkCollision(const SDL_Rect&, Collision::Target target);
     
     Uint64 NOW = SDL_GetPerformanceCounter();
     Uint64 LAST = NOW;
