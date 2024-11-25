@@ -60,8 +60,8 @@ void Enemy::update() {
 	// SceneObject::update(); // si hiciera falta
 }
 
-//Collision Enemy::hit(const SDL_Rect& other, bool fromPlayer) {
-//	Collision colGoomba = NO_COLLISION; // Inicialmente no hay colision.
+Collision Enemy::hit(const SDL_Rect&, Collision::Target target) {
+	Collision colGoomba = NO_COLLISION; // Inicialmente no hay colision.
 //	SDL_Rect col = createRect(pos.GetX() * Game::TILE_SIDE, pos.GetY() * Game::TILE_SIDE);
 //
 //	SDL_Rect intersection;
@@ -76,9 +76,9 @@ void Enemy::update() {
 //			}
 //		}
 //	}
-//
-//	return colGoomba;
-//}
+
+	return colGoomba;
+}
 
 #pragma region Submétodos
 SDL_Rect Enemy::createRect(float x, float y) {

@@ -17,7 +17,11 @@ Player::Player(Game* _game, std::istream& in)
     catch (...) {
         std::cout << "Error creando Player.";
     }
+
+
 }
+
+
 
 void Player::render(SDL_Renderer* renderer) {
     SDL_Rect rect = getRect(true);
@@ -131,6 +135,21 @@ Collision Player::hit(const SDL_Rect& otherRect, Collision::Target target) {
 }
 
 #pragma region Submétodos
+SDL_Rect Player::getRect(bool forRender)const {
+    SDL_Rect rect;
+
+    rect.x = pos.GetX() * TILE_SIDE;
+    rect.y = pos.GetY() * TILE_SIDE;
+    if (forRender) {
+        rect.x = (pos.GetX() * TILE_SIDE) - game->getMapOffset();
+    }
+
+    rect.w = texture->getFrameWidth();
+    rect.h = texture->getFrameHeight();
+
+    return rect;
+}
+
 SDL_Rect Player::createRect(float x, float y, float w, float h) {
     // Se crea el rect.
     SDL_Rect rect;

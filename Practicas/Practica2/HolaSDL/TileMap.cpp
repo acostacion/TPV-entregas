@@ -71,6 +71,9 @@ void TileMap::render(SDL_Renderer* renderer) {
 	}
 }
 
+void TileMap::update() {
+}
+
 // REVISAR.
 Collision TileMap::hit(const SDL_Rect& rect, Collision::Target target)
 {
