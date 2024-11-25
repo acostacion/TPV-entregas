@@ -115,9 +115,7 @@ void Game::run()
 	}
 }
 
-int Game::getPlayerDirectionY() const {
-	return this->player->getPlayerDir().GetY();
-}
+
 
 // RENDER.
 void Game::render() const

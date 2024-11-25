@@ -24,6 +24,7 @@ protected:
 	const float GRAVITY = 0.1f;
 	const float MOVE_SPEED = 0.3f; // velocidad de movimiento.
 	const float MAX_FALL_SPEED = 0.2f;
+	const float MOVE_PERIOD = 30.0f; // fps??
 
 	int timer = 3;
 	int anim = 0;
@@ -35,6 +36,6 @@ public:
 
 	virtual void render(SDL_Renderer* renderer) override;
 	virtual void update() override;
-	virtual Collision hit(const SDL_Rect&, bool) override;
+	virtual Collision hit(const SDL_Rect&, Collision::Target target) override;
 };
 

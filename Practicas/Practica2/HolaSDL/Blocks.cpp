@@ -41,8 +41,8 @@ Blocks::Blocks(Game* _game, std::istream& in)
 	height = texture->getFrameHeight() * 2;
 
 	// COLLISION RECT.
-	colision.x = pos.GetX() * Game::TILE_SIDE;
-	colision.y = pos.GetY() * Game::TILE_SIDE;
+	colision.x = pos.GetX() * TILE_SIDE;
+	colision.y = pos.GetY() * TILE_SIDE;
 	colision.w = width;
 	colision.h = height;
 };
@@ -122,8 +122,8 @@ SDL_Rect Blocks::createBlockRect() {
 	// 2. Se le da dimensiones y posici�n.
 	rect.w = width;
 	rect.h = height;
-	rect.x = pos.GetX() * Game::TILE_SIDE - game->getMapOffset();
-	rect.y = pos.GetY() * Game::TILE_SIDE;
+	rect.x = pos.GetX() * TILE_SIDE - game->getMapOffset();
+	rect.y = pos.GetY() * TILE_SIDE;
 
 	return rect;
 }

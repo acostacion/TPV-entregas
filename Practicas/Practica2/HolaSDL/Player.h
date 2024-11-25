@@ -43,11 +43,12 @@ public:
 	void render(SDL_Renderer* _renderer) override;
 	void update() override;
 	void handleEvent(SDL_Event _event);
-	Collision hit(const SDL_Rect& otherRect, bool fromPlayer) override;
+	Collision hit(const SDL_Rect& otherRect, Collision::Target target) override;
 
 	// Other Methods.
 	bool isDead() { return life <= 0; }
 	void resetPosition() { pos = posInicio; }
+	Point2D<float> getDir() { return dir; }
 
 private:
 	// Submethods.

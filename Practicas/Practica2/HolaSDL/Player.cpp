@@ -71,29 +71,27 @@ void Player::update()
     Point2D<float> nextPosition = pos + dir * MOVE_SPEED;
 
     // Verificar que Mario no exceda el borde izquierdo del mapa
-    if (nextPosition.GetX() * TILE_SIDE < game->getMapOffset() 
-        || nextPosition.GetY() * TILE_SIDE + TILE_SIDE * 2 > WIN_HEIGHT){
+    if (nextPosition.GetX() * TILE_SIDE < game->getMapOffset() || 
+        nextPosition.GetY() * TILE_SIDE + TILE_SIDE * 2 > WIN_HEIGHT){
         game->resetLevel();
         return;
     }
 
+    // Rectángulo que se muee hacia adelante.
     SDL_Rect nextCollider = createRect(nextPosition.GetX() * TILE_SIDE, 
-        nextPosition.GetY() * TILE_SIDE, width, height);
-    Collision result = game->checkCollision(nextCollider, true);
-    result.horizontal = 2;
-    result.vertical = 2;
+                                       nextPosition.GetY() * TILE_SIDE, 
+                                       width, height);
+
+    Collision result = game->checkCollision(nextCollider, Collision::BOTH);
 
     // Si hay daño en la colisión, reducir la vida
     if (result.result = Collision::DAMAGE) {
-        decreaseLife();
-        return;
-    }
-
-    // Sin colisión: actualizar posición y estado de "en el suelo"
-    if (result.result = Collision::NONE) {
-        pos = nextPosition;
-        isGrounded = false;
-        jump();
+        if (superMario) { // Si te hacen daño siendo SMB -> MB.
+            setSuperMario(false);
+        }
+        else { // Si te hacen daño siendo MB -> -vida.
+            decreaseLife();
+        }
         return;
     }
 
@@ -101,14 +99,15 @@ void Player::update()
     if (result.result == Collision::EFFECT) {
         setSuperMario(true);
     }
-    // Colisión con un enemigo: revertir Super Mario o reducir vida
-    else if (result.result == Collision::DAMAGE) {
-        if (superMario) setSuperMario(false);
-        else decreaseLife();
+
+    if (result.result = Collision::NONE) { // Sin colisión: actualizar posición y estado de "en el suelo"
+        pos = nextPosition;
+        isGrounded = false;
+        jump();
+        return;
     }
-    // Colisión con otro obstáculo: verificar el margen de colisión
-    else if (result.intersectRect.h <= MARGEN_COLI && result.intersectRect.y > nextCollider.y) {
-        // Si hay margen suficiente en la dirección Y, actualizar posición y estado de "en el suelo"
+    else if (result.vertical == 1) { // Colisión con otro obstáculo: verificar el margen de colisión
+        
         pos = nextPosition;
         isGrounded = true;
     }
@@ -121,14 +120,12 @@ void Player::update()
     jump();
 }
 
-Collision Player::hit(const SDL_Rect& otherRect, bool fromPlayer) {
-    fromPlayer = false; // FROMPLAYER SIEMPRE SERA FALSE AQUÍ.
-
+Collision Player::hit(const SDL_Rect& otherRect, Collision::Target target) {
     Collision resultadoFinal;
-    resultadoFinal.horizontal = 2;
-    resultadoFinal.vertical = 2;
-    resultadoFinal.result = 
-    resultadoFinal.collides = true;
+
+    //resultadoFinal.horizontal = 2;
+   // resultadoFinal.vertical = 2;
+   // resultadoFinal.result = Collision::DAMAGE
 
     return resultadoFinal;
 }

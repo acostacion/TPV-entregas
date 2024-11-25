@@ -20,6 +20,6 @@ public:
 	TileMap(std::istream& entrada, Game* _game); // Constructora desde flujo de entrada y referencia al juego.
 	
 	void render(SDL_Renderer* renderer) override;
-	Collision hit(const SDL_Rect& rect, bool fromPlayer) override;
+	Collision hit(const SDL_Rect& rect, Collision::Target target) override;
 };
 

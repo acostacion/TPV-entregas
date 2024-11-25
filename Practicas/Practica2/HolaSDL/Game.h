@@ -110,8 +110,7 @@ public:
     bool won() const { return wonGame; }
     Texture* getTexture(TextureName) const;
     int getMapOffset() const;
-    int getPlayerDirectionY() const;
-    void addMushroom(Mushroom* n);
+    void addMushroom(SceneObject* n);
     void setMapOffset(int e) { mapOffset = e; }
     bool getSMario() { return Smario; }
     SDL_Renderer* getRender() { return renderer; }
@@ -133,8 +132,8 @@ inline int Game::getMapOffset() const {
 }
 
 
-inline void Game::addMushroom(Mushroom* n) {
-    objectQueue.push_back(n);
+inline void Game::addMushroom(SceneObject* n) {
+    gameList.push_back(n);
 }
 inline void Game::end() {
     gameContinue = false;

@@ -35,7 +35,7 @@ public:
 	Mushroom(Game *, const Point2D<float>&); // No tengo claro q ha de ir en la constructora, se leería con std??
 	void render(SDL_Renderer* renderer);
 	void update();
-	Collision::collision hit(const SDL_Rect&, bool);
+	Collision hit(const SDL_Rect&, Collision::Target target);
 
 	bool isDead()const { return dead; }
 

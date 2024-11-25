@@ -4,7 +4,7 @@
 #include "SceneObject.h"
 
 TileMap::TileMap(std::istream& entrada, Game* _game) 
-	: SceneObject(_game, Vector2D<float>(0,0), TILE_SIDE, TILE_SIDE, nullptr) {
+	: SceneObject(_game, Vector2D<float>(0,0), TILE_MAP, TILE_MAP, nullptr) {
 	texture = _game->getTexture(Game::BACKGROUND);
 
 	try {
@@ -71,7 +71,8 @@ void TileMap::render(SDL_Renderer* renderer) {
 	}
 }
 
-Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
+// REVISAR.
+Collision TileMap::hit(const SDL_Rect& rect, Collision::Target target)
 {
 	Collision collisionResult;
 
@@ -79,16 +80,19 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 	int row1 = (rect.y + rect.h - 1) / TILE_SIDE;
 	int col1 = (rect.x + rect.w - 1) / TILE_SIDE;
 
-	for (int row = rect.y / TILE_SIDE; row <= row1 && collisionResult.result == Collision::NONE; ++row)
+	for (int row = rect.y / TILE_SIDE; row <= row1 && collisionResult.result == Collision::NONE; ++row) {
 		for (int col = rect.x / TILE_SIDE; col <= col1 && collisionResult.result == Collision::NONE; ++col) {
 			int indice = map[row][col];
 			if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD) {
 				SDL_Rect tile = { col * TILE_SIDE,row * TILE_SIDE, TILE_SIDE, TILE_SIDE };
-				if (SDL_IntersectRect(&tile, &rect, &collisionResult.intersectRect)) {
-					collisionResult.collides = true;
+				if (SDL_IntersectRect(&tile, &rect, nullptr)) {
+					collisionResult.result = Collision::OBSTACLE;
+					collisionResult.horizontal = col * TILE_SIDE;
+					collisionResult.vertical = row * TILE_SIDE;
 				}
 			}
 		}
+	}
 
 	return collisionResult;
 }

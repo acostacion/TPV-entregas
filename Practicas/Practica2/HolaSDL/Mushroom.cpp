@@ -13,10 +13,10 @@ Mushroom::Mushroom(Game* _game, const Point2D<float>& _pos) {
 SDL_Rect Mushroom::getRect(bool forRender) const {
 	SDL_Rect rect;
 
-	rect.x = pos.GetX() * Game::TILE_SIDE;
-	rect.y = pos.GetY() * Game::TILE_SIDE;
+	rect.x = pos.GetX() * TILE_SIDE;
+	rect.y = pos.GetY() * TILE_SIDE;
 	if (forRender) {
-		rect.x = (pos.GetX() * Game::TILE_SIDE) - game->getMapOffset();
+		rect.x = (pos.GetX() * TILE_SIDE) - game->getMapOffset();
 	}
 	
 	rect.w = texturaMushroom->getFrameWidth();
@@ -43,15 +43,15 @@ SDL_Rect Mushroom::createRect(float x, float y) {
 void Mushroom::render(SDL_Renderer* renderer) {
 	// 1. Se crea el rect.
 	// 2. Se le da dimensiones y posici�n.
-	SDL_Rect rect = createRect(pos.GetX() * Game::TILE_SIDE - game->getMapOffset(), pos.GetY() * Game::TILE_SIDE);
+	SDL_Rect rect = createRect(pos.GetX() * TILE_SIDE - game->getMapOffset(), pos.GetY() * TILE_SIDE);
 
 	texturaMushroom->renderFrame(rect, 0, 0);
 
-	if (Game::DEBUG) {
+	if (DEBUG) {
 		Point2D<float> nextPos = pos + dir * MOVE_SPEED;
 		SDL_Rect rect2 = createRect(
-			nextPos.GetX() * Game::TILE_SIDE,
-			nextPos.GetY() * Game::TILE_SIDE);
+			nextPos.GetX() * TILE_SIDE,
+			nextPos.GetY() * TILE_SIDE);
 
 		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
 		SDL_RenderDrawRect(renderer, &rect2);
@@ -59,11 +59,11 @@ void Mushroom::render(SDL_Renderer* renderer) {
 	}
 }
 
-void Mushroom::update() {
+/*void Mushroom::update() {
 	// Calcular la próxima posicion basada en la direccion y velocidad de movimiento
 	Point2D<float> nextPos = pos + Vector2D<float>(dir.GetX() * (MOVE_SPEED_X - FALL_OFFSET), MOVE_SPEED_Y);
-	SDL_Rect nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
-	Collision::collision result = game->checkCollision(nextCollider, false);
+	SDL_Rect nextCollider = createRect(nextPos.GetX() * TILE_SIDE, nextPos.GetY() * TILE_SIDE);
+	Collision result = game->checkCollision(nextCollider, false);
 
 	// Si no hay colisión, actualizar la posición y salir
 	if (!result.collides) {
@@ -73,7 +73,7 @@ void Mushroom::update() {
 
 	// En caso de colisión, recalcular posición sin el desplazamiento de caída
 	nextPos = pos + Vector2D<float>(dir.GetX() * MOVE_SPEED_X, dir.GetY() * MOVE_SPEED_Y);
-	nextCollider = createRect(nextPos.GetX() * Game::TILE_SIDE, nextPos.GetY() * Game::TILE_SIDE);
+	nextCollider = createRect(nextPos.GetX() * TILE_SIDE, nextPos.GetY() * TILE_SIDE);
 	result = game->checkCollision(nextCollider, false);
 
 	// Si la nueva posición no genera colisión, actualizar la posición y salir
@@ -90,10 +90,10 @@ void Mushroom::update() {
 		// Si no, invertir la dirección en el eje X
 		dir.SetX(-dir.GetX());
 	}
-}
+}*/
 
-Collision::collision Mushroom::hit(const SDL_Rect& other, bool fromPlayer) {
-	Collision::collision res;
+/*Collision Mushroom::hit(const SDL_Rect& other, Collision::Target target) {
+	Collision res;
 	SDL_Rect rect = getRect(false);
 	if(SDL_IntersectRect(&other, &rect, &res.intersectRect)) {
 		res.collides = true;
@@ -104,4 +104,4 @@ Collision::collision Mushroom::hit(const SDL_Rect& other, bool fromPlayer) {
 	}
 	
 	return res;
-}
+}*/
