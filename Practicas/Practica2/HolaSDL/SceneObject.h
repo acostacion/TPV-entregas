@@ -32,7 +32,7 @@ public:
 	SceneObject(Game* _game, Point2D<float> _pos, float _W, float _h, Texture* _textue);
 
 	// Métodos.
-	virtual Collision hit(const SDL_Rect& otherRect, Collision::Target target) = 0; // Detecta colisión con otro rectángulo
+	virtual Collision hit(const SDL_Rect& rect, Collision::Target target) = 0; // Detecta colisión con otro rectángulo
 	Collision tryToMove(const Vector2D<float>& speed, Collision::Target target);
 
 	void setListAnchor(GameList<SceneObject>::anchor&& anchor) {

@@ -1,5 +1,6 @@
 #pragma once
 #include "CheckML.h"
+#include <iostream> // std::istream y std::ostream
 
 // Template para representar una clase de tipo T (genérica).
 template <class T>

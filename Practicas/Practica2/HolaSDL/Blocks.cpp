@@ -89,7 +89,7 @@ Collision Blocks::hit(const SDL_Rect& region, Collision::Target target)
 	return NO_COLLISION;
 }
 
-#pragma region Submétodos
+#pragma region Submetodos
 void Blocks::changeSprite() {
 	if (tipo == Tipos::LADRILLO) {
 		animFrame = 5;
