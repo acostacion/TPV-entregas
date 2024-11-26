@@ -1,5 +1,4 @@
 #pragma once
-#include "CheckML.h"
 #include "SceneObject.h"
 
 // para evitar inclusiones cruzadas.

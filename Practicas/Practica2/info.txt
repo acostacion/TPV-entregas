@@ -1,0 +1,4 @@
+Carmen Gómez Becerra. 
+Hay un error con getTexture en la entrega que procuraré solucionar. Aún no compila.
+SceneObject, GameObject, Enemy. Comienzo de las colisiones y de la lista doblemente enlazada.
+Pendiente modificación.

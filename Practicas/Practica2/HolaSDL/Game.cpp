@@ -1,4 +1,4 @@
-#include "CheckML.h"
+#include "checkML.h"
 #include "Game.h"
 
 #include <string>
