@@ -2,11 +2,11 @@
 #include "SceneObject.h"
 #include "Game.h"
 
-SceneObject::SceneObject(Game* _game, Point2D<float> _pos, float _w, float _h, Texture* _texture) : GameObject(_game) {
-	pos = _pos;
-	texture = _texture;
-	width = _w;
-	height = _h;
+SceneObject::SceneObject(Game* _game, Point2D<float> _pos, float _w, float _h, Texture* _texture) 
+	: GameObject(_game), pos(_pos), texture(_texture), width(_w), height(_h) 
+{
+	width = texture->getFrameWidth();
+	height = texture->getFrameHeight();
 }
 
 Collision SceneObject::tryToMove(const Vector2D<float>& speed, Collision::Target target)

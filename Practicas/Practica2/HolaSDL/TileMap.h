@@ -12,7 +12,7 @@ class TileMap : public SceneObject
 {
 private:
 	std::vector<std::vector<int>> map; // Tilemap.
-	Texture* texture; // Conjunto de patrones (textura con tiles).
+	Texture* texture = nullptr; // Conjunto de patrones (textura con tiles).
 	
 public:
 	static constexpr uint TILE_MAP = 32;

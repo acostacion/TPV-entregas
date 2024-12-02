@@ -3,16 +3,17 @@
 #include "Game.h" // para evitar inclusiones cruzadas.
 
 Player::Player(Game* _game, std::istream& in) 
-    : SceneObject(_game, pos, width, height, texture), game(_game)
+    : SceneObject(_game, pos, width, height, _game->getTexture(Game::MARIO)), game(_game), texture(_game->getTexture(Game::MARIO)) // Inicialmente es Only Mario.
 {
     try {
 
         in >> pos; // lee pos.
         pos = pos - Point2D<float>(0, 1); // ajusta pos.
         in >> life; // vidas.
-
-        texture = game->getTexture(Game::MARIO); // Inicialmente es Only Mario.
         posInicio = pos;
+
+        width = texture->getFrameWidth();
+        height = texture->getFrameHeight();
     }
     catch (...) {
         std::cout << "Error creando Player.";

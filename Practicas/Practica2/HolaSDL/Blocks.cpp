@@ -3,8 +3,12 @@
 #include "Game.h"
 
 Blocks::Blocks(Game* _game, std::istream& in) 
-	: SceneObject(_game, pos, width, height, texture)
+	: SceneObject(_game, pos, width, height, _game->getTexture(Game::BLOCKS))
 {
+	texture = _game->getTexture(Game::BLOCKS); // obtiene la textura.
+	width = texture->getFrameWidth() * 2;
+	height = texture->getFrameHeight() * 2;
+
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 
@@ -36,9 +40,6 @@ Blocks::Blocks(Game* _game, std::istream& in)
 		break;
 	}
 
-	texture = _game->getTexture(Game::BLOCKS); // obtiene la textura.
-	width = texture->getFrameWidth() * 2;
-	height = texture->getFrameHeight() * 2;
 
 	// COLLISION RECT.
 	colision.x = pos.GetX() * TILE_SIDE;

@@ -3,7 +3,7 @@
 #include "Game.h"
 
 Enemy::Enemy(Game* _game, std::istream& in) 
-	: SceneObject(_game, pos, width, height, texture), game(_game){
+	: SceneObject(_game, Point2D<float>(0,0), 0, 0, nullptr), game(_game) {
 	in >> pos; // lee pos.
 	pos = pos - Point2D<float>(0, 1); // coloca a pos.
 }

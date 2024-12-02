@@ -10,14 +10,14 @@ class Game;
 
 class SceneObject : public GameObject{ // SceneObject hereda de GameObject.
 protected:
-	// Propiedades.
-	Point2D<float>pos;
-	float width = texture->getFrameWidth();
-	float height = texture->getFrameHeight();
-
 	// Referencias.
 	Texture* texture = nullptr;
 	Game* game = nullptr;
+
+	// Propiedades.
+	Point2D<float>pos;
+	float width = 0;
+	float height = 0;
 
 	// HAY QUE METER LO DEL ANCHOR.
 

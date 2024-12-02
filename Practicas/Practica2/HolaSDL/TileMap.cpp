@@ -4,9 +4,9 @@
 #include "SceneObject.h"
 
 TileMap::TileMap(std::istream& entrada, Game* _game) 
-	: SceneObject(_game, Vector2D<float>(0,0), TILE_MAP, TILE_MAP, nullptr) {
+	: SceneObject(_game, Vector2D<float>(0,0), TILE_MAP, TILE_MAP, _game->getTexture(Game::BACKGROUND))
+{
 	texture = _game->getTexture(Game::BACKGROUND);
-
 	try {
 		int x = 0, y = 0;
 		// Lee el archivo CSV.
