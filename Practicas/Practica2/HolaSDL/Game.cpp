@@ -47,6 +47,7 @@ Game::Game()
 // DESTRUCTORA.
 Game::~Game()
 {
+
 	deleteObj();
 
 	// Desactiva la SDL.
