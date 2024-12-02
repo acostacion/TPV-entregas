@@ -16,8 +16,8 @@ protected:
 
 	// Propiedades.
 	Point2D<float>pos;
-	float width = 0;
-	float height = 0;
+	float width;
+	float height;
 
 	// HAY QUE METER LO DEL ANCHOR.
 

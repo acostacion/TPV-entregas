@@ -16,6 +16,7 @@ private:
 
 	// Referencias.
 	Texture* texture = nullptr;
+	Game* game = nullptr;
 
 	// Propiedades.
 	Point2D<float> pos;

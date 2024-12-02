@@ -14,8 +14,8 @@ class Mushroom
 	// pos, dir, textura, game.
 
 private:
-	Game* game;
-	Texture* texturaMushroom;
+	Game* game = nullptr;
+	Texture* texturaMushroom = nullptr;
 	Point2D<float> pos;
 	Point2D<float> dir;
 

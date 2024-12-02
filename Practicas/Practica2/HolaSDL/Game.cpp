@@ -300,6 +300,7 @@ void Game::createEntitymap() {
 					gameList.push_back(player);
 				}
 				break;
+
 			case 'G': // Goomba
 			case 'K': // Koopa
 				gameList.push_back(new Enemy(this, lineStream));

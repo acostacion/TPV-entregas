@@ -62,7 +62,7 @@ private:
     std::array<Texture*, NUM_TEXTURES> textures; // Array con todas las texturas del juego
     bool gameContinue = true; // Interruptor para terminar el juego
     bool wonGame = false; // Ganar
-    int mapOffset = 0; // Lleva la coordenada x del extremo izquierdo de la vista.
+    int mapOffset; // Lleva la coordenada x del extremo izquierdo de la vista.
 
     bool Smario = false;
     bool reset = false;

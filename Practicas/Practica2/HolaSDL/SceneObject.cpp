@@ -5,8 +5,8 @@
 SceneObject::SceneObject(Game* _game, Point2D<float> _pos, float _w, float _h, Texture* _texture) 
 	: GameObject(_game), pos(_pos), texture(_texture), width(_w), height(_h) 
 {
-	width = texture->getFrameWidth();
-	height = texture->getFrameHeight();
+	width = TILE_SIDE;
+	height = TILE_SIDE;
 }
 
 Collision SceneObject::tryToMove(const Vector2D<float>& speed, Collision::Target target)
