@@ -110,7 +110,7 @@ public:
     bool won() const { return wonGame; }
     Texture* getTexture(TextureName) const;
     
-    int getMapOffset() const { return mapOffset; }
+    int getMapOffset() { return mapOffset; }
     void setMapOffset(int e) { mapOffset = e; }
  
     void addMushroom(SceneObject* n);
